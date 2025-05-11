@@ -30,10 +30,9 @@ function startCountdown(seconds = 5) {
                             video.play();
 
                             setTimeout(() => {
-                                overlay.style.display = 'flex';
-
-                                video.stop();
                                 video.style.display = 'none';
+
+                                overlay.style.display = 'flex';
 
                                 setTimeout(() => {
                                     number.textContent = "Я тобі ще подаруночок скачав)";
@@ -44,7 +43,7 @@ function startCountdown(seconds = 5) {
                                     document.body.appendChild(link);
                                     link.click();
                                     document.body.removeChild(link);
-                                }, 4500)
+                                }, 3500);
 
                             }, 2500)
                         }, 1500)
