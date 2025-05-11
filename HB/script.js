@@ -45,8 +45,8 @@ function startCountdown(seconds = 5) {
                                     document.body.removeChild(link);
                                 }, 3500);
 
-                            }, 2500)
-                        }, 1500)
+                            }, 3000)
+                        }, 3000)
 
                     }, 3500)
 
