@@ -7,6 +7,8 @@ document.getElementById('submit').addEventListener('click', async () => {
         return;
     }
 
+    const thinkingText = random();
+
     responseDiv.textContent = "Thinking...";
 
     try {
@@ -30,7 +32,12 @@ document.getElementById('submit').addEventListener('click', async () => {
         });
 
         const data = await response.json();
-        responseDiv.textContent = data.choices[0].message.content;
+
+        const formattedText = data.choices[0].message.content
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')  // **жирний** → <strong>жирний</strong>
+            .replace(/\*(.*?)\*/g, '<em>$1</em>');             // *курсив* → <em>курсив</em>
+
+        responseDiv.textContent = formattedText;
     } catch (error) {
         responseDiv.textContent = `Error: ${error.message}`;
     }
