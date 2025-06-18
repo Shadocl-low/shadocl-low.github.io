@@ -37,6 +37,8 @@ document.addEventListener('DOMContentLoaded', function() {
         logoContainer.style.setProperty('--y', `${y}px`);
     });
 
+    Tone.start();
+    console.log(Tone);
     // Piano keys interaction
     const piano = document.getElementById('piano');
     piano.addEventListener('click', () => {
@@ -78,7 +80,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     soundToggle.addEventListener('click', () => {
         if (audio.paused) {
-            Tone.start();
             audio.start().catch(error => console.log(error));
             soundToggle.querySelector('.sound-icon').textContent = '🔊';
             soundToggle.querySelector('.sound-text').textContent = 'Saloon Ambience';
