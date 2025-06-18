@@ -416,7 +416,7 @@ h1 {
 .deck-cards {
     position: relative;
     width: 60px;
-    height: 80px;
+    height: 60px;
     cursor: pointer;
 }
 
@@ -435,14 +435,14 @@ h1 {
     transform: translateX(-50%) rotate(5deg);
     width: 50px;
     height: 70px;
-    background: white;
+    background: var(--accent-color);
     border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-family: 'IM Fell English SC', serif;
     font-size: 1.5rem;
-    color: #9c3d2e;
+    color: var(--primary-color);
     box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     opacity: 0;
     transition: all 0.5s ease;

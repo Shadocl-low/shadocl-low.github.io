@@ -29,12 +29,14 @@ const sounds = {
 
     beerPour: new Tone.Player({
         url: "www/sounds/beer-pour.mp3",
-        autostart: false
+        autostart: false,
+        volume: -10
     }).toDestination(),
 
     cardShuffle: new Tone.Player({
         url: "www/sounds/card-shuffle.mp3",
-        autostart: false
+        autostart: false,
+        volume: -10
     }).toDestination(),
 
     ambiance: new Tone.Player({
@@ -91,7 +93,7 @@ function setupInteractions() {
     document.getElementById('deck-cards').addEventListener('click', (event) => {
         initAudio();
 
-        const deck = event.target;
+        const deck = document.getElementById('deck-cards');
         const cardStack = deck.querySelector('.card-stack');
         const luckyCard = deck.querySelector('.lucky-card');
 
@@ -121,12 +123,6 @@ function setupInteractions() {
                 duration: 500,
                 iterations: 3
             });
-
-            // Hide after 3 seconds
-            setTimeout(() => {
-                luckyCard.style.opacity = '0';
-                luckyCard.style.bottom = '-40px';
-            }, 3000);
         }
 
         sounds.cardShuffle.start();
