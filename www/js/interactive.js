@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     soundToggle.addEventListener('click', () => {
         if (audio.paused) {
-            audio.play();
+            audio.play().catch(error => console.log(error));
             soundToggle.querySelector('.sound-icon').textContent = '🔊';
             soundToggle.querySelector('.sound-text').textContent = 'Saloon Ambience';
         } else {
@@ -57,11 +57,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Visitor counter animation
     let count = 0;
-    const targetCount = Math.floor(Math.random() * 20) + 5; // Random "visitors"
+    const targetCount = Math.floor(Math.random() * 10) + 5; // Random "visitors"
     const counter = document.getElementById('visitor-count');
     const counterInterval = setInterval(() => {
         count++;
-        counter.textContent = count;
+        counter.textContent = count.toString();
         if (count >= targetCount) clearInterval(counterInterval);
     }, 150);
 });
