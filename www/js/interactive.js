@@ -28,17 +28,17 @@ const sounds = {
     }).toDestination(),
 
     beerPour: new Tone.Player({
-        url: "sounds/beer-pour.mp3",
+        url: "www/sounds/beer-pour.mp3",
         autostart: false
     }).toDestination(),
 
     cardShuffle: new Tone.Player({
-        url: "sounds/card-shuffle.mp3",
+        url: "www/sounds/card-shuffle.mp3",
         autostart: false
     }).toDestination(),
 
     ambiance: new Tone.Player({
-        url: "sounds/blaze.mp3",
+        url: "www/sounds/blaze.mp3",
         loop: true,
         autostart: false,
         volume: -20

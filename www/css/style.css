@@ -244,12 +244,11 @@ h1 {
     position: relative;
 }
 
-
 /* Saloon sign animation */
 .saloon-sign {
     position: relative;
     height: 100px;
-    margin-bottom: 40px;
+    margin-bottom: 60px;
     perspective: 500px;
 }
 
@@ -259,11 +258,51 @@ h1 {
     padding: 20px 40px;
     animation: swing 5s infinite ease-in-out;
     transform-origin: top center;
+    width: 550px;
+    margin: auto;
 }
 
+/* Add to your style.css */
+.sign-chain {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(to bottom,
+    #c19a6b 0%,
+    #8a6d4b 50%,
+    #5d4a30 100%);
+    transform: translateX(-50%);
+}
+/* Animate ropes with the sign */
 @keyframes swing {
-    0%, 100% { transform: rotate(-3deg); }
-    50% { transform: rotate(3deg); }
+    0%, 100% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+}
+
+/* Make ropes move more naturally */
+.sign-chain {
+    animation: chain-swing 5s infinite ease-in-out;
+}
+
+@keyframes chain-swing {
+    0%, 100% {
+        transform: translateX(-50%) rotate(-1deg);
+    }
+    50% {
+        transform: translateX(-50%) rotate(1deg);
+    }
+}
+
+.sign-chain,
+.sign-board::before,
+.sign-board::after {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 /* Interactive logo */
