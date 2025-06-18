@@ -248,8 +248,9 @@ h1 {
 .saloon-sign {
     position: relative;
     height: 100px;
-    margin-bottom: 60px;
     perspective: 500px;
+    width: 550px;
+    margin: auto;
 }
 
 .sign-board {
@@ -258,8 +259,8 @@ h1 {
     padding: 20px 40px;
     animation: swing 5s infinite ease-in-out;
     transform-origin: top center;
-    width: 550px;
     margin: auto;
+    width: 100%;
 }
 
 /* Add to your style.css */
@@ -309,7 +310,7 @@ h1 {
 .logo-container {
     position: relative;
     width: 200px;
-    margin: 0 auto 30px;
+    margin: 60px auto 30px;
     transition: all 0.3s ease;
 }
 
@@ -517,8 +518,11 @@ h1 {
     }
 
     .saloon-sign {
-        height: 80px;
-        margin-bottom: 20px;
+        position: relative;
+        height: 100px;
+        perspective: 500px;
+        width: 100%;
+        margin: auto;
     }
 
     .wanted-poster {
@@ -531,6 +535,7 @@ h1 {
 
     .logo {
         max-width: 150px;
+        margin-top: 50px;
     }
 
     p {
@@ -538,8 +543,7 @@ h1 {
     }
 
     #video-corner {
-        width: 250px;
-        height: 150px;
+        display: none;
     }
 }
 
