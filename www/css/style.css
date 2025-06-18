@@ -244,17 +244,6 @@ h1 {
     position: relative;
 }
 
-h1::before, h1::after {
-    content: "✻";
-    position: absolute;
-    color: var(--primary-color);
-    font-size: 1.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-h1::before { left: 15px; }
-h1::after { right: 15px; }
 
 /* Saloon sign animation */
 .saloon-sign {
