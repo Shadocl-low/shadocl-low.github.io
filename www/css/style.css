@@ -227,6 +227,195 @@ p span {
     font-size: 14px;
 }
 
+/* Western typography */
+h1 {
+    font-family: 'Cinzel Decorative', 'Playfair Display', serif;
+    color: var(--accent-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(156, 61, 46, 0.3);
+    font-size: 3rem;
+    letter-spacing: 2px;
+    margin: 0;
+    padding: 10px 20px;
+    background: linear-gradient(to right,
+    transparent 10%,
+    rgba(193, 154, 107, 0.2) 50%,
+    transparent 90%);
+    position: relative;
+}
+
+h1::before, h1::after {
+    content: "✻";
+    position: absolute;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+}
+
+h1::before { left: 0; }
+h1::after { right: 0; }
+
+/* Saloon sign animation */
+.saloon-sign {
+    position: relative;
+    height: 100px;
+    margin-bottom: 40px;
+    perspective: 500px;
+}
+
+.sign-board {
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="80" viewBox="0 0 300 80"><rect width="300" height="80" rx="5" fill="%232a2a2a" stroke="%23c19a6b" stroke-width="2"/></svg>') center/contain no-repeat;
+    padding: 20px 40px;
+    animation: swing 5s infinite ease-in-out;
+    transform-origin: top center;
+}
+
+@keyframes swing {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+}
+
+/* Interactive logo */
+.logo-container {
+    position: relative;
+    width: 200px;
+    margin: 0 auto 30px;
+    transition: all 0.3s ease;
+}
+
+.logo-shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at var(--x) var(--y),
+    rgba(255,255,255,0.3) 0%,
+    transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+.logo-container:hover .logo-shine {
+    opacity: 1;
+}
+
+/* Counter styling */
+.counter-container {
+    position: relative;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="100" viewBox="0 0 300 100"><rect width="300" height="100" rx="10" fill="%231e1e1e" stroke="%23d4a373" stroke-width="2"/></svg>') center/contain no-repeat;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 300px;
+}
+
+.counter-display {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    position: relative;
+}
+
+.counter-gears {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 20L54 30H46L50 20M30 46L20 50L30 54V46M70 54L80 50L70 46V54M46 70L50 80L54 70H46M50 54A4 4 0 0 1 50 46A4 4 0 0 1 50 54Z" fill="%23c19a6b" opacity="0.3"/></svg>');
+    background-size: 30px 30px;
+    animation: rotateGears 20s linear infinite;
+    opacity: 0.3;
+}
+
+@keyframes rotateGears {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Interactive bar items */
+.bar-items {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+}
+
+.piano-keys, .beer-mug, .deck-cards {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.piano-keys {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="10" y="30" width="80" height="40" fill="%231e1e1e" stroke="%23c19a6b"/><rect x="15" y="30" width="10" height="40" fill="%23000"/><rect x="30" y="30" width="10" height="40" fill="%23000"/><rect x="45" y="30" width="10" height="40" fill="%23000"/><rect x="60" y="30" width="10" height="40" fill="%23000"/><rect x="75" y="30" width="10" height="40" fill="%23000"/></svg>');
+}
+
+.beer-mug {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 20H70V50C70 65 50 75 50 75C50 75 30 65 30 50V20Z" fill="%23d4a373" stroke="%23c19a6b" stroke-width="2"/><path d="M30 20L25 10H75L70 20" fill="%23c19a6b"/><path d="M35 25V45C35 50 40 55 50 55C60 55 65 50 65 45V25" fill="%239c3d2e" opacity="0.7"/></svg>');
+}
+
+.deck-cards {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="10" y="20" width="60" height="80" rx="5" fill="%239c3d2e"/><rect x="20" y="30" width="60" height="80" rx="5" fill="%231e1e1e"/><rect x="30" y="40" width="60" height="80" rx="5" fill="%239c3d2e"/></svg>');
+}
+
+/* Wanted posters */
+.wanted-poster {
+    position: fixed;
+    width: 150px;
+    height: 200px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200" viewBox="0 0 150 200"><rect width="150" height="200" fill="%23d4a373" opacity="0.1"/><rect x="10" y="10" width="130" height="180" fill="%23d4a373" opacity="0.05" stroke="%23c19a6b" stroke-width="1"/></svg>');
+    background-size: contain;
+    z-index: -1;
+}
+
+.wanted-poster[data-poster="1"] {
+    top: 20px;
+    left: 20px;
+    transform: rotate(-5deg);
+}
+
+.wanted-poster[data-poster="2"] {
+    bottom: 20px;
+    right: 20px;
+    transform: rotate(3deg);
+}
+
+/* Sound control */
+.sound-control {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}
+
+#sound-toggle {
+    background: var(--surface-dark);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Bullet holes */
+.bullet-holes::before {
+    content: "";
+    position: fixed;
+    top: 30%;
+    right: 15%;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, transparent 30%, var(--surface-dark) 31%);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
 @media (max-width: 600px) {
     body {
         padding: 12px;
@@ -234,6 +423,15 @@ p span {
 
     h1 {
         font-size: 1.8rem;
+    }
+
+    .saloon-sign {
+        height: 80px;
+        margin-bottom: 20px;
+    }
+
+    .wanted-poster {
+        display: none;
     }
 
     #prompt {
