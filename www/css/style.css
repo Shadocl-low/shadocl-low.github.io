@@ -396,17 +396,25 @@ h1 {
 /* Wanted posters */
 .wanted-poster {
     position: fixed;
-    width: 150px;
-    height: 200px;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200" viewBox="0 0 150 200"><rect width="150" height="200" fill="%23d4a373" opacity="0.1"/><rect x="10" y="10" width="130" height="180" fill="%23d4a373" opacity="0.05" stroke="%23c19a6b" stroke-width="1"/></svg>');
-    background-size: contain;
+    width: 180px;
+    height: 240px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200" viewBox="0 0 150 200"><rect width="150" height="200" fill="%23d4a373" opacity="0.1"/><rect x="10" y="10" width="130" height="180" fill="%23d4a373" opacity="0.05" stroke="%23c19a6b" stroke-width="1"/></svg>') center/contain no-repeat,
+            linear-gradient(to bottom, #d4a373 0%, #8a6d4b 100%);
+    border: 8px solid #5d4a30;
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    padding: 15px;
     z-index: -1;
+    transform-style: preserve-3d;
 }
 
 .wanted-poster[data-poster="1"] {
     top: 20px;
     left: 20px;
     transform: rotate(-5deg);
+    background-image:
+            url('www/img/wanted.png'),
+            linear-gradient(to bottom, #d4a373 0%, #8a6d4b 100%);
 }
 
 .wanted-poster[data-poster="2"] {
