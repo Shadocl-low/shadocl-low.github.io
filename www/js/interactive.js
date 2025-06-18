@@ -52,7 +52,6 @@ function initAudio() {
     if (!audioContextStarted) {
         Tone.start();
         audioContextStarted = true;
-        console.log("Audio context started");
     }
 }
 
@@ -147,15 +146,6 @@ function setupInteractions() {
             document.querySelector('.sound-text').textContent = 'Sound Off';
         }
     });
-
-    // Visitor counter
-    let count = 0;
-    const targetCount = Math.floor(Math.random() * 10) + 5;
-    const counterInterval = setInterval(() => {
-        count++;
-        document.getElementById('visitor-count').textContent = count;
-        if (count >= targetCount) clearInterval(counterInterval);
-    }, 150);
 }
 
 // Start everything when DOM is ready
