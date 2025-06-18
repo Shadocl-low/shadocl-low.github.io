@@ -333,9 +333,13 @@ h1 {
 }
 
 /* Counter styling */
+.counter-label {
+    margin: 0;
+}
+
 .counter-container {
     position: relative;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="100" viewBox="0 0 300 100"><rect width="300" height="100" rx="10" fill="%231e1e1e" stroke="%23d4a373" stroke-width="2"/></svg>') center/contain no-repeat;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="125" viewBox="0 0 300 75"><rect width="300" height="100" rx="10" fill="%231e1e1e" stroke="%23d4a373" stroke-width="2"/></svg>') center/contain no-repeat;
     padding: 20px;
     margin: 20px auto;
     max-width: 300px;
@@ -396,10 +400,8 @@ h1 {
 /* Wanted posters */
 .wanted-poster {
     position: fixed;
-    width: 180px;
-    height: 240px;
-    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="150" height="200" viewBox="0 0 150 200"><rect width="150" height="200" fill="%23d4a373" opacity="0.1"/><rect x="10" y="10" width="130" height="180" fill="%23d4a373" opacity="0.05" stroke="%23c19a6b" stroke-width="1"/></svg>') center/contain no-repeat,
-            linear-gradient(to bottom, #d4a373 0%, #8a6d4b 100%);
+    width: 270px;
+    height: 360px;
     border: 8px solid #5d4a30;
     border-radius: 2px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.4);
@@ -408,19 +410,18 @@ h1 {
     transform-style: preserve-3d;
 }
 
-.wanted-poster[data-poster="1"] {
-    top: 20px;
-    left: 20px;
-    transform: rotate(-5deg);
-    background-image:
-            url('www/img/wanted.png'),
-            linear-gradient(to bottom, #d4a373 0%, #8a6d4b 100%);
-}
 
-.wanted-poster[data-poster="2"] {
+.wanted-poster[data-poster="1"] {
     bottom: 20px;
     right: 20px;
     transform: rotate(3deg);
+}
+
+.wanted-poster[data-poster="2"] {
+    top: 100px;
+    left: 100px;
+    transform: rotate(-5deg);
+    background: url('/www/img/wanted.png') center/cover no-repeat;
 }
 
 /* Sound control */
