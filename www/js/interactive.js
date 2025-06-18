@@ -65,18 +65,71 @@ function setupInteractions() {
     });
 
     // Beer mug
-    document.getElementById('beer-mug').addEventListener('click', () => {
+    document.getElementById('beer-mug').addEventListener('click', (event) => {
         initAudio();
+
+        const mug = event.target;
+        const foam = mug.querySelector('.beer-foam');
+
+        // Tilt animation
+        mug.style.transform = 'rotate(20deg)';
+
+        // Foam bubble effect
+        foam.style.opacity = '0.8';
+        foam.style.transform = 'translateX(-40%) translateY(-100%) scale(1.5)';
+
+        setTimeout(() => {
+            mug.style.transform = '';
+            foam.style.opacity = '0';
+            foam.style.transform = 'translateX(-50%) scale(1)';
+        }, 500);
+
         sounds.beerPour.start();
     });
 
     // Deck of cards
-    document.getElementById('deck-cards').addEventListener('click', () => {
+    document.getElementById('deck-cards').addEventListener('click', (event) => {
         initAudio();
-        sounds.cardShuffle.start();
+
+        const deck = event.target;
+        const cardStack = deck.querySelector('.card-stack');
+        const luckyCard = deck.querySelector('.lucky-card');
+
+        // Shuffle animation
+        cardStack.style.transform = 'translateX(10px) rotate(10deg)';
+
+        setTimeout(() => {
+            cardStack.style.transform = '';
+        }, 300);
+
+        // 10% chance for lucky card
         if (Math.random() < 0.1) {
-            document.getElementById('secret-panel').style.display = 'block';
+            // Generate random card value (1-10)
+            const cardValue = Math.floor(Math.random() * 10) + 1;
+            luckyCard.textContent = cardValue;
+
+            // Show lucky card
+            luckyCard.style.opacity = '1';
+            luckyCard.style.bottom = '-50px';
+
+            // Special animation
+            luckyCard.animate([
+                { transform: 'translateX(-50%) rotate(-10deg)' },
+                { transform: 'translateX(-50%) rotate(10deg)' },
+                { transform: 'translateX(-50%) rotate(0deg)' }
+            ], {
+                duration: 500,
+                iterations: 3
+            });
+
+            // Hide after 3 seconds
+            setTimeout(() => {
+                luckyCard.style.opacity = '0';
+                luckyCard.style.bottom = '-40px';
+            }, 3000);
         }
+
+        sounds.cardShuffle.start();
     });
 
     // Bullet holes
