@@ -1,15 +1,34 @@
+const thinkingMessages = [
+    "Підбираю найменш образливі слова",
+    "Аналізую інтелектуальний рівень користувача",
+    "Встаю в Jackopose",
+    "Перебираю вакансії для фурі художника",
+    "Намагаюсь не впасти у депресію від таких питань",
+    "Очищую пам'ять від заїдливіх пісень",
+    "Згадую всі строки треків папочки Оксі"
+];
+
+function getRandomThinkingMessage() {
+    const randomIndex = Math.floor(Math.random() * thinkingMessages.length);
+    return thinkingMessages[randomIndex];
+}
+
 document.getElementById('submit').addEventListener('click', async () => {
     const prompt = document.getElementById('prompt').value.trim();
     const responseDiv = document.getElementById('response');
 
     if (!prompt) {
-        responseDiv.textContent = "Please enter a prompt!";
+        responseDiv.textContent = "Введи повідомлення, сноб(";
         return;
     }
 
-    const thinkingText = random();
+    responseDiv.textContent = getRandomThinkingMessage();
 
-    responseDiv.textContent = "Thinking...";
+    let dotCount = 0;
+    const thinkingInterval = setInterval(() => {
+        dotCount = (dotCount + 1) % 4;
+        responseDiv.textContent = getRandomThinkingMessage() + '.'.repeat(dotCount);
+    }, 500);
 
     try {
         const API_KEY = "Bearer ab2072debb1240428a579dbd34d31429";
@@ -38,6 +57,7 @@ document.getElementById('submit').addEventListener('click', async () => {
             .replace(/\*(.*?)\*/g, '<em>$1</em>');             // *курсив* → <em>курсив</em>
 
         responseDiv.textContent = formattedText;
+        clearInterval(thinkingInterval);
     } catch (error) {
         responseDiv.textContent = `Error: ${error.message}`;
     }

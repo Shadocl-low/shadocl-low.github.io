@@ -1,14 +1,28 @@
 /* style.css */
 :root {
-    --bg-color: #121212;
-    --text-color: #e0e0e0;
-    --primary-color: #bb86fc;
-    --secondary-color: #03dac6;
-    --surface-color: #1e1e1e;
-    --error-color: #cf6679;
-    --border-radius: 8px;
-    --spacing: 16px;
-    --font-main: 'Segoe UI', Roboto, -apple-system, sans-serif;
+    /* Base colors */
+    --bg-color: #1a1a1a; /* Slightly lighter deep gray */
+    --text-color: #e8e8e8; /* Soft off-white */
+
+    /* Western accent colors */
+    --primary-color: #c19a6b; /* Dusty saddle brown (replaces purple) */
+    --secondary-color: #d4a373; /* Warm desert tan */
+    --accent-color: #9c3d2e; /* Rusty red (new accent) */
+    --metal-color: #b8b8b8; /* Silver/gunmetal */
+
+    /* Surface colors */
+    --surface-color: #2a2a2a; /* Lighter than bg for contrast */
+    --surface-dark: #1e1e1e; /* For darker elements */
+
+    /* Utility colors */
+    --error-color: #c45c41; /* Earthy red */
+    --success-color: #7a9c6b; /* Sage green */
+
+    /* Measurements */
+    --border-radius: 6px; /* Slightly sharper corners */
+    --spacing: 18px;
+    --font-main: 'Montserrat', 'Segoe UI', sans-serif;
+    --font-heading: 'Playfair Display', serif; /* For h1/h2 */
 }
 
 * {
@@ -20,7 +34,7 @@
 body {
     background-color: var(--bg-color);
     color: var(--text-color);
-    font-family: var(--font-main);
+    font-family: var(--font-main), serif;
     line-height: 1.6;
     padding: var(--spacing);
     max-width: 800px;
@@ -31,26 +45,84 @@ body {
     gap: var(--spacing);
 }
 
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+    var(--primary-color),
+    var(--secondary-color),
+    var(--primary-color));
+    z-index: 1000;
+}
+
 h1 {
-    color: var(--primary-color);
+    color: var(--accent-color);
+    font-family: var(--font-heading), serif;
     text-align: center;
     margin-bottom: calc(var(--spacing) * 0.5);
-    font-weight: 600;
+    font-weight: 700;
     font-size: 2.2rem;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
 }
 
 h2 {
     color: var(--secondary-color);
-    font-weight: 500;
+    font-weight: 600;
     font-size: 1.5rem;
     margin-top: var(--spacing);
+}
+
+.logo {
+    display: block;
+    max-width: 200px;
+    height: auto;
+    margin: 0 auto var(--spacing);
+    filter: drop-shadow(0 0 8px rgba(193, 154, 107, 0.3));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    padding: 5px;
+    background-color: var(--surface-dark);
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px rgba(193, 154, 107, 0.5));
+}
+
+p {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: var(--spacing);
+    padding: 8px;
+    background-color: var(--surface-dark);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--metal-color);
+}
+
+p span {
+    color: var(--secondary-color);
+    font-weight: bold;
+    font-family: 'Consolas', monospace;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+p span {
+    animation: pulse 3s infinite;
 }
 
 #prompt {
     width: 100%;
     padding: 12px;
     border-radius: var(--border-radius);
-    border: 1px solid #333;
+    border: 1px solid var(--metal-color);
     background-color: var(--surface-color);
     color: var(--text-color);
     font-size: 1rem;
@@ -62,29 +134,32 @@ h2 {
 #prompt:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.2);
+    box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2);
 }
 
 #submit {
-    background-color: var(--primary-color);
-    color: #000;
-    border: none;
+    background: linear-gradient(to bottom, var(--primary-color), #b08d5f);
+    color: #2a2a2a;
+    border: 1px solid #8a6d4b;
     padding: 12px 24px;
     border-radius: var(--border-radius);
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
 }
 
 #submit:hover {
-    background-color: #a370d8;
+    background: linear-gradient(to bottom, #d4a373, #c19a6b);
     transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 #submit:active {
     transform: translateY(0);
+    box-shadow: none;
 }
 
 #response {
@@ -94,29 +169,64 @@ h2 {
     white-space: pre-wrap;
     font-family: 'Consolas', monospace;
     min-height: 100px;
-    border: 1px solid #333;
+    border: 1px solid var(--metal-color);
     overflow-x: auto;
 }
 
-/* Анімація завантаження */
 #response:empty::before {
     content: "Очікування відповіді...";
-    color: #666;
+    color: var(--metal-color);
     font-style: italic;
 }
 
-
 #response em {
     font-style: italic;
-    color: #555;
+    color: var(--secondary-color);
 }
 
 #response strong {
     font-weight: bold;
-    color: #000;
+    color: var(--primary-color);
 }
 
-/* Адаптація для мобільних */
+#video-corner {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 200px;
+    border: 2px solid var(--metal-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    background-color: var(--surface-dark);
+}
+
+#video-corner video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    color: var(--text-color);
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
 @media (max-width: 600px) {
     body {
         padding: 12px;
@@ -129,15 +239,32 @@ h2 {
     #prompt {
         min-height: 80px;
     }
+
+    .logo {
+        max-width: 150px;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    #video-corner {
+        width: 250px;
+        height: 150px;
+    }
 }
 
-/* Ефекти для інтерактивних елементів */
 button, textarea {
     transition: all 0.2s ease-out;
 }
 
-/* Стилі для помилок */
 .error {
     color: var(--error-color);
     border-color: var(--error-color) !important;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; text-shadow: 0 0 8px var(--secondary-color); }
+    100% { opacity: 0.8; }
 }
