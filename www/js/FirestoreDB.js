@@ -133,6 +133,9 @@ export default class FirestoreDB {
             const notes = ['A4', 'F#4', 'C4', 'F4', 'A#4', 'C5', 'G4', 'C#4', 'D#4'];
             const assignedNote = notes[(visitorIndex - 1) % notes.length];
 
+            display.textContent = visitorIndex || '1';
+            luckyCard.textContent = assignedNote ?? "A4";
+
             // 5. Create visitor record
             await this.updateDoc('saloonVisitors', ip, {
                 ip,
