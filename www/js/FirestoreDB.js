@@ -54,7 +54,7 @@ export default class FirestoreDB {
         try {
             await this.db.collection(collection)
                 .doc(docId)
-                .set(data, { merge: true });
+                .set(data, {merge: true});
             return true;
         } catch (error) {
             console.error("Firestore update error:", error);
@@ -65,12 +65,21 @@ export default class FirestoreDB {
     // Add to array field
     async addToArray(collection, docId, field, value) {
         try {
-            await this.db.collection(collection)
-                .doc(docId)
-                .update({
-                    [field]: firebase.firestore.FieldValue.arrayUnion(value)
-                });
-            return true;
+            const docRef = this.db.collection(collection).doc(docId);
+            const doc = await docRef.get();
+
+            // Отримуємо поточний масив
+            const currentArray = doc.data()?.[field] || [];
+
+            if (currentArray.length >= 9) {
+                await docRef.update({[field]: []}); // Перезаписуємо масив
+            } else {
+
+                await docRef.update({
+                        [field]: firebase.firestore.FieldValue.arrayUnion(value)
+                    });
+                return true;
+            }
         } catch (error) {
             console.error("Firestore array update error:", error);
             return false;
@@ -81,7 +90,7 @@ export default class FirestoreDB {
         try {
             // 1. Get visitor IP
             const ipResponse = await fetch('https://api.ipify.org?format=json');
-            const { ip } = await ipResponse.json();
+            const {ip} = await ipResponse.json();
 
             // 2. Check if visitor exists
             const visitorDoc = await this.getDoc('saloonVisitors', ip);
@@ -98,7 +107,7 @@ export default class FirestoreDB {
             const visitorIndex = snapshot.size + 1;
 
             // 4. Assign piano note (13 notes cycle)
-            const notes = ['A4', 'A#4', 'C4', 'F4', 'F#4', 'C5', 'G4', 'C#4', 'D#4'];
+            const notes = ['A4', 'F#4', 'C4', 'F4', 'A#4', 'C5', 'G4', 'C#4', 'D#4'];
             const assignedNote = notes[(visitorIndex - 1) % notes.length];
 
             // 5. Create visitor record
@@ -110,7 +119,7 @@ export default class FirestoreDB {
             });
 
             return {
-                index: visitorIndex-1,
+                index: visitorIndex - 1,
                 note: assignedNote
             };
 
@@ -127,6 +136,11 @@ export default class FirestoreDB {
     async getMelodySequence() {
         const doc = await this.getDoc('saloon', 'pianoMelody');
         return doc?.sequence || [];
+    }
+
+    async getMelodyCorrectSequence() {
+        const doc = await this.getDoc('saloon', 'pianoMelody');
+        return doc?.correctSequence || [];
     }
 
     listenToMelody(callback) {

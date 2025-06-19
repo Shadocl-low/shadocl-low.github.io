@@ -1,6 +1,7 @@
 import FirestoreDB from "./FirestoreDB.js";
 
 let audioContextStarted = false;
+
 function initAudio() {
     if (!audioContextStarted) {
         Tone.start();
@@ -52,8 +53,7 @@ class PianoPuzzle {
                 this.playNote(note);
                 key.classList.add('active');
 
-                // Update melody sequence
-                await db.addToArray('saloon', 'pianoMelody', 'sequence', note);
+                await handleNotePress(note);
             });
 
             key.addEventListener('mouseup', () => {
@@ -75,7 +75,7 @@ class PianoPuzzle {
             'saloon',
             'pianoMelody',
             (doc) => {
-                const melody = doc?.currentSequence || [];
+                const melody = doc?.sequence || [];
                 this.updateMelodyDisplay(melody);
             }
         );
@@ -117,13 +117,41 @@ class PianoPuzzle {
         ).join(' - ');
 
         // Update progress
-        const progress = (melody.length / 7) * 100;
+        const progress = (melody.length / 9) * 100;
         document.querySelector('.progress-fill').style.width = `${progress}%`;
 
         // Check for completion
         //if (melody.length >= 7 && this.checkCorrectSequence(melody)) {
         //    this.revealSecret();
         //}
+    }
+}
+
+async function handleNotePress(note) {
+    try {
+        // Отримуємо правильну послідовність і поточний стан
+        const correctSequence = await db.getMelodyCorrectSequence();
+        const currentSequence = await db.getMelodySequence();
+
+        // Визначаємо індекс наступної правильної ноти
+        const nextCorrectIndex = currentSequence.length;
+        const nextCorrectNote = correctSequence[nextCorrectIndex];
+
+        // Правильна нота - додаємо до sequence
+        await db.addToArray('saloon', 'pianoMelody', 'sequence', note);
+
+        // Якщо послідовність завершена (дорівнює correctSequence)
+        if (currentSequence.length === 9) {
+            for (let i = 0; i < 9; i++) {
+                if (currentSequence[i] !== correctSequence[i]) {
+                    return;
+                }
+            }
+            console.log("Послідовність введена правильно!");
+            // Тут можна додати логіку для повного співпадіння
+        }
+    } catch (error) {
+        console.error("Помилка при обробці ноти:", error);
     }
 }
 
