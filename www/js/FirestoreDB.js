@@ -108,7 +108,7 @@ export default class FirestoreDB {
             const visitorDoc = await this.getDoc('saloonVisitors', ip);
 
             const display = document.getElementById('user-id');
-            display.textContent = visitorDoc?.index || 'Гість';
+            display.textContent = visitorDoc?.index || '1';
             // Додаємо ефект для нового ID
             display.classList.remove('new-id');
             void display.offsetWidth; // Trigger reflow
@@ -116,7 +116,7 @@ export default class FirestoreDB {
 
             const deck = document.getElementById('deck-cards');
             const luckyCard = deck.querySelector('.lucky-card');
-            luckyCard.textContent = visitorDoc?.note;
+            luckyCard.textContent = visitorDoc?.note ?? "A4";
 
             if (visitorDoc) {
                 return {
