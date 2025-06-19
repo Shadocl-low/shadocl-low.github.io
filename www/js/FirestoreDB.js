@@ -49,6 +49,18 @@ export default class FirestoreDB {
             });
     }
 
+    listenToCollection(collectionPath, callback) {
+        let ref = this.db.collection(collectionPath);
+
+        return ref.onSnapshot((querySnapshot) => {
+            const docs = [];
+            querySnapshot.forEach((doc) => {
+                docs.push({id: doc.id, ...doc.data()});
+            });
+            callback(docs);
+        });
+    }
+
     // Update document
     async updateDoc(collection, docId, data) {
         try {
@@ -76,8 +88,8 @@ export default class FirestoreDB {
             } else {
 
                 await docRef.update({
-                        [field]: firebase.firestore.FieldValue.arrayUnion(value)
-                    });
+                    [field]: firebase.firestore.FieldValue.arrayUnion(value)
+                });
                 return true;
             }
         } catch (error) {
@@ -94,6 +106,17 @@ export default class FirestoreDB {
 
             // 2. Check if visitor exists
             const visitorDoc = await this.getDoc('saloonVisitors', ip);
+
+            const display = document.getElementById('user-id');
+            display.textContent = visitorDoc?.index || 'Гість';
+            // Додаємо ефект для нового ID
+            display.classList.remove('new-id');
+            void display.offsetWidth; // Trigger reflow
+            display.classList.add('new-id');
+
+            const deck = document.getElementById('deck-cards');
+            const luckyCard = deck.querySelector('.lucky-card');
+            luckyCard.textContent = visitorDoc?.note;
 
             if (visitorDoc) {
                 return {

@@ -1,3 +1,13 @@
+import FirestoreDB from "./FirestoreDB.js";
+
+const db = new FirestoreDB();
+
+async function initializeIp() {
+    const ipResponse = await fetch('https://api.ipify.org?format=json');
+    const data = await ipResponse.json(); // First await the JSON parsing
+    return data.ip;
+}
+
 // Initialize all audio components
 let audioContextStarted = false;
 
@@ -80,45 +90,6 @@ function setupInteractions() {
         sounds.beerPour.start();
     });
 
-    // Deck of cards
-    document.getElementById('deck-cards').addEventListener('click', (event) => {
-        initAudio();
-
-        const deck = document.getElementById('deck-cards');
-        const cardStack = deck.querySelector('.card-stack');
-        const luckyCard = deck.querySelector('.lucky-card');
-
-        // Shuffle animation
-        cardStack.style.transform = 'translateX(10px) rotate(10deg)';
-
-        setTimeout(() => {
-            cardStack.style.transform = '';
-        }, 300);
-
-        // 10% chance for lucky card
-        if (Math.random() < 0.1) {
-            // Generate random card value (1-10)
-            const cardValue = Math.floor(Math.random() * 10) + 1;
-            luckyCard.textContent = cardValue;
-
-            // Show lucky card
-            luckyCard.style.opacity = '1';
-            luckyCard.style.bottom = '-50px';
-
-            // Special animation
-            luckyCard.animate([
-                { transform: 'translateX(-50%) rotate(-10deg)' },
-                { transform: 'translateX(-50%) rotate(10deg)' },
-                { transform: 'translateX(-50%) rotate(0deg)' }
-            ], {
-                duration: 500,
-                iterations: 3
-            });
-        }
-
-        sounds.cardShuffle.start();
-    });
-
     // Bullet holes
     document.querySelector('.bullet-holes').addEventListener('click', () => {
         initAudio();
@@ -140,9 +111,47 @@ function setupInteractions() {
     });
 }
 
+function setupCardDeck(ip) {
+    // Deck of cards
+    document.getElementById('deck-cards').addEventListener('click', async (event) => {
+        initAudio();
+
+        const deck = document.getElementById('deck-cards');
+        const cardStack = deck.querySelector('.card-stack');
+        const luckyCard = deck.querySelector('.lucky-card');
+
+        // Shuffle animation
+        cardStack.style.transform = 'translateX(10px) rotate(10deg)';
+
+        setTimeout(() => {
+            cardStack.style.transform = '';
+        }, 300);
+
+        // 10% chance for lucky card
+        if (Math.random() < 0.25) {
+            // Show lucky card
+            luckyCard.style.opacity = '1';
+            luckyCard.style.bottom = '-50px';
+
+            // Special animation
+            luckyCard.animate([
+                {transform: 'translateX(-50%) rotate(-10deg)'},
+                {transform: 'translateX(-50%) rotate(10deg)'},
+                {transform: 'translateX(-50%) rotate(0deg)'}
+            ], {
+                duration: 500,
+                iterations: 3
+            });
+        }
+
+        sounds.cardShuffle.start();
+    });
+}
+
 // Start everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     setupInteractions();
+    setupCardDeck();
 
     // Logo shine effect
     const logoContainer = document.querySelector('.logo-container');

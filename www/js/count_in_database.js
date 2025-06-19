@@ -1,7 +1,5 @@
 import FirestoreDB from "./FirestoreDB.js";
 
-let ip;
-
 // Audio initialization remains the same
 let audioContextStarted = false;
 
@@ -14,11 +12,6 @@ function initAudio() {
 
 // Initialize the singleton (no need to config here - it's in the class)
 const db = new FirestoreDB();
-
-async function initializeIp() {
-    const ipResponse = await fetch('https://api.ipify.org?format=json');
-    ip = await ipResponse.json().ip;
-}
 
 // Unique visitor counter with real-time updates
 async function countVisitor() {
@@ -39,10 +32,8 @@ async function countVisitor() {
 // Real-time counter with Firestore listener
 async function setupRealTimeCounter() {
     // Listen to the metadata document
-    db.listenToDoc('saloonVisitors', ip, (doc) => {
-        if (doc && doc.count) {
-            animateCounterUpdate(doc.count);
-        }
+    db.listenToCollection('saloonVisitors', (visitors) => {
+        animateCounterUpdate(visitors.length);
     });
 }
 
@@ -125,15 +116,5 @@ function fallbackCounter() {
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-    initializeIp().catch(error => console.log(error));
     countVisitor().catch(error => console.log(error));
-
-    // Backup interval in case listener fails
-    setInterval(() => {
-        db.getDoc('saloonVisitors', ip).then(doc => {
-            if (doc && doc.count) {
-                animateCounterUpdate(doc.count);
-            }
-        });
-    }, 10000); // Check every 10 seconds
 });

@@ -119,11 +119,6 @@ class PianoPuzzle {
         // Update progress
         const progress = (melody.length / 9) * 100;
         document.querySelector('.progress-fill').style.width = `${progress}%`;
-
-        // Check for completion
-        //if (melody.length >= 7 && this.checkCorrectSequence(melody)) {
-        //    this.revealSecret();
-        //}
     }
 }
 
@@ -132,10 +127,6 @@ async function handleNotePress(note) {
         // Отримуємо правильну послідовність і поточний стан
         const correctSequence = await db.getMelodyCorrectSequence();
         const currentSequence = await db.getMelodySequence();
-
-        // Визначаємо індекс наступної правильної ноти
-        const nextCorrectIndex = currentSequence.length;
-        const nextCorrectNote = correctSequence[nextCorrectIndex];
 
         // Правильна нота - додаємо до sequence
         await db.addToArray('saloon', 'pianoMelody', 'sequence', note);

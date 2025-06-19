@@ -243,6 +243,10 @@ h1 {
     position: relative;
 }
 
+.saloon-container {
+    position: relative;
+}
+
 /* Saloon sign animation */
 .saloon-sign {
     position: relative;
@@ -457,15 +461,16 @@ h1 {
 
 
 .wanted-poster[data-poster="1"] {
-    bottom: 20px;
+    bottom: 200px;
     right: 20px;
-    transform: rotate(3deg);
+    transform: rotate(4deg);
+    background: url('/www/img/wanted2.png') center/cover no-repeat;
 }
 
 .wanted-poster[data-poster="2"] {
     top: 100px;
     left: 100px;
-    transform: rotate(-5deg);
+    transform: rotate(-8deg);
     background: url('/www/img/wanted.png') center/cover no-repeat;
 }
 
@@ -499,45 +504,6 @@ h1 {
     background: radial-gradient(circle, transparent 30%, var(--surface-dark) 31%);
     border-radius: 50%;
     box-shadow: 0 0 0 2px var(--primary-color);
-}
-
-@media (max-width: 600px) {
-    body {
-        padding: 12px;
-    }
-
-    h1 {
-        font-size: 1.8rem;
-    }
-
-    .saloon-sign {
-        position: relative;
-        height: 100px;
-        perspective: 500px;
-        width: 100%;
-        margin: auto;
-    }
-
-    .wanted-poster {
-        display: none;
-    }
-
-    #prompt {
-        min-height: 80px;
-    }
-
-    .logo {
-        max-width: 150px;
-        margin-top: 50px;
-    }
-
-    p {
-        font-size: 1rem;
-    }
-
-    #video-corner {
-        display: none;
-    }
 }
 
 button, textarea {
@@ -594,4 +560,154 @@ button, textarea {
 @keyframes whiskeyWave {
     0% { transform: translateY(0) rotate(0deg); }
     100% { transform: translateY(-100px) rotate(2deg); }
+}
+
+/* Стилі для ID користувача */
+.user-id-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    perspective: 1000px;
+}
+
+.cowboy-hat-icon {
+    margin-right: 8px;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+}
+
+.user-id-plate:hover .cowboy-hat-icon {
+    transform: rotate(5deg) scale(1.1);
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+}
+
+.user-id-plate {
+    background: linear-gradient(135deg, #f5e7c1 0%, #e6d5a8 100%);
+    border: 3px solid #8B4513;
+    border-radius: 8px;
+    padding: 12px 20px;
+    box-shadow:
+            0 4px 8px rgba(0, 0, 0, 0.3),
+            inset 0 0 15px rgba(139, 69, 19, 0.2);
+    transform: rotate(1deg);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    max-width: 200px;
+}
+
+.user-id-plate:hover {
+    transform: rotate(0deg) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.plate-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    border-bottom: 1px dashed #8B4513;
+    padding-bottom: 6px;
+}
+
+.plate-icon {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.plate-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #5a3921;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+.user-id-display {
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    font-weight: bold;
+    color: #3a2a1a;
+    text-align: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    border: 1px solid rgba(139, 69, 19, 0.3);
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+    word-break: break-all;
+}
+
+.plate-footer {
+    height: 4px;
+    background: linear-gradient(90deg, #8B4513, #e6d5a8, #8B4513);
+    margin-top: 10px;
+    border-radius: 2px;
+}
+
+/* Анімація для нового ID */
+@keyframes fadeGlow {
+    0% { background-color: rgba(255, 215, 0, 0.3); }
+    50% { background-color: rgba(255, 215, 0, 0.7); }
+    100% { background-color: rgba(255, 255, 255, 0.7); }
+}
+
+.new-id {
+    animation: fadeGlow 1.5s ease-out;
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .saloon-sign {
+        position: relative;
+        height: 100px;
+        perspective: 500px;
+        width: 100%;
+        margin: auto;
+    }
+
+    .sign-chain {
+        height: 40px;
+    }
+
+    .wanted-poster {
+        display: none;
+    }
+
+    #prompt {
+        min-height: 80px;
+    }
+
+    .logo {
+        max-width: 150px;
+        margin-top: 50px;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    #video-corner {
+        display: none;
+    }
+
+    .user-id-container {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 100%;
+        margin-bottom: 50px;
+        z-index: -1;
+
+        display: flex;
+        justify-content: center;
+    }
 }
