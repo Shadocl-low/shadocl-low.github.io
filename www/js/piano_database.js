@@ -1,5 +1,12 @@
 import FirestoreDB from "./FirestoreDB.js";
 
+let audioContextStarted = false;
+function initAudio() {
+    if (!audioContextStarted) {
+        Tone.start();
+        audioContextStarted = true;
+    }
+}
 
 // Initialize the singleton DB instance
 const db = new FirestoreDB();
@@ -51,11 +58,18 @@ class PianoPuzzle {
 
         // Key listeners
         keys.forEach(key => {
-            key.addEventListener('click', () => {
+            key.addEventListener('mousedown', () => {
                 const note = key.dataset.note;
-                if (note === this.userNote) {
-                    this.playUserNote(note);
-                }
+                this.playNote(note);
+                key.classList.add('active');
+            });
+
+            key.addEventListener('mouseup', () => {
+                key.classList.remove('active');
+            });
+
+            key.addEventListener('mouseleave', () => {
+                key.classList.remove('active');
             });
         });
     }
@@ -83,46 +97,23 @@ class PianoPuzzle {
         }
     }
 
-    // Handle note playing
-    async playUserNote(note) {
-        try {
-            // Visual feedback
-            document.getElementById('user-note').classList.add('played');
-            setTimeout(() => {
-                document.getElementById('user-note').classList.remove('played');
-            }, 500);
-
-            // Play sound
-            this.playNote(note);
-
-            // Add to shared melody
-            const success = await db.addToArray(
-                'saloon',
-                'pianoMelody',
-                'currentSequence',
-                note
-            );
-
-            if (!success) {
-                console.warn("Failed to update melody");
-            }
-        } catch (error) {
-            console.error("Note play error:", error);
-        }
-    }
-
-    // Audio playback
+    // Tone.js note player
     playNote(note) {
-        initAudio(); // Your existing audio initializer
+        initAudio(); // Ensure audio context is ready
+
         const synth = new Tone.Synth({
-            oscillator: { type: "triangle" },
+            oscillator: {
+                type: "triangle" // Western saloon sound
+            },
             envelope: {
-                attack: 0.005,
-                decay: 0.2,
+                attack: 0.01,
+                decay: 0.1,
                 sustain: 0.3,
-                release: 0.1
-            }
+                release: 0.5
+            },
+            volume: -10
         }).toDestination();
+
         synth.triggerAttackRelease(note, "8n");
     }
 
