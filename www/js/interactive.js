@@ -1,13 +1,3 @@
-import FirestoreDB from "./FirestoreDB.js";
-
-const db = new FirestoreDB();
-
-async function initializeIp() {
-    const ipResponse = await fetch('https://api.ipify.org?format=json');
-    const data = await ipResponse.json(); // First await the JSON parsing
-    return data.ip;
-}
-
 // Initialize all audio components
 let audioContextStarted = false;
 
@@ -111,9 +101,9 @@ function setupInteractions() {
     });
 }
 
-function setupCardDeck(ip) {
+function setupCardDeck() {
     // Deck of cards
-    document.getElementById('deck-cards').addEventListener('click', async (event) => {
+    document.getElementById('deck-cards').addEventListener('click', async () => {
         initAudio();
 
         const deck = document.getElementById('deck-cards');

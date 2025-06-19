@@ -174,5 +174,4 @@ export default class FirestoreDB {
 }
 
 // Singleton instance
-const firestoreDB = new FirestoreDB();
 Object.freeze(FirestoreDB);

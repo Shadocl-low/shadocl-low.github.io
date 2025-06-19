@@ -497,8 +497,8 @@ h1 {
 .bullet-holes::before {
     content: "";
     position: fixed;
-    top: 30%;
-    right: 15%;
+    top: 38%;
+    right: 5%;
     width: 10px;
     height: 10px;
     background: radial-gradient(circle, transparent 30%, var(--surface-dark) 31%);
