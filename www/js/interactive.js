@@ -57,14 +57,6 @@ function initAudio() {
 
 // Setup all interactive elements
 function setupInteractions() {
-    // Piano keys
-    document.getElementById('piano').addEventListener('click', () => {
-        initAudio();
-        const notes = ['C4', 'E4', 'G4', 'C5'];
-        const note = notes[Math.floor(Math.random() * notes.length)];
-        sounds.piano.triggerAttackRelease(note, "8n");
-    });
-
     // Beer mug
     document.getElementById('beer-mug').addEventListener('click', (event) => {
         initAudio();

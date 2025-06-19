@@ -3,14 +3,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#121212">
-    <title></title>
+    <title>Colton Bar</title>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script defer src="www/js/lib/Tone.js"></script>
     <script defer src="www/js/video.js"></script>
     <script type="module" src="www/js/interactive.js"></script>
-    <script src="www/js/lib/Tone.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
-    <script src="www/js/count_in_database.js"></script>
+    <script type="module" src="www/js/count_in_database.js"></script>
+    <script type="module" src="www/js/piano_database.js"></script>
     <link rel="stylesheet" href="www/css/style.css" />
+    <link rel="stylesheet" href="www/css/piano.css" />
     <link rel="preload" href="www/sounds/whiskey-pour.mp3" as="audio">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
@@ -50,7 +53,23 @@
 
     <!-- Interactive bar items -->
     <div class="bar-items">
-        <div class="piano-keys" id="piano"></div>
+        <div class="piano-keys" id="piano">
+            <div class="mini-piano" id="mini-piano">🎹</div>
+            <div class="fullscreen-piano" id="fullscreen-piano" style="display: none">
+                <div class="piano-close" id="piano-close">✕</div>
+                <div class="piano-keys-container">
+                    <!-- Keys remain the same as before -->
+                </div>
+                <div class="piano-sequence">
+                    <p>Your note: <span id="user-note" class="glow-note">E4</span></p>
+                    <p>Full melody: <span id="collective-notes"></span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="hint">All players must play in sequence</p>
+                </div>
+            </div>
+        </div>
         <div class="beer-mug" id="beer-mug">
             <div class="beer-foam"></div>
         </div>

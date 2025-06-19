@@ -1,3 +1,7 @@
+import FirestoreDB from "./FirestoreDB.js";
+
+
+// Audio initialization remains the same
 let audioContextStarted = false;
 
 function initAudio() {
@@ -7,103 +11,134 @@ function initAudio() {
     }
 }
 
-// Your Firebase config (replace with actual values)
-const firebaseConfig = {
-    authDomain: "saloonvisitors.firebaseapp.com",
-    projectId: "saloonvisitors",
-    storageBucket: "saloonvisitors.appspot.com",
-    messagingSenderId: "374582370155"
-};
+// Initialize the singleton (no need to config here - it's in the class)
+const db = new FirestoreDB();
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-// Unique visitor counter
+// Unique visitor counter with real-time updates
 async function countVisitor() {
     try {
-        // Get client IP (using free API)
+        // Get client IP
         const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const {ip} = await ipResponse.json();
+        const { ip } = await ipResponse.json();
 
-        // Check if IP exists in database
-        const visitorsRef = db.collection('saloonVisitors');
-        const query = await visitorsRef.where('ip', '==', ip).limit(1).get();
+        // Check if IP exists using singleton
+        const existingVisitor = await db.getDoc('saloonVisitors', ip);
 
-        if (query.empty) {
+        if (!existingVisitor) {
             // New visitor - add to database
-            await visitorsRef.add({
-                ip: ip,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            await db.updateDoc('saloonVisitors', ip, {
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                userAgent: navigator.userAgent.slice(0, 50)
             });
         }
 
-        updateCounter();
+        // Start real-time counter updates
+        setupRealTimeCounter();
+
     } catch (error) {
         console.error("Visitor tracking error:", error);
+        // Fallback to localStorage if Firebase fails
+        fallbackCounter();
     }
 }
 
+// Real-time counter with Firestore listener
+function setupRealTimeCounter() {
+    // Listen to the metadata document
+    db.listenToDoc('saloon', 'visitorStats', (doc) => {
+        if (doc && doc.count) {
+            animateCounterUpdate(doc.count);
+        }
+    });
+}
 
-let lastCount = 0;
+// Optimized counter animation
+let currentDisplayCount = 0;
+let targetDisplayCount = 0;
+let animationFrame;
 
-async function updateCounter() {
-    const snapshot = await db.collection('saloonVisitors').get();
-    const count = snapshot.size;
-    const counterElement = document.getElementById('visitor-count');
+function animateCounterUpdate(newCount) {
+    targetDisplayCount = newCount;
 
-    if (count !== lastCount) {
+    if (!animationFrame) {
+        const animate = () => {
+            if (currentDisplayCount < targetDisplayCount) {
+                currentDisplayCount++;
+                document.getElementById('visitor-count').textContent = currentDisplayCount.toString();
 
-        let c = 0;
-        const targetCount = count;
-        const counterInterval = setInterval(() => {
-            c++;
-            counterElement.textContent = c.toString();
-            if (c >= targetCount) clearInterval(counterInterval);
-        }, 150);
+                // Dynamic gear speed
+                const gears = document.querySelector('.counter-gears');
+                gears.style.animationDuration = `${Math.max(3 - currentDisplayCount/10, 0.5)}s`;
 
-        lastCount = count;
+                // Celebrate milestones
+                if ([5, 10, 15, 20].includes(currentDisplayCount)) {
+                    celebrateWithWhiskey(currentDisplayCount);
+                }
 
-        // Whiskey celebration animation
-        celebrateWithWhiskey(count);
-
-        // Animate gears
-        document.querySelector('.counter-gears').style.animationDuration =
-            `${Math.max(3 - count / 10, 0.5)}s`;
+                animationFrame = requestAnimationFrame(animate);
+            } else {
+                animationFrame = null;
+            }
+        };
+        animate();
     }
 }
 
+// Enhanced celebration with error handling
 function celebrateWithWhiskey(count) {
-    initAudio();
+    try {
+        initAudio();
 
-    const overlay = document.querySelector('.whiskey-overlay');
+        const overlay = document.querySelector('.whiskey-overlay');
+        const messages = {
+            5: "Keep 'em coming!",
+            10: "Now we're talking!",
+            15: "The good stuff!",
+            20: "SALOON'S FULL!"
+        };
 
-    // Different messages based on milestones
-    const messages = {
-        5: "Keep 'em coming!",
-        10: "Now we're talking!",
-        15: "The good stuff!",
-        20: "SALOON'S FULL!"
-    };
+        overlay.textContent = messages[count] || `${count} cowboys!`;
+        overlay.style.opacity = '1';
 
-    overlay.textContent = messages[count] || `${count} cowboys!`;
+        // Auto-hide after delay
+        setTimeout(() => {
+            overlay.style.opacity = '0';
+        }, 2000);
 
-    // Animation sequence
-    overlay.style.opacity = '1';
-    setTimeout(() => {
-        overlay.style.opacity = '0';
-    }, 2000);
+        // Play sound with fallback
+        try {
+            const pourSound = new Tone.Player({
+                url: "www/sounds/whiskey-pour.mp3",
+                autostart: true,
+                volume: -10
+            }).toDestination();
+        } catch (audioError) {
+            console.log("Audio skipped in background tab");
+        }
 
-    // Play a pouring sound if available
-    const pourSound = new Tone.Player({
-        url: "www/sounds/whiskey-pour.mp3",
-        autostart: true,
-        volume: -10
-    }).toDestination();
+    } catch (error) {
+        console.error("Celebration error:", error);
+    }
 }
 
-// Run on page load
+// Fallback counter using localStorage
+function fallbackCounter() {
+    const storedCount = localStorage.getItem('fallbackVisitorCount') || 0;
+    const newCount = parseInt(storedCount) + 1;
+    localStorage.setItem('fallbackVisitorCount', newCount.toString());
+    animateCounterUpdate(newCount);
+}
+
+// Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
     countVisitor();
-    setInterval(updateCounter, 10000); // Update every 10 seconds
+
+    // Backup interval in case listener fails
+    setInterval(() => {
+        db.getDoc('saloon', 'visitorStats').then(doc => {
+            if (doc && doc.count) {
+                animateCounterUpdate(doc.count);
+            }
+        });
+    }, 10000); // Check every 10 seconds
 });

@@ -374,7 +374,7 @@ h1 {
     margin: 30px 0;
 }
 
-.piano-keys, .beer-mug, .deck-cards {
+.beer-mug, .deck-cards {
     width: 60px;
     height: 60px;
     cursor: pointer;
@@ -382,10 +382,6 @@ h1 {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-}
-
-.piano-keys {
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="10" y="30" width="80" height="40" fill="%231e1e1e" stroke="%23c19a6b"/><rect x="15" y="30" width="10" height="40" fill="%23000"/><rect x="30" y="30" width="10" height="40" fill="%23000"/><rect x="45" y="30" width="10" height="40" fill="%23000"/><rect x="60" y="30" width="10" height="40" fill="%23000"/><rect x="75" y="30" width="10" height="40" fill="%23000"/></svg>');
 }
 
 /* Beer Mug Animation */
