@@ -278,6 +278,7 @@ h1 {
     #8a6d4b 50%,
     #5d4a30 100%);
     transform: translateX(-50%);
+    z-index: -1;
 }
 /* Animate ropes with the sign */
 @keyframes swing {
