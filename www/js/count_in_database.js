@@ -56,7 +56,7 @@ function animateCounterUpdate(newCount) {
                 gears.style.animationDuration = `${Math.max(3 - currentDisplayCount/10, 0.5)}s`;
 
                 // Celebrate milestones
-                if ([1, 3, 5, 9].includes(currentDisplayCount)) {
+                if ([3, 5, 9].includes(currentDisplayCount)) {
                     celebrateWithWhiskey(currentDisplayCount);
                 }
 
@@ -76,7 +76,6 @@ function celebrateWithWhiskey(count) {
 
         const overlay = document.querySelector('.whiskey-overlay');
         const messages = {
-            1: "Keep 'em coming!",
             3: "Now we're talking!",
             5: "The good stuff!",
             9: "SALOON'S FULL!"

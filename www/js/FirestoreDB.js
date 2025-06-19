@@ -83,7 +83,7 @@ export default class FirestoreDB {
             // Отримуємо поточний масив
             const currentArray = doc.data()?.[field] || [];
 
-            if (currentArray.length >= 9) {
+            if (currentArray.length >= 3) {
                 await docRef.update({[field]: []}); // Перезаписуємо масив
             } else {
 

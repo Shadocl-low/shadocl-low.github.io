@@ -35,6 +35,8 @@
 
     <!-- Logo with interactive shine -->
     <div class="logo-container">
+        <button class="hidden-button" id="secret-button">SECRET</button>
+        <button onclick="changePage()" id="hidden-button">SECRET</button>
         <img class="logo" src="www/img/ColtonBar%20Logo.png" alt="Saloon Logo" id="interactive-logo">
         <div class="logo-shine"></div>
     </div>
@@ -115,3 +117,9 @@
 <div class="whiskey-overlay"></div>
 </body>
 </html>
+
+<script>
+    function changePage() {
+        window.location.href = "https://shadocl-low.github.io/saloon";
+    }
+</script>

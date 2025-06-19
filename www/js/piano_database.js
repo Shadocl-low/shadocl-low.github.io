@@ -132,22 +132,81 @@ async function handleNotePress(note) {
         await db.addToArray('saloon', 'pianoMelody', 'sequence', note);
 
         // Якщо послідовність завершена (дорівнює correctSequence)
-        if (currentSequence.length === 9) {
-            for (let i = 0; i < 9; i++) {
+        if (currentSequence.length === 3) {
+            let isCorrect = true;
+            for (let i = 0; i < 3; i++) {
                 if (currentSequence[i] !== correctSequence[i]) {
-                    return;
+                    isCorrect = false;
+                    break;
                 }
             }
-            console.log("Послідовність введена правильно!");
-            // Тут можна додати логіку для повного співпадіння
+
+            if (isCorrect) {
+                console.log("Послідовність введена правильно!");
+                // Update win state in Firestore
+                await db.updateDoc('saloon', 'playersState', { win: true });
+            }
         }
     } catch (error) {
         console.error("Помилка при обробці ноти:", error);
     }
 }
 
+function setupWinListener() {
+    return db.listenToDoc('saloon', 'playersState', (doc) => {
+        if (doc?.win) {
+            triggerWinAnimation();
+        }
+    });
+}
+
+function triggerWinAnimation() {
+    document.getElementById('fullscreen-piano').style.display = 'none';
+
+    const secretButton = document.getElementById('secret-button');
+    const hiddenButton = document.getElementById('hidden-button');
+    const logo = document.getElementById('interactive-logo');
+    const logoBasePath = 'www/img/logos/ColtonBar%20Logo'; // Base path without number and extension
+    const frameCount = 5; // Number of animation frames (logo1.png, logo2.png, etc.)
+    const frameDuration = 600; // Time between frames in ms
+    const gunshotSound = new Tone.Player({
+        url: "www/sounds/gun-shot.mp3",
+        volume: -8
+    }).toDestination();
+
+    let currentFrame = 1;
+
+    // Animation interval
+    const animationInterval = setInterval(() => {
+        // Update logo source
+        logo.src = `${logoBasePath}${currentFrame}.png`;
+
+        // Play gunshot sound (with slight randomization)
+        gunshotSound.start();
+        gunshotSound.playbackRate = 0.9 + Math.random() * 0.2;
+
+        // Advance to next frame or end animation
+        currentFrame++;
+        if (currentFrame > frameCount) {
+            clearInterval(animationInterval);
+
+            secretButton.classList.add('show-secret-button');
+            hiddenButton.style.opacity = '1';
+            hiddenButton.style.display = 'block';
+
+            // Add click handler
+            secretButton.addEventListener('click', () => {
+                console.log("Secret button clicked!");
+                // Add your secret functionality here
+            });
+        }
+    }, frameDuration);
+}
+
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', () => {
     const pianoPuzzle = new PianoPuzzle();
     pianoPuzzle.init();
+
+    setupWinListener();
 });

@@ -78,8 +78,9 @@ h2 {
 }
 
 .logo {
+    position: relative;
     display: block;
-    max-width: 200px;
+    max-width: 230px;
     height: auto;
     margin: 0 auto var(--spacing);
     filter: drop-shadow(0 0 8px rgba(193, 154, 107, 0.3));
@@ -87,7 +88,7 @@ h2 {
     border-radius: 50%;
     border: 2px solid var(--primary-color);
     padding: 5px;
-    background-color: var(--surface-dark);
+    z-index: 4;
 }
 
 .logo:hover {
@@ -313,7 +314,7 @@ h1 {
 /* Interactive logo */
 .logo-container {
     position: relative;
-    width: 200px;
+    width: 230px;
     margin: 60px auto 30px;
     transition: all 0.3s ease;
 }
@@ -658,6 +659,65 @@ button, textarea {
     animation: fadeGlow 1.5s ease-out;
 }
 
+/* Hidden button styles */
+.hidden-button {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Behind the logo */
+
+    /* Initial hidden state */
+    opacity: 0;
+    pointer-events: none; /* Make unclickable when hidden */
+    transition: opacity 0.5s ease;
+
+    /* Your button styling */
+    background: linear-gradient(to bottom, #8B4513, #5a2d0b);
+    color: gold;
+    border: 2px solid gold;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+}
+
+/* Show button at end of animation */
+.show-secret-button {
+    opacity: 1;
+    pointer-events: auto; /* Make clickable */
+    z-index: 3; /* Above logo and shine */
+    animation: buttonPulse 1.5s infinite alternate;
+}
+
+#hidden-button {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Initial hidden state */
+    opacity: 0;
+    display: none;
+    transition: opacity 0.5s ease;
+
+    /* Your button styling */
+    background: transparent;
+    color: transparent;
+    border: 0 solid transparent;
+    cursor: pointer;
+    padding: 8px 20px;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    z-index: 5;
+}
+
+@keyframes buttonPulse {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
 @media (max-width: 600px) {
     body {
         padding: 12px;
@@ -685,11 +745,6 @@ button, textarea {
 
     #prompt {
         min-height: 80px;
-    }
-
-    .logo {
-        max-width: 150px;
-        margin-top: 50px;
     }
 
     p {
