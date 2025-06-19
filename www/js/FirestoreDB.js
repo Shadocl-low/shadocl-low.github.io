@@ -19,21 +19,11 @@ export default class FirestoreDB {
         }
     }
 
-    async signInAnonymously() {
-        try {
-            await this.auth.signInAnonymously();
-            console.log("Signed in anonymously");
-        } catch (err) {
-            console.error("Anonymous auth failed:", err);
-        }
-    }
-
     async enablePersistence() {
         try {
             await this.db.enablePersistence({
                 synchronizeTabs: true // For multi-tab sync
             });
-            console.log("Persistence enabled");
         } catch (err) {
             console.warn("Persistence failed (likely unsupported browser):", err);
         }
@@ -86,21 +76,66 @@ export default class FirestoreDB {
             return false;
         }
     }
+
+    async registerVisitor() {
+        try {
+            // 1. Get visitor IP
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const { ip } = await ipResponse.json();
+
+            // 2. Check if visitor exists
+            const visitorDoc = await this.getDoc('saloonVisitors', ip);
+
+            if (visitorDoc) {
+                return {
+                    index: visitorDoc.index,
+                    note: visitorDoc.note
+                };
+            }
+
+            // 3. Get current visitor count for index
+            const snapshot = await this.db.collection('saloonVisitors').get();
+            const visitorIndex = snapshot.size + 1;
+
+            // 4. Assign piano note (13 notes cycle)
+            const notes = ['A4', 'A#4', 'C4', 'F4', 'F#4', 'C5', 'G4', 'C#4', 'D#4'];
+            const assignedNote = notes[(visitorIndex - 1) % notes.length];
+
+            // 5. Create visitor record
+            await this.updateDoc('saloonVisitors', ip, {
+                ip,
+                index: visitorIndex,
+                note: assignedNote,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            return {
+                index: visitorIndex-1,
+                note: assignedNote
+            };
+
+        } catch (error) {
+            console.error("Visitor registration failed:", error);
+            // Fallback values
+            return {
+                index: 0,
+                note: 'C4'
+            };
+        }
+    }
+
+    async getMelodySequence() {
+        const doc = await this.getDoc('saloon', 'pianoMelody');
+        return doc?.sequence || [];
+    }
+
+    listenToMelody(callback) {
+        return this.listenToDoc('saloon', 'pianoMelody', (doc) => {
+            callback(doc?.sequence || []);
+        });
+    }
 }
 
 // Singleton instance
 const firestoreDB = new FirestoreDB();
 Object.freeze(FirestoreDB);
-
-// Usage examples:
-// 1. Get document
-// firestoreDB.getDoc("saloon", "pianoMelody").then(data => ...);
-
-// 2. Real-time updates
-// firestoreDB.listenToDoc("saloon", "visitors", (data) => ...);
-
-// 3. Update document
-// firestoreDB.updateDoc("saloon", "puzzleState", { solved: true });
-
-// 4. Add to array
-// firestoreDB.addToArray("saloon", "pianoMelody", "currentSequence", "C4");

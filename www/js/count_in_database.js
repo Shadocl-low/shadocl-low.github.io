@@ -1,5 +1,6 @@
 import FirestoreDB from "./FirestoreDB.js";
 
+let ip;
 
 // Audio initialization remains the same
 let audioContextStarted = false;
@@ -14,26 +15,19 @@ function initAudio() {
 // Initialize the singleton (no need to config here - it's in the class)
 const db = new FirestoreDB();
 
+async function initializeIp() {
+    const ipResponse = await fetch('https://api.ipify.org?format=json');
+    ip = await ipResponse.json().ip;
+}
+
 // Unique visitor counter with real-time updates
 async function countVisitor() {
     try {
         // Get client IP
-        const ipResponse = await fetch('https://api.ipify.org?format=json');
-        const { ip } = await ipResponse.json();
-
-        // Check if IP exists using singleton
-        const existingVisitor = await db.getDoc('saloonVisitors', ip);
-
-        if (!existingVisitor) {
-            // New visitor - add to database
-            await db.updateDoc('saloonVisitors', ip, {
-                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-                userAgent: navigator.userAgent.slice(0, 50)
-            });
-        }
+        await db.registerVisitor();
 
         // Start real-time counter updates
-        setupRealTimeCounter();
+        await setupRealTimeCounter();
 
     } catch (error) {
         console.error("Visitor tracking error:", error);
@@ -43,9 +37,9 @@ async function countVisitor() {
 }
 
 // Real-time counter with Firestore listener
-function setupRealTimeCounter() {
+async function setupRealTimeCounter() {
     // Listen to the metadata document
-    db.listenToDoc('saloon', 'visitorStats', (doc) => {
+    db.listenToDoc('saloonVisitors', ip, (doc) => {
         if (doc && doc.count) {
             animateCounterUpdate(doc.count);
         }
@@ -131,11 +125,12 @@ function fallbackCounter() {
 
 // Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-    countVisitor();
+    initializeIp().catch(error => console.log(error));
+    countVisitor().catch(error => console.log(error));
 
     // Backup interval in case listener fails
     setInterval(() => {
-        db.getDoc('saloon', 'visitorStats').then(doc => {
+        db.getDoc('saloonVisitors', ip).then(doc => {
             if (doc && doc.count) {
                 animateCounterUpdate(doc.count);
             }

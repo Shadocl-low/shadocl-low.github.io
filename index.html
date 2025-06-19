@@ -10,11 +10,10 @@
     <script defer src="www/js/lib/Tone.js"></script>
     <script defer src="www/js/video.js"></script>
     <script type="module" src="www/js/interactive.js"></script>
-    <script type="module" src="www/js/count_in_database.js"></script>
     <script type="module" src="www/js/piano_database.js"></script>
+    <script type="module" src="www/js/count_in_database.js"></script>
     <link rel="stylesheet" href="www/css/style.css" />
     <link rel="stylesheet" href="www/css/piano.css" />
-    <link rel="preload" href="www/sounds/whiskey-pour.mp3" as="audio">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -76,12 +75,10 @@
                     <div class="key black" data-note="A#4" style="left: 57%"></div>
                 </div>
                 <div class="piano-sequence">
-                    <p>Your note: <span id="user-note" class="glow-note">E4</span></p>
-                    <p>Full melody: <span id="collective-notes"></span></p>
+                    <p>Поточна мелодія: <span id="collective-notes"></span></p>
                     <div class="progress-bar">
                         <div class="progress-fill"></div>
                     </div>
-                    <p class="hint">All players must play in sequence</p>
                 </div>
             </div>
         </div>
