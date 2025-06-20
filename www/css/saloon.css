@@ -1,0 +1,296 @@
+h2 {
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-top: -10px;
+}
+
+/* Шапка салуну */
+.saloon-header {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: var(--spacing);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--primary-color);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.saloon-header h1 {
+    color: var(--accent-color);
+    font-family: var(--font-heading), serif;
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+
+/* Основний вміст */
+.saloon-main {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: var(--spacing);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing);
+}
+
+@media (min-width: 768px) {
+    .saloon-main {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+/* Барна стійка */
+.bar-counter {
+    background: linear-gradient(to bottom, #5d4037, #3e2723);
+    border: 3px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
+    position: relative;
+    min-height: 300px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.bar-counter::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, #c19a6b, #8b5a2b);
+    border-radius: 50% 50% 0 0;
+}
+
+/* Стилі для напоїв */
+.drinks-menu {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.drink-item {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.drink-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+    background: rgba(193, 154, 107, 0.2);
+}
+
+.drink-icon {
+    font-size: 2rem;
+    margin-bottom: 5px;
+}
+
+.drink-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.drink-price {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+}
+
+/* Область зі столиками */
+.tables-area {
+    background: rgba(58, 42, 26, 0.4);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
+    min-height: 300px;
+    position: relative;
+    overflow: hidden;
+    border: 2px dashed var(--primary-color);
+}
+
+.table {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(to bottom, #5d4037, #3e2723);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+}
+
+.table::before {
+    content: "";
+    position: absolute;
+    top: -15px;
+    width: 60px;
+    height: 60px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%233e2723" stroke="%23c19a6b" stroke-width="3"/></svg>');
+    background-size: cover;
+    border-radius: 50%;
+}
+
+.table-1 { top: 20%; left: 15%; }
+.table-2 { top: 60%; left: 25%; }
+.table-3 { top: 30%; left: 65%; }
+.table-4 { top: 70%; left: 75%; }
+
+.patron {
+    position: absolute;
+    width: 40px;
+    height: 60px;
+    animation: patronMove 8s infinite alternate;
+}
+
+.patron-1 { top: 15%; left: 10%; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 60"><rect fill="%23444" x="10" y="20" width="20" height="30" rx="5"/><circle fill="%23d4a373" cx="20" cy="15" r="10"/></svg>'); }
+.patron-2 { top: 55%; left: 20%; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 60"><rect fill="%23722" x="10" y="20" width="20" height="30" rx="5"/><circle fill="%23d4a373" cx="20" cy="15" r="10"/></svg>'); }
+.patron-3 { top: 25%; left: 60%; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 60"><rect fill="%23285" x="10" y="20" width="20" height="30" rx="5"/><circle fill="%23d4a373" cx="20" cy="15" r="10"/></svg>'); }
+.patron-4 { top: 65%; left: 70%; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 60"><rect fill="%23882" x="10" y="20" width="20" height="30" rx="5"/><circle fill="%23d4a373" cx="20" cy="15" r="10"/></svg>'); }
+
+@keyframes patronMove {
+    0% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(2deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* Бічна панель */
+.saloon-sidebar {
+    background-color: rgba(30, 30, 30, 0.8);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.saloon-sidebar h2 {
+    color: var(--secondary-color);
+    font-family: var(--font-heading), serif;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.active-patrons {
+    margin-bottom: var(--spacing);
+}
+
+.patron-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.patron-card {
+    background: rgba(193, 154, 107, 0.2);
+    border: 1px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    padding: 8px;
+    width: 80px;
+    text-align: center;
+}
+
+.patron-avatar {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto 5px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    overflow: hidden;
+}
+
+.patron-name {
+    font-size: 0.8rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.game-controls {
+    margin-top: var(--spacing);
+}
+
+.game-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background: linear-gradient(to bottom, var(--primary-color), #8b5a2b);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    font-family: var(--font-main), serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.game-button:hover {
+    background: linear-gradient(to bottom, #d4a373, #c19a6b);
+    transform: translateY(-2px);
+}
+
+/* Підвал */
+.saloon-footer {
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: var(--spacing);
+    text-align: center;
+    border-top: 2px solid var(--primary-color);
+    margin-top: auto;
+}
+
+/* Анімація фону */
+@keyframes flicker {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+
+.saloon-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+            radial-gradient(circle at 20% 30%, rgba(156, 61, 46, 0.1) 0%, transparent 40%),
+            radial-gradient(circle at 80% 70%, rgba(193, 154, 107, 0.1) 0%, transparent 40%),
+            linear-gradient(to bottom, #1a1a1a, #000);
+    z-index: -1;
+    animation: flicker 10s infinite;
+}
+
+.wood-texture {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" opacity="0.03"><path d="M0 0L100 100M100 0L0 100" stroke="%23c19a6b" stroke-width="1"/></svg>');
+    z-index: -1;
+}
+
+/* Анімація входу */
+@keyframes enterAnimation {
+    0% { transform: translateY(100px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.saloon-header, .saloon-main, .saloon-footer {
+    animation: enterAnimation 0.8s ease-out;
+}
+
+@media (max-width: 768px) {
+    body {
+        max-width: 768px;
+        width: 100%;
+        margin: 0;
+    }
+}
