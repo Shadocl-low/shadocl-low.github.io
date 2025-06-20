@@ -1,0 +1,44 @@
+.symbols-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    gap: 12px;
+}
+
+.symbol {
+    width: 80px;
+    height: 80px;
+    background-image: url('/www/img/символи.png'); /* шлях до зображення */
+    background-size: 500% 500%; /* 5x5 сітка */
+    background-repeat: no-repeat;
+    image-rendering: pixelated;
+}
+
+.symbol.pos-0  { background-position:   0%   0%; }
+.symbol.pos-1  { background-position:  25%   0%; }
+.symbol.pos-2  { background-position:  50%   0%; }
+.symbol.pos-3  { background-position:  75%   0%; }
+.symbol.pos-4  { background-position: 100%   0%; }
+
+.symbol.pos-5  { background-position:   0%  25%; }
+.symbol.pos-6  { background-position:  25%  25%; }
+.symbol.pos-7  { background-position:  50%  25%; }
+.symbol.pos-8  { background-position:  75%  25%; }
+.symbol.pos-9  { background-position: 100%  25%; }
+
+.symbol.pos-10 { background-position:   0%  50%; }
+.symbol.pos-11 { background-position:  25%  50%; }
+.symbol.pos-12 { background-position:  50%  50%; }
+.symbol.pos-13 { background-position:  75%  50%; }
+.symbol.pos-14 { background-position: 100%  50%; }
+
+.symbol.pos-15 { background-position:   0%  75%; }
+.symbol.pos-16 { background-position:  25%  75%; }
+.symbol.pos-17 { background-position:  50%  75%; }
+.symbol.pos-18 { background-position:  75%  75%; }
+.symbol.pos-19 { background-position: 100%  75%; }
+
+.symbol.pos-20 { background-position:   0% 100%; }
+.symbol.pos-21 { background-position:  25% 100%; }
+.symbol.pos-22 { background-position:  50% 100%; }
+.symbol.pos-23 { background-position:  75% 100%; }
+.symbol.pos-24 { background-position: 100% 100%; }
