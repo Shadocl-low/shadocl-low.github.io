@@ -6,6 +6,7 @@
     <title>Colton Bar - Салун</title>
     <script defer src="/www/js/lib/Tone.js"></script>
     <script defer src="/www/js/saloon.js"></script>
+    <script defer src="/www/js/modals.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link href="/www/css/style.css" rel="stylesheet">
     <link href="/www/css/saloon.css" rel="stylesheet">
@@ -93,7 +94,7 @@
                     <div class="patron-card">
                         <div class="wanted-frame">
                             <div class="patron-avatar" style="background-image: url('/www/img/wanted/солнце.png')"></div>
-                            <div class="patron-name">Отец</div>
+                            <div class="patron-name">«Отец»</div>
                             <div class="patron-title">Мисливці за душею</div>
                             <div class="patron-bounty">Нагорода: $1000</div>
                         </div>
@@ -115,6 +116,41 @@
     <footer class="saloon-footer">
         <p>© 2023 Colton Bar - Легендарний салун Дикого Заходу</p>
     </footer>
+
+    <!-- Приховані модільні вікна -->
+    <div class="modal" id="poster1-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>«Я»</h2>
+            <div class="modal-text">
+                <p>Ви дійсно хочете стати «Я»? Дороги назад не буде, лише ви зможете виконати відведену йому роль, і ніхто більше.</p>
+                <br />
+                <p>Якщо ви згодні стати «Я», то введіть необхідну фразу:</p>
+            </div>
+            <textarea placeholder="Введіть вашу фразу тут..." rows="5"></textarea>
+            <div class="modal-buttons">
+                <button class="cancel-btn">Відмовитись</button>
+                <button class="confirm-btn">Погодитись</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="poster2-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>«Отец»</h2>
+            <div class="modal-text">
+                <p>Ви дійсно хочете стати «Отец»? Так ви зможете допомогти вашому «Я» дійти до кінця.</p>
+                <br />
+                <p>Якщо ви згодні стати «Отец», то введіть необхідну фразу:</p>
+            </div>
+            <textarea placeholder="Введіть вашу фразу тут..." rows="5"></textarea>
+            <div class="modal-buttons">
+                <button class="cancel-btn">Відмовитись</button>
+                <button class="confirm-btn">Погодитись</button>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
