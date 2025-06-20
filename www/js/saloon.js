@@ -1,4 +1,106 @@
-// Додавання ефекту вибору напою
+// Глобальні змінні для звуків
+let saloonMusic;
+let soundCache = {};
+
+// Функція для завантаження звуків
+async function loadSounds() {
+    try {
+        // Завантажуємо всі необхідні звуки
+        const soundsToLoad = {
+            'saloon-ambient': '/www/sounds/blaze.mp3',
+            'drink-select': '/www/sounds/drink-select.mp3',
+            'hover-sound': '/www/sounds/hover-sound.mp3'
+        };
+
+        // Створюємо проміси для завантаження кожного звуку
+        const loadPromises = Object.entries(soundsToLoad).map(([name, url]) => {
+            return new Promise((resolve) => {
+                soundCache[name] = new Tone.Player({
+                    url: url,
+                    onload: () => {
+                        console.log(`${name} loaded`);
+                        soundCache[name].toDestination();
+                        resolve();
+                    },
+                    onerror: (e) => {
+                        console.error(`Error loading ${name}:`, e);
+                        resolve(); // Все одно виконуємо проміс, щоб не блокувати завантаження
+                    }
+                });
+            });
+        });
+
+        // Чекаємо, поки всі звуки завантажаться
+        await Promise.all(loadPromises);
+        console.log('All sounds loaded');
+
+        // Тепер можна безпечно стартувати музику
+    } catch (error) {
+        console.error('Error loading sounds:', error);
+    }
+}
+
+// Функція для запуску фонової музики
+function startAmbientMusic() {
+    if (!soundCache['saloon-ambient']) return;
+
+    // Перевіряємо стан аудіоконтексту
+    if (Tone.context.state !== 'running') {
+        Tone.context.resume().then(() => {
+            soundCache['saloon-ambient'].loop = true;
+            soundCache['saloon-ambient'].volume.value = -15;
+            soundCache['saloon-ambient'].start();
+        });
+    } else {
+        soundCache['saloon-ambient'].loop = true;
+        soundCache['saloon-ambient'].volume.value = -15;
+        soundCache['saloon-ambient'].start();
+    }
+}
+
+// Функція для відтворення звуку
+function playSound(name, volume = -20) {
+    if (!soundCache[name]) {
+        console.warn(`Sound ${name} not loaded`);
+        return;
+    }
+
+    // Перевіряємо стан аудіоконтексту
+    if (Tone.context.state !== 'running') {
+        Tone.context.resume().then(() => {
+            soundCache[name].volume.value = volume;
+            soundCache[name].start();
+        });
+    } else {
+        soundCache[name].volume.value = volume;
+        soundCache[name].start();
+    }
+}
+
+// Ініціалізація при завантаженні сторінки
+window.addEventListener('DOMContentLoaded', () => {
+    // Починаємо завантаження звуків
+    loadSounds();
+
+
+    // Додаємо обробник для кнопки звуку
+    document.getElementById('sound-toggle').addEventListener('click', () => {
+        const soundIcon = document.querySelector('.sound-icon');
+        const soundText = document.querySelector('.sound-text');
+
+        if (soundIcon.textContent === '🔇') {
+            soundIcon.textContent = '🔊';
+            soundText.textContent = 'Sound On';
+            startAmbientMusic();
+        } else {
+            soundIcon.textContent = '🔇';
+            soundText.textContent = 'Sound Off';
+            if (soundCache['saloon-ambient']) {
+                soundCache['saloon-ambient'].stop();
+            }
+        }
+    });
+});
 document.querySelectorAll('.drink-item').forEach(item => {
     item.addEventListener('click', function() {
         // Знімаємо виділення з усіх напоїв
@@ -11,6 +113,9 @@ document.querySelectorAll('.drink-item').forEach(item => {
         this.style.border = '2px solid var(--accent-color)';
         this.style.boxShadow = '0 0 15px rgba(156, 61, 46, 0.5)';
 
+        // Відтворення звуку вибору напою
+        playSound('hover-sound', -10);
+
         // Створення анімації руху напою до гравця
         const drinkIcon = this.querySelector('.drink-icon').textContent;
         const drinkElement = document.createElement('div');
@@ -22,7 +127,7 @@ document.querySelectorAll('.drink-item').forEach(item => {
 
         // Початкова позиція (над кнопкою)
         const rect = this.getBoundingClientRect();
-        drinkElement.style.left = (rect.left + rect.width/2) + 'px';
+        drinkElement.style.left = (rect.left + rect.width/4) + 'px';
         drinkElement.style.top = (rect.top) + 'px';
 
         document.body.appendChild(drinkElement);
@@ -30,8 +135,6 @@ document.querySelectorAll('.drink-item').forEach(item => {
         // Анімація руху до бічної панелі
         const random = Math.floor(Math.random()*4)+1;
         const to_table = `.table-${random}`;
-
-        console.log(to_table);
 
         const target = document.querySelector(to_table);
         const targetRect = target.getBoundingClientRect();
@@ -51,18 +154,9 @@ document.querySelectorAll('.drink-item').forEach(item => {
     });
 });
 
-// Додавання звукових ефектів при наведенні
+// Оновлений код для наведення
 document.querySelectorAll('.game-button, .drink-item, .back-button').forEach(button => {
     button.addEventListener('mouseenter', () => {
-        // В реальному додатку тут був би звуковий ефект
-        console.log("Hover sound effect");
+        playSound('drink-select', -20);
     });
-});
-
-// Імітація звукового супроводу
-window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-        // В реальному додатку тут був би звук салуну
-        console.log("Saloon ambient sound started");
-    }, 1000);
 });

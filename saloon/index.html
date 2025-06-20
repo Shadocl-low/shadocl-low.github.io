@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colton Bar - Салун</title>
+    <script defer src="/www/js/lib/Tone.js"></script>
     <script defer src="/www/js/saloon.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link href="/www/css/style.css" rel="stylesheet">
@@ -79,43 +80,35 @@
         <!-- Права колонка - бічна панель -->
         <aside class="saloon-sidebar">
             <div class="active-patrons">
-                <h2>Гості салуну</h2>
+                <h2 class="patrons-title">Очікувані «Гості»</h2>
                 <div class="patron-list">
                     <div class="patron-card">
-                        <div class="patron-avatar"></div>
-                        <div class="patron-name">Шериф</div>
+                        <div class="wanted-frame">
+                            <div class="patron-avatar" style="background-image: url('/www/img/wanted/пикми.png')"></div>
+                            <div class="patron-name">«Я»</div>
+                            <div class="patron-title">Головний ковбой</div>
+                            <div class="patron-bounty">Нагорода: $5000</div>
+                        </div>
                     </div>
                     <div class="patron-card">
-                        <div class="patron-avatar"></div>
-                        <div class="patron-name">Ковбой</div>
-                    </div>
-                    <div class="patron-card">
-                        <div class="patron-avatar"></div>
-                        <div class="patron-name">Гравець</div>
-                    </div>
-                    <div class="patron-card">
-                        <div class="patron-avatar"></div>
-                        <div class="patron-name">Салун</div>
-                    </div>
-                    <div class="patron-card">
-                        <div class="patron-avatar"></div>
-                        <div class="patron-name">Стрілець</div>
-                    </div>
-                    <div class="patron-card">
-                        <div class="patron-avatar"></div>
-                        <div class="patron-name">Чужинець</div>
+                        <div class="wanted-frame">
+                            <div class="patron-avatar" style="background-image: url('/www/img/wanted/солнце.png')"></div>
+                            <div class="patron-name">Отец</div>
+                            <div class="patron-title">Мисливці за душею</div>
+                            <div class="patron-bounty">Нагорода: $1000</div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="game-controls">
-                <h2>Ігри в салуні</h2>
-                <button class="game-button">🎲 Гра в кості</button>
-                <button class="game-button">🃏 Покер</button>
-                <button class="game-button">🎯 Змагання</button>
-                <button class="game-button">🎹 Гра на піаніно</button>
-            </div>
         </aside>
+
+        <!-- Ambient sounds control -->
+        <div class="sound-control">
+            <button id="sound-toggle">
+                <span class="sound-icon">🔇</span>
+                <span class="sound-text">Sound Off</span>
+            </button>
+        </div>
     </main>
 
     <!-- Підвал -->
