@@ -2,9 +2,62 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>ME</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colton Bar - Шифр</title>
+    <script defer src="/www/js/lib/Tone.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link href="/www/css/style.css" rel="stylesheet">
+    <link href="/www/css/main_cypher.css" rel="stylesheet">
+    <link href="/www/img/parchment-texture.jpg" rel="preload" as="image" type="image/jpeg">
 </head>
 <body>
+<div class="cipher-container">
+    <div class="cipher-header">
+        <h1>«Я»</h1>
+        <p>Розкрийте істинний облік Невідомого</p>
+    </div>
+
+    <div class="cipher-sequence">
+        <!-- Перший ряд: 6 22 -->
+        <div class="cipher-row">
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/06.png')" data-number="6"></div>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/22.png')" data-number="22"></div>
+        </div>
+
+        <!-- Другий ряд: 2 19 - 21 -->
+        <div class="cipher-row">
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/13.png')" data-number="13"></div>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/02.png')" data-number="2"></div>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/19.png')" data-number="19"></div>
+            <span class="cipher-divider">-</span>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/21.png')" data-number="21"></div>
+        </div>
+
+        <!-- Третій ряд: 8 13 7 12 -->
+        <div class="cipher-row">
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/10.png')" data-number="10"></div>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/11.png')" data-number="11"></div>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/23.png')" data-number="23"></div>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/13.png')" data-number="13"></div>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/02.png')" data-number="2"></div>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/03.png')" data-number="3"></div>
+        </div>
+
+        <!-- Четвертий ряд: 3 - 13 -->
+        <div class="cipher-row">
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/03.png')" data-number="3"></div>
+            <span class="cipher-divider">-</span>
+            <div class="cipher-symbol" style="background-image: url('/www/img/symbols/13.png')" data-number="13"></div>
+        </div>
+    </div>
+
+    <div class="cipher-hint">
+        <p>Самотужки вам це не розгадати...</p>
+    </div>
+</div>
+
+<div class="corner-decoration splatter1" style="background-image: url('/www/img/blood/blood-spatter3.png'); background-size: contain; background-repeat: no-repeat"></div>
+<div class="corner-decoration splatter2" style="background-image: url('/www/img/blood/blood-spatter4.png'); background-size: contain; background-repeat: no-repeat"></div>
 
 </body>
 </html>
