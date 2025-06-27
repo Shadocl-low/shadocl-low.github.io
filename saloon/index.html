@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colton Bar - Салун</title>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script defer src="/www/js/lib/Tone.js"></script>
+    <link rel="preconnect" href="/www/videos/saloon.mp4" type="video/mp4">
+    <script defer src="/www/js/saloon_video.js"></script>
+    <script defer src="/www/js/saloon.js"></script>
+    <script type="module" src="/www/js/FirestoreDB.js"></script>
+    <script type="module" src="/www/js/modals.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="/www/css/style.css" rel="stylesheet">
+    <link href="/www/css/saloon.css" rel="stylesheet">
+    <link rel="preload" href="/www/img/blood/blood-spatter1.png" as="image" type="image/png">
+</head>
+<body>
+    <!-- Фон салуну -->
+    <div class="saloon-bg"></div>
+    <div class="wood-texture"></div>
+
+    <!-- Шапка салуну -->
+    <header class="saloon-header">
+        <h1>Colton Bar - Салун</h1>
+    </header>
+
+    <!-- Основний вміст -->
+    <main class="saloon-main">
+        <!-- Ліва колонка - барна стійка та столики -->
+        <div class="saloon-content">
+            <!-- Барна стійка -->
+            <section class="bar-counter">
+                <h2>Барна стійка</h2>
+
+                <div class="drinks-menu">
+                    <div class="drink-item">
+                        <div class="drink-icon">🍺</div>
+                        <div class="drink-name">Пиво</div>
+                        <div class="drink-price">₴50</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-icon">🥃</div>
+                        <div class="drink-name">Віскі</div>
+                        <div class="drink-price">₴80</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-icon">🍷</div>
+                        <div class="drink-name">Вино</div>
+                        <div class="drink-price">₴70</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-icon">🍸</div>
+                        <div class="drink-name">Коктейль</div>
+                        <div class="drink-price">₴100</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-icon">🥤</div>
+                        <div class="drink-name">Сік</div>
+                        <div class="drink-price">₴40</div>
+                    </div>
+                    <div class="drink-item">
+                        <div class="drink-icon">☕</div>
+                        <div class="drink-name">Кава</div>
+                        <div class="drink-price">₴45</div>
+                    </div>
+                    <div class="drink-item"  data-name="blood">
+                        <div class="drink-icon">🍹</div>
+                        <div class="drink-name">Кровава Мері</div>
+                        <div class="drink-price">₴450</div>
+                    </div>
+                    <div class="drink-item" data-name="laugh">
+                        <div class="drink-icon">🥛</div>
+                        <div class="drink-name">Смішинка</div>
+                        <div class="drink-price">₴999</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Область зі столиками -->
+            <section class="tables-area">
+                <h2>Столики</h2>
+                <div class="table table-1"></div>
+                <div class="table table-2"></div>
+                <div class="table table-3"></div>
+                <div class="table table-4"></div>
+
+                <div class="patron patron-1"></div>
+                <div class="patron patron-2"></div>
+                <div class="patron patron-3"></div>
+                <div class="patron patron-4"></div>
+            </section>
+        </div>
+
+        <!-- Права колонка - бічна панель -->
+        <aside class="saloon-sidebar">
+            <div class="active-patrons">
+                <h2 class="patrons-title">Очікувані «Гості»</h2>
+                <div class="patron-list">
+                    <div class="patron-card">
+                        <div class="wanted-frame">
+                            <div class="patron-avatar" style="background-image: url('/www/img/wanted/пикми.png')"></div>
+                            <div class="patron-name">«Я»</div>
+                            <div class="patron-title">Головний ковбой</div>
+                            <div class="patron-bounty">Нагорода: $5000</div>
+                        </div>
+                    </div>
+                    <div class="patron-card">
+                        <div class="wanted-frame">
+                            <div class="patron-avatar" style="background-image: url('/www/img/wanted/солнце.png')"></div>
+                            <div class="patron-name">«Отец»</div>
+                            <div class="patron-title">Мисливці за душею</div>
+                            <div class="patron-bounty">Нагорода: $1000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Ambient sounds control -->
+        <div class="sound-control">
+            <button id="sound-toggle">
+                <span class="sound-icon">🔇</span>
+                <span class="sound-text">Sound Off</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- Підвал -->
+    <footer class="saloon-footer">
+        <p>© 2023 Colton Bar - Легендарний салун Дикого Заходу</p>
+    </footer>
+
+    <!-- Приховані модільні вікна -->
+    <div class="modal" id="poster1-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>«Я»</h2>
+            <div class="modal-text">
+                <p>Ви дійсно хочете стати «Я»? Дороги назад не буде, лише ви зможете виконати відведену йому роль, і ніхто більше.</p>
+                <br />
+                <p>Якщо ви згодні стати «Я», то введіть необхідну фразу:</p>
+            </div>
+            <textarea placeholder="Введіть вашу фразу тут..." rows="5"></textarea>
+            <div class="modal-buttons">
+                <button class="cancel-btn">Відмовитись</button>
+                <button class="confirm-btn">Погодитись</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="poster2-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>«Отец»</h2>
+            <div class="modal-text">
+                <p>Ви дійсно хочете стати «Отец»? Так ви зможете допомогти вашому «Я» дійти до кінця.</p>
+                <br />
+                <p>Якщо ви згодні стати «Отец», то введіть необхідну фразу:</p>
+            </div>
+            <textarea placeholder="Введіть вашу фразу тут..." rows="5"></textarea>
+            <div class="modal-buttons">
+                <button class="cancel-btn">Відмовитись</button>
+                <button class="confirm-btn">Погодитись</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

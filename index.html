@@ -1,0 +1,128 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#121212">
+    <title>Colton Bar</title>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script type="module" src="/www/js/FirestoreDB.js"></script>
+    <script defer src="www/js/lib/Tone.js"></script>
+    <link rel="preconnect" href="/www/videos/saloon_enter.mp4" type="video/mp4">
+    <script defer src="/www/js/video.js"></script>
+    <script type="module" src="www/js/interactive.js"></script>
+    <script type="module" src="www/js/piano_database.js"></script>
+    <script type="module" src="www/js/count_in_database.js"></script>
+    <link rel="stylesheet" href="www/css/style.css" />
+    <link rel="stylesheet" href="www/css/colton.css" />
+    <link rel="stylesheet" href="www/css/piano.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Animated background elements -->
+<div class="wanted-poster" data-poster="1"></div>
+<div class="wanted-poster" data-poster="2"></div>
+<div class="bullet-holes"></div>
+
+<!-- Main content container -->
+<div class="saloon-container">
+    <!-- Swinging sign -->
+    <div class="saloon-sign">
+        <div class="sign-board">
+            <h1>Colton Bar</h1>
+        </div>
+        <div class="sign-chain"></div>
+    </div>
+
+    <!-- Logo with interactive shine -->
+    <div class="logo-container">
+        <button class="hidden-button" id="secret-button">SECRET</button>
+        <button onclick="changePage()" id="hidden-button">SECRET</button>
+        <img class="logo" src="www/img/ColtonBar%20Logo.png" alt="Saloon Logo" id="interactive-logo">
+        <div class="logo-shine"></div>
+    </div>
+
+    <!-- Visitor counter with animated elements -->
+    <div class="counter-container">
+        <div class="counter-box">
+            <p class="counter-label">Поточні клієнти:</p>
+            <div class="counter-display">
+                <span id="visitor-count">0</span><span>/10</span>
+                <div class="counter-gears"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive bar items -->
+    <div class="bar-items">
+        <div class="piano-keys" id="piano">
+            <div class="mini-piano" id="mini-piano">🎹</div>
+            <div class="fullscreen-piano" id="fullscreen-piano" style="display: none">
+                <div class="piano-close" id="piano-close">✕</div>
+                <div class="piano-keys-container">
+                    <!-- White Keys -->
+                    <div class="key white" data-note="C4"></div>
+                    <div class="key white" data-note="D4"></div>
+                    <div class="key white" data-note="E4"></div>
+                    <div class="key white" data-note="F4"></div>
+                    <div class="key white" data-note="G4"></div>
+                    <div class="key white" data-note="A4"></div>
+                    <div class="key white" data-note="B4"></div>
+                    <div class="key white" data-note="C5"></div>
+
+                    <!-- Black Keys (positioned absolutely) -->
+                    <div class="key black" data-note="C#4" style="left: 7%"></div>
+                    <div class="key black" data-note="D#4" style="left: 17%"></div>
+                    <div class="key black" data-note="F#4" style="left: 37%"></div>
+                    <div class="key black" data-note="G#4" style="left: 47%"></div>
+                    <div class="key black" data-note="A#4" style="left: 57%"></div>
+                </div>
+                <div class="piano-sequence">
+                    <p>Поточна мелодія: <span id="collective-notes"></span></p>
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="beer-mug" id="beer-mug">
+            <div class="beer-foam"></div>
+        </div>
+        <div class="deck-cards" id="deck-cards">
+            <div class="card-stack"></div>
+            <div class="lucky-card"></div>
+        </div>
+    </div>
+
+    <!-- Users id -->
+    <div class="user-id-container">
+        <div class="user-id-plate">
+            <div class="plate-header">
+                <img src="www/img/hat.png" alt="cowboy hat" class="cowboy-hat-icon" width="24">
+                <span class="plate-title">КОВБОЙ</span>
+            </div>
+            <div class="user-id-display" id="user-id"></div>
+            <div class="plate-footer"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Ambient sounds control -->
+<div class="sound-control">
+    <button id="sound-toggle">
+        <span class="sound-icon">🔇</span>
+        <span class="sound-text">Sound Off</span>
+    </button>
+</div>
+
+<div class="whiskey-overlay"></div>
+</body>
+</html>
+
+<script>
+    function changePage() {
+        window.location.href = "https://shadocl-low.github.io/saloon";
+    }
+</script>

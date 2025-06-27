@@ -1,0 +1,98 @@
+/* style.css */
+:root {
+    /* Base colors */
+    --bg-color: #1a1a1a; /* Slightly lighter deep gray */
+    --text-color: #e8e8e8; /* Soft off-white */
+
+    /* Western accent colors */
+    --primary-color: #c19a6b; /* Dusty saddle brown (replaces purple) */
+    --secondary-color: #d4a373; /* Warm desert tan */
+    --accent-color: #9c3d2e; /* Rusty red (new accent) */
+    --metal-color: #b8b8b8; /* Silver/gunmetal */
+
+    /* Surface colors */
+    --surface-color: #2a2a2a; /* Lighter than bg for contrast */
+    --surface-dark: #1e1e1e; /* For darker elements */
+
+    /* Utility colors */
+    --error-color: #c45c41; /* Earthy red */
+    --success-color: #7a9c6b; /* Sage green */
+
+    /* Measurements */
+    --border-radius: 6px; /* Slightly sharper corners */
+    --spacing: 18px;
+    --font-main: 'Montserrat', 'Segoe UI', sans-serif;
+    --font-heading: 'Playfair Display', serif; /* For h1/h2 */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main), serif;
+    line-height: 1.6;
+    padding: var(--spacing);
+    max-width: 80vw;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg,
+    var(--primary-color),
+    var(--secondary-color),
+    var(--primary-color));
+    z-index: 1000;
+}
+
+h1 {
+    color: var(--accent-color);
+    font-family: var(--font-heading), serif;
+    text-align: center;
+    margin-bottom: calc(var(--spacing) * 0.5);
+    font-weight: 700;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+h2 {
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-top: var(--spacing);
+}
+
+/* Sound control */
+.sound-control {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}
+
+#sound-toggle {
+    background: var(--surface-dark);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}

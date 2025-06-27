@@ -1,0 +1,150 @@
+body {
+    width: 100%;
+    background-color: #f5f1e6;
+    background-size: cover;
+    color: #3a2c1a;
+    font-family: 'IM Fell English', serif;
+    padding: 10px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #8b4513;
+    padding-bottom: 15px;
+}
+
+.header h1 {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 3rem;
+    color: #5c2e0f;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.header p {
+    font-style: italic;
+    margin-top: 5px;
+}
+
+.symbols-container {
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.symbol-column {
+    width: 45%;
+}
+
+.symbol-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    background-color: rgba(245, 241, 230, 0.8);
+    border: 1px solid #8b4513;
+    border-radius: 5px;
+    box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.symbol-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 3px 8px 15px rgba(0,0,0,0.2);
+}
+
+.symbol-img {
+    width: 70px;
+    height: 70px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 2px solid #5c2e0f;
+    border-radius: 5px;
+    margin-right: 20px;
+    flex-shrink: 0;
+}
+
+.symbol-details {
+    flex-grow: 1;
+}
+
+.symbol-number {
+    font-weight: bold;
+    color: #8b4513;
+    font-size: 0.9rem;
+}
+
+.symbol-phrases {
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.divider {
+    width: 2px;
+    background-color: #8b4513;
+    margin: 0 20px;
+    opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+    body {
+        max-width: 768px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .symbols-container {
+        flex-direction: column;
+    }
+
+    .symbol-column {
+        width: 100%;
+    }
+
+    .divider {
+        display: none;
+    }
+}
+
+/* Додаткові декоративні елементи */
+.corner-decoration {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+.hand {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 40px;
+    right: 40px;
+    transform: rotate(20deg);
+}
+
+.splatter1 {
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    top: 760px;
+    left: 40px;
+}
+
+.top-left {
+    top: 10px;
+    left: 10px;
+}
+
+.bottom-right {
+    bottom: 0;
+    right: 0;
+}

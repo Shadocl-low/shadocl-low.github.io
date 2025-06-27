@@ -1,0 +1,652 @@
+/* style.css */
+:root {
+    /* Base colors */
+    --bg-color: #1a1a1a; /* Slightly lighter deep gray */
+    --text-color: #e8e8e8; /* Soft off-white */
+
+    /* Western accent colors */
+    --primary-color: #c19a6b; /* Dusty saddle brown (replaces purple) */
+    --secondary-color: #d4a373; /* Warm desert tan */
+    --accent-color: #9c3d2e; /* Rusty red (new accent) */
+    --metal-color: #b8b8b8; /* Silver/gunmetal */
+
+    /* Surface colors */
+    --surface-color: #2a2a2a; /* Lighter than bg for contrast */
+    --surface-dark: #1e1e1e; /* For darker elements */
+
+    /* Utility colors */
+    --error-color: #c45c41; /* Earthy red */
+    --success-color: #7a9c6b; /* Sage green */
+
+    /* Measurements */
+    --border-radius: 6px; /* Slightly sharper corners */
+    --spacing: 18px;
+    --font-main: 'Montserrat', 'Segoe UI', sans-serif;
+    --font-heading: 'Playfair Display', serif; /* For h1/h2 */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.logo {
+    position: relative;
+    display: block;
+    max-width: 230px;
+    height: auto;
+    margin: 0 auto var(--spacing);
+    filter: drop-shadow(0 0 8px rgba(193, 154, 107, 0.3));
+    transition: transform 0.3s ease, filter 0.3s ease;
+    border-radius: 50%;
+    border: 2px solid var(--primary-color);
+    padding: 5px;
+    z-index: 4;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 12px rgba(193, 154, 107, 0.5));
+}
+
+p {
+    color: var(--text-color);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: var(--spacing);
+    padding: 8px;
+    background-color: var(--surface-dark);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--metal-color);
+}
+
+div span {
+    color: var(--secondary-color);
+    font-family: 'Consolas', monospace;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+div span:nth-child(1) {
+    animation: pulse 3s infinite;
+}
+
+#video-corner {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 300px;
+    height: 200px;
+    border: 2px solid var(--metal-color);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    background-color: var(--surface-dark);
+}
+
+#video-corner video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: rgba(0, 0, 0, 0.5);
+    color: var(--text-color);
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+}
+
+/* Western typography */
+h1 {
+    font-family: 'Cinzel Decorative', 'Playfair Display', serif;
+    color: var(--accent-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(156, 61, 46, 0.3);
+    font-size: 3rem;
+    letter-spacing: 2px;
+    margin: 0;
+    padding: 10px 40px;
+    background: linear-gradient(to right,
+    transparent 10%,
+    rgba(193, 154, 107, 0.2) 50%,
+    transparent 90%);
+    position: relative;
+}
+
+.saloon-container {
+    position: relative;
+}
+
+/* Saloon sign animation */
+.saloon-sign {
+    position: relative;
+    height: 100px;
+    perspective: 500px;
+    width: 550px;
+    margin: auto;
+}
+
+.sign-board {
+    position: relative;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="80" viewBox="0 0 300 80"><rect width="300" height="80" rx="5" fill="%232a2a2a" stroke="%23c19a6b" stroke-width="2"/></svg>') center/contain no-repeat;
+    padding: 20px 40px;
+    animation: swing 5s infinite ease-in-out;
+    transform-origin: top center;
+    margin: auto;
+    width: 100%;
+}
+
+/* Add to your style.css */
+.sign-chain {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(to bottom,
+    #c19a6b 0%,
+    #8a6d4b 50%,
+    #5d4a30 100%);
+    transform: translateX(-50%);
+    z-index: -1;
+}
+/* Animate ropes with the sign */
+@keyframes swing {
+    0%, 100% {
+        transform: rotate(-3deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+}
+
+/* Make ropes move more naturally */
+.sign-chain {
+    animation: chain-swing 5s infinite ease-in-out;
+}
+
+@keyframes chain-swing {
+    0%, 100% {
+        transform: translateX(-50%) rotate(-1deg);
+    }
+    50% {
+        transform: translateX(-50%) rotate(1deg);
+    }
+}
+
+.sign-chain,
+.sign-board::before,
+.sign-board::after {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Interactive logo */
+.logo-container {
+    position: relative;
+    width: 230px;
+    margin: 60px auto 30px;
+    transition: all 0.3s ease;
+}
+
+.logo-shine {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at var(--x) var(--y),
+    rgba(255,255,255,0.3) 0%,
+    transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    border-radius: 50%;
+}
+
+.logo-container:hover .logo-shine {
+    opacity: 1;
+}
+
+/* Counter styling */
+.counter-label {
+    margin: 0;
+}
+
+.counter-container {
+    position: relative;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="125" viewBox="0 0 300 75"><rect width="300" height="100" rx="10" fill="%231e1e1e" stroke="%23d4a373" stroke-width="2"/></svg>') center/contain no-repeat;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 300px;
+}
+
+.counter-display {
+    font-family: 'IM Fell English SC', serif;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-align: center;
+    position: relative;
+}
+
+.counter-gears {
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 20L54 30H46L50 20M30 46L20 50L30 54V46M70 54L80 50L70 46V54M46 70L50 80L54 70H46M50 54A4 4 0 0 1 50 46A4 4 0 0 1 50 54Z" fill="%23c19a6b" opacity="0.3"/></svg>');
+    background-size: 30px 30px;
+    animation: rotateGears 3s linear infinite;
+    width: 100%;
+    height: 30px;
+}
+
+@keyframes rotateGears {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Interactive bar items */
+.bar-items {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+}
+
+.beer-mug, .deck-cards {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Beer Mug Animation */
+.beer-mug {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M30 20H70V50C70 65 50 75 50 75C50 75 30 65 30 50V20Z" fill="%23d4a373" stroke="%23c19a6b" stroke-width="2"/><path d="M30 20L25 10H75L70 20" fill="%23c19a6b"/><path d="M35 25V45C35 50 40 55 50 55C60 55 65 50 65 45V25" fill="%239c3d2e" opacity="0.7"/></svg>') center/contain no-repeat;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.beer-foam {
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40%;
+    height: 15%;
+    background: white;
+    border-radius: 50%;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+/* Deck Cards Animation */
+.deck-cards {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+
+.card-stack {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 140"><rect x="10" y="20" width="80" height="100" rx="5" fill="%239c3d2e"/><rect x="20" y="30" width="80" height="100" rx="5" fill="%231e1e1e"/><rect x="30" y="40" width="80" height="100" rx="5" fill="%239c3d2e"/></svg>') center/contain no-repeat;
+    transition: all 0.3s ease;
+}
+
+.lucky-card {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%) rotate(5deg);
+    width: 50px;
+    height: 70px;
+    background: var(--accent-color);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IM Fell English SC', serif;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+/* Wanted posters */
+.wanted-poster {
+    position: fixed;
+    width: 270px;
+    height: 360px;
+    border: 8px solid #5d4a30;
+    border-radius: 2px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    padding: 15px;
+    z-index: -1;
+    transform-style: preserve-3d;
+}
+
+
+.wanted-poster[data-poster="1"] {
+    bottom: 200px;
+    right: 20px;
+    transform: rotate(4deg);
+    background: url('/www/img/wanted2.png') center/cover no-repeat;
+}
+
+.wanted-poster[data-poster="2"] {
+    top: 100px;
+    left: 100px;
+    transform: rotate(-8deg);
+    background: url('/www/img/wanted.png') center/cover no-repeat;
+}
+
+/* Sound control */
+.sound-control {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+}
+
+#sound-toggle {
+    background: var(--surface-dark);
+    border: 1px solid var(--primary-color);
+    color: var(--text-color);
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Bullet holes */
+.bullet-holes::before {
+    content: "";
+    position: fixed;
+    top: 38%;
+    right: 5%;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, transparent 30%, var(--surface-dark) 31%);
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+button, textarea {
+    transition: all 0.2s ease-out;
+}
+
+.error {
+    color: var(--error-color);
+    border-color: var(--error-color) !important;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; text-shadow: 0 0 8px var(--secondary-color); }
+    100% { opacity: 0.8; }
+}
+
+/* Add to your style.css */
+.whiskey-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            rgba(212, 163, 115, 0.8),
+            rgba(156, 61, 46, 0.6)
+    );
+    z-index: 9999;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading), serif;
+    font-size: 3rem;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.whiskey-overlay::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M10,10 Q25,50 10,90 Q50,75 90,90 Q75,50 90,10 Q50,25 10,10" fill="%23d4a373" opacity="0.3"/></svg>');
+    background-size: 200px 200px;
+    animation: whiskeyWave 8s linear infinite;
+}
+
+@keyframes whiskeyWave {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-100px) rotate(2deg); }
+}
+
+/* Стилі для ID користувача */
+.user-id-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    perspective: 1000px;
+}
+
+.cowboy-hat-icon {
+    margin-right: 8px;
+    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+}
+
+.user-id-plate:hover .cowboy-hat-icon {
+    transform: rotate(5deg) scale(1.1);
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.4));
+}
+
+.user-id-plate {
+    background: linear-gradient(135deg, #f5e7c1 0%, #e6d5a8 100%);
+    border: 3px solid #8B4513;
+    border-radius: 8px;
+    padding: 12px 20px;
+    box-shadow:
+            0 4px 8px rgba(0, 0, 0, 0.3),
+            inset 0 0 15px rgba(139, 69, 19, 0.2);
+    transform: rotate(1deg);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    max-width: 200px;
+}
+
+.user-id-plate:hover {
+    transform: rotate(0deg) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.plate-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    border-bottom: 1px dashed #8B4513;
+    padding-bottom: 6px;
+}
+
+.plate-icon {
+    font-size: 20px;
+    margin-right: 8px;
+}
+
+.plate-title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: #5a3921;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+}
+
+.user-id-display {
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    font-weight: bold;
+    color: #3a2a1a;
+    text-align: center;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    border: 1px solid rgba(139, 69, 19, 0.3);
+    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+    word-break: break-all;
+}
+
+.plate-footer {
+    height: 4px;
+    background: linear-gradient(90deg, #8B4513, #e6d5a8, #8B4513);
+    margin-top: 10px;
+    border-radius: 2px;
+}
+
+/* Анімація для нового ID */
+@keyframes fadeGlow {
+    0% { background-color: rgba(255, 215, 0, 0.3); }
+    50% { background-color: rgba(255, 215, 0, 0.7); }
+    100% { background-color: rgba(255, 255, 255, 0.7); }
+}
+
+.new-id {
+    animation: fadeGlow 1.5s ease-out;
+}
+
+/* Hidden button styles */
+.hidden-button {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Behind the logo */
+
+    /* Initial hidden state */
+    opacity: 0;
+    pointer-events: none; /* Make unclickable when hidden */
+    transition: opacity 0.5s ease;
+
+    /* Your button styling */
+    background: linear-gradient(to bottom, #8B4513, #5a2d0b);
+    color: gold;
+    border: 2px solid gold;
+    border-radius: 20px;
+    padding: 8px 20px;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+}
+
+/* Show button at end of animation */
+.show-secret-button {
+    opacity: 1;
+    pointer-events: auto; /* Make clickable */
+    z-index: 3; /* Above logo and shine */
+    animation: buttonPulse 1.5s infinite alternate;
+}
+
+#hidden-button {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    /* Initial hidden state */
+    opacity: 0;
+    display: none;
+    transition: opacity 0.5s ease;
+
+    /* Your button styling */
+    background: transparent;
+    color: transparent;
+    border: 0 solid transparent;
+    cursor: pointer;
+    padding: 8px 20px;
+    font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    z-index: 5;
+}
+
+@keyframes buttonPulse {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .saloon-sign {
+        position: relative;
+        height: 100px;
+        perspective: 500px;
+        width: 100%;
+        margin: auto;
+    }
+
+    .sign-chain {
+        height: 40px;
+    }
+
+    .wanted-poster {
+        display: none;
+    }
+
+    #prompt {
+        min-height: 80px;
+    }
+
+    p {
+        font-size: 1rem;
+    }
+
+    #video-corner {
+        display: none;
+    }
+
+    .user-id-container {
+        position: relative;
+        right: auto;
+        top: auto;
+        width: 100%;
+        margin-bottom: 50px;
+        z-index: -1;
+
+        display: flex;
+        justify-content: center;
+    }
+}

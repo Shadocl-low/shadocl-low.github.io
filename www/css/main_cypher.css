@@ -1,0 +1,171 @@
+.hidden {
+    display: none;
+}
+
+body {
+    background-color: #f5f1e6;
+    background-image: url('/www/img/parchment-texture.jpg');
+    color: #3a2c1a;
+    font-family: 'IM Fell English', serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cipher-container {
+    max-width: 800px;
+    width: 100%;
+    background-color: rgba(245, 241, 230, 0.9);
+    border: 3px solid #8b4513;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.cipher-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 15px;
+    background: linear-gradient(to right, #8b4513, #c19a6b, #8b4513);
+}
+
+.corner-decoration {
+    position: fixed;
+    width: 100px;
+    height: 100px;
+    opacity: 0.3;
+}
+
+.splatter1 {
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    top: 200px;
+    right: 200px;
+    transform: rotate(20deg);
+}
+
+.splatter2 {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    top: 600px;
+    left: 400px;
+    transform: rotate(20deg);
+}
+
+.cipher-header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 2px dashed #8b4513;
+    padding-bottom: 15px;
+}
+
+.cipher-header h1 {
+    font-family: 'UnifrakturMaguntia', cursive;
+    font-size: 2.5rem;
+    color: #5c2e0f;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.cipher-header p {
+    font-style: italic;
+    margin-top: 5px;
+    color: #5c2e0f;
+}
+
+.cipher-sequence {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.cipher-row {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.cipher-row:nth-child(2) {
+    border-bottom: 2px solid #8b4513;
+    padding-bottom: 15px;
+}
+
+.cipher-symbol {
+    width: 80px;
+    height: 80px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border: 2px solid #5c2e0f;
+    border-radius: 8px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.cipher-symbol:hover {
+    transform: scale(1.05);
+    box-shadow: 3px 3px 15px rgba(0,0,0,0.2);
+}
+
+.cipher-symbol::after {
+    display: none;
+    content: attr(data-number);
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #8b4513;
+    font-weight: bold;
+}
+
+.cipher-divider {
+    color: #8b4513;
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin: 0 5px;
+}
+
+.cipher-hint {
+    margin-top: 30px;
+    font-style: italic;
+    text-align: center;
+    color: #5c2e0f;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    body {
+        max-width: 768px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .cipher-container {
+        padding: 20px;
+        margin: 20px;
+    }
+
+    .cipher-symbol {
+        width: 60px;
+        height: 60px;
+    }
+
+    .cipher-header h1 {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,60 @@
+#prompt {
+    width: 100%;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--metal-color);
+    background-color: var(--surface-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    resize: vertical;
+    min-height: 100px;
+    transition: border 0.3s ease;
+}
+
+#prompt:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2);
+}
+
+#submit {
+    background: linear-gradient(to bottom, var(--primary-color), #b08d5f);
+    color: #2a2a2a;
+    border: 1px solid #8a6d4b;
+    padding: 12px 24px;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+
+#submit:hover {
+    background: linear-gradient(to bottom, #d4a373, #c19a6b);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+#submit:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+#response {
+    background-color: var(--surface-color);
+    padding: var(--spacing);
+    border-radius: var(--border-radius);
+    white-space: pre-wrap;
+    font-family: 'Consolas', monospace;
+    min-height: 100px;
+    border: 1px solid var(--metal-color);
+    overflow-x: auto;
+}
+
+#response:empty::before {
+    content: "Очікування відповіді...";
+    color: var(--metal-color);
+    font-style: italic;
+}

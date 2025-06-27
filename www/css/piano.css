@@ -1,0 +1,172 @@
+/* Mini Piano Preview */
+.mini-piano {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.mini-piano:hover {
+    transform: scale(1.1);
+}
+
+/* Fullscreen Piano */
+.fullscreen-piano {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(30, 30, 30, 0.95);
+    z-index: 10000;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.piano-keys-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    margin-top: 20px;
+    background: linear-gradient(to bottom, #8B4513 0%, #A0522D 100%);
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.key {
+    cursor: pointer;
+    transition: all 0.1s;
+    position: relative;
+}
+
+/* White Keys */
+.key.white {
+    height: 100%;
+    flex: 1;
+    background: white;
+    border-radius: 0 0 5px 5px;
+    z-index: 1;
+    background: linear-gradient(to bottom, #FFF 0%, #EEE 100%);
+    border: 1px solid #999;
+}
+
+/* Black Keys */
+.key.black {
+    position: absolute;
+    top: 0;
+    width: 6%;
+    height: 60%;
+    background: #333;
+    z-index: 2;
+    border-radius: 0 0 3px 3px;
+    background: linear-gradient(to bottom, #222 0%, #000 100%);
+}
+
+/* Key Press Effects */
+.key:active, .key.active {
+    transform: translateY(3px);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.2);
+}
+
+/* Key Labels */
+.key::after {
+    content: attr(data-note);
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #666;
+}
+
+.key.black::after {
+    color: #aaa;
+    bottom: 15px;
+}
+
+.piano-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--primary-color);
+}
+
+.piano-sequence {
+    margin-top: 2rem;
+    text-align: center;
+    font-family: var(--font-heading), serif;
+    color: white;
+}
+
+#target-notes {
+    color: var(--secondary-color);
+    letter-spacing: 3px;
+}
+
+.user-input {
+    min-height: 30px;
+    margin: 1rem 0;
+}
+
+.glow-note {
+    color: var(--secondary-color);
+    text-shadow: 0 0 10px var(--primary-color);
+    font-size: 1.5rem;
+    animation: pulse 2s infinite;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: var(--surface-dark);
+    margin: 1rem 0;
+    border-radius: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    border-radius: 5px;
+    transition: width 0.5s;
+}
+
+.glow-note {
+     color: var(--secondary-color);
+     text-shadow: 0 0 10px var(--primary-color);
+     font-size: 1.5rem;
+     animation: pulse 2s infinite;
+ }
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: var(--surface-dark);
+    margin: 1rem 0;
+    border-radius: 5px;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    border-radius: 5px;
+    transition: width 0.5s;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+.white { width: 8%; }
+.black { width: 5%; }
+}
