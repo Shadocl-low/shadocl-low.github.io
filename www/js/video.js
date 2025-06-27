@@ -5,9 +5,6 @@ function createVideoPlayer(src) {
     // Додаємо відео-елемент
     const video = document.createElement('video');
     video.controls = true;
-    video.autoplay = true;
-    video.loop = true;
-    video.muted = true; // Автовідтворення потребує muted
 
     // Додаємо кнопку закриття
     const closeBtn = document.createElement('button');
