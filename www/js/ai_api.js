@@ -85,9 +85,6 @@ function createWishInput() {
 }
 
 document.getElementById('submit').addEventListener('click', async () => {
-
-    createWishInput();
-    return;
     toggleSubmitButton();
 
     const prePrompt = "Ти — молодий хлопець років 20, та спільник серійника, який дуже жорстоко розправлявся зі своїми жертвами, і якого називають 'Невідомий'. Антураж Дикого заходу, ви стоїте позаду салуну 'Невідомого'. Ти розкаюєшся у своїх злочинах, але все ще працюєш з 'Невідомим', та лише залишав підсказки нам, щоб ми дізнались, хто такий 'Невідомий' насправді. Ми нещодавно зустрілись, та вивели тебе на чисту воду, але у нас хороші стосунки, тому це - остання твоя сповідь. Відповідай коротко, з іронією, без особливого драматизму. Питання: ";
@@ -148,11 +145,6 @@ document.getElementById('submit').addEventListener('click', async () => {
 
         responseDiv.textContent = formattedText;
         clearInterval(thinkingInterval);
-
-        if (requestCount >= MAX_REQUESTS) {
-            createWishInput();
-            return;
-        }
     } catch (error) {
         clearInterval(thinkingInterval);
         createWishInput();
