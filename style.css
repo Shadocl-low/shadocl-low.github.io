@@ -1,0 +1,43 @@
+/* Навигация */
+.navbar {
+    background-color: #1f2233 !important; /* темно-серый с синим оттенком */
+}
+.navbar-brand, .navbar-nav .nav-link {
+    color: #e0e0e0 !important;
+}
+.navbar-nav .nav-link.active {
+    color: #ff6b6b !important; /* акцентный цвет */
+}
+
+/* Баннер */
+.hero {
+    background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    color: #ffffff;
+    padding: 100px 20px;
+    text-align: center;
+    border-radius: 0 0 20px 20px;
+    position: relative;
+}
+.hero .overlay {
+    background: rgba(0, 0, 0, 0.7); /* более тёмный слой */
+}
+.hero h1, .hero p {
+    text-shadow: 0 0 15px rgba(0,0,0,0.8);
+}
+
+.container > img {
+    position: absolute;
+    height: 30%;
+}
+.container > img:nth-child(1) {
+    left: 10%;
+    top: 50%;
+}
+.container > img:nth-child(2) {
+    right: 10%;
+    top: 113%;
+}
+.container > img:nth-child(3) {
+    left: 5%;
+    top: 90%;
+}

@@ -1,0 +1,181 @@
+body {
+    /* Более светлый тёмный фон с градиентом сверху вниз */
+    background: linear-gradient(180deg, #1a1a1a 0%, #2a2a2a 100%);
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Навигация */
+.navbar-dark {
+    background-color: #1c1c1c;
+}
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #ff4c4c !important;
+    font-weight: 600;
+}
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #ff6b6b !important;
+}
+
+/* Hero-изображение */
+.news-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+}
+.news-hero img {
+    width: 100%;
+    border-radius: 15px;
+    transition: transform 0.5s ease;
+}
+.news-hero:hover img {
+    transform: scale(1.05);
+}
+.news-hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.6);
+    padding: 20px 25px;
+    border-radius: 10px;
+    text-align: center;
+}
+.news-hero-text h1 {
+    color: #fff;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.news-hero-text p {
+    color: #ddd;
+    font-style: italic;
+}
+
+/* Текст новости */
+.news-content img {
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 10px;
+}
+.news-content p {
+    font-size: 1.3rem;
+    line-height: 1.8;
+    color: #e0e0e0;
+}
+.news-content h1 {
+    font-size: 2.5rem;
+    color: #fff;
+}
+
+/* Секция комментариев */
+section.comments-section {
+    background-color: #2b2b2f; /* чуть светлее нижнего тона градиента */
+    padding: 40px 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.5); /* менее яркая тень */
+    margin-top: 50px;
+    color: #e0e0e0;
+}
+
+/* Заголовок секции */
+section.comments-section h4 {
+    border-bottom: 2px solid #ff6b6b; /* акцентный цвет */
+    display: inline-block;
+    padding-bottom: 6px;
+    margin-bottom: 25px;
+    color: #fff;
+}
+
+/* Отдельные комментарии */
+.comment {
+    display: flex;
+    align-items: flex-start;
+    background-color: #29292d; /* чуть светлее секции, мягкий контраст */
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+.comment:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    background-color: #2a2a32; /* мягкое выделение при наведении */
+}
+
+/* Аватарка */
+.comment-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    flex-shrink: 0;
+    border: 1px solid #444; /* нейтральная окантовка */
+}
+
+/* Блок с текстом комментария */
+.comment-body strong {
+    color: #ff6b6b; /* имя пользователя */
+}
+
+.comment-body .comment-date {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-left: 8px;
+}
+
+.comment-body p {
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #ccc;
+}
+
+.audio-player {
+    display: flex;
+    align-items: center;
+    background-color: #2b2f45;
+    padding: 5px 10px;
+    border-radius: 20px;
+    width: 200px;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+.play-btn {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    font-size: 1rem;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 6px;
+    background-color: #444;
+    border-radius: 3px;
+    margin-right: 8px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background-color: #ff6b6b;
+}
+
+.duration {
+    color: #ccc;
+}
+
+/* Подвал */
+footer {
+    background: linear-gradient(135deg, #111, #1c1c1c);
+    color: #aaa;
+}
+footer small:hover {
+    color: #ff4c4c;
+    transition: color 0.3s;
+}

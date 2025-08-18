@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новость — ВолодяНьюс</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/news.css" rel="stylesheet" />
+</head>
+<body>
+
+<!-- Навигация -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="../index.html">ВолодяНьюс</a>
+        <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="../index.html">Главная</a></li>
+                <li class="nav-item"><a class="nav-link active" href="#">Новости</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Форум</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Контент -->
+<div class="container my-5">
+    <article class="news-content mb-5">
+        <div class="row align-items-center">
+            <!-- Левый столбец: текст -->
+            <div class="col-lg-7">
+                <h1 class="fw-bold mb-3" style="font-size: 2.5rem;">Мужчина в образе Человека-паука удивил гостей вечеринки</h1>
+                <p class="mb-4" style="font-size: 1.2rem; font-style: italic;">автор: Саня</p>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    На недавней вечеринке произошёл необычный инцидент: мужчина проник на мероприятие и, сняв с себя одежду, предстал перед гостями в маске Человека-паука. Его импровизированный косплей сразу же привлёк внимание присутствующих и вызвал оживлённое обсуждение.
+                </p>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    По словам очевидцев, столь неожиданное поведение стало «изюминкой вечера», а атмосфера вечеринки заметно оживилась. Некоторые из гостей в шутку заявили, что хотели бы повторить подобный эксперимент, и поделать всякие вещи с виновником вечера.
+                </p>
+                <p style="font-size: 1.3rem; line-height: 1.8;">
+                    Организаторы мероприятия отметили, что эпизод не нарушил порядок и был воспринят публикой скорее как стриптиз шоу, чему все были очень рады.
+                </p>
+            </div>
+
+            <!-- Правый столбец: изображение -->
+            <div class="col-lg-5 text-center">
+                    <img src="../photo/5249003386869765224.jpg"
+                         alt="Новость"
+                         class="img-fluid rounded shadow-lg"
+                         style="max-width: 70%;">
+            </div>
+        </div>
+    </article>
+
+    <!-- Комментарии -->
+    <section class="comments-section mt-5 p-4 rounded shadow-sm">
+        <h4 class="mb-4">Комментарии</h4>
+        <div class="mt-3">
+            <div class="comment d-flex align-items-start p-3 rounded mb-3">
+                <img class="comment-avatar me-3" src="../photo/avatar/andrey.jfif" alt="Аватар пользователя1">
+                <div class="comment-body">
+                    <strong>Андрей</strong> <span class="comment-date">15.08.2025</span>
+                    <p>Глядя на него веруешь в богов</p>
+                </div>
+            </div>
+
+            <div class="comment d-flex align-items-start p-3 rounded">
+                <img class="comment-avatar me-3" src="../photo/avatar/egor.jfif" alt="Аватар пользователя2">
+                <div class="comment-body">
+                    <strong>Егор</strong> <span class="comment-date">15.08.2025</span>
+                    <p>Ну пацанчік, реально Ель мачос мускуліно !!!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+
+<!-- Подвал -->
+<footer class="bg-dark text-white py-3 mt-5">
+    <div class="container text-center">
+        <small>© 2025 ВолодяНьюс. Все права защищены.</small>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
