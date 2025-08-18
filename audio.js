@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const progress = player.querySelector('.progress');
         const durationEl = player.querySelector('.duration');
 
+        audio.src = audio.dataset.audio;
+
         if (!audio || !btn || !progress || !durationEl) return; // проверка на null
 
         btn.addEventListener('click', () => {

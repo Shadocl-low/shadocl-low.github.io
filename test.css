@@ -1,7 +1,7 @@
 :root {
     --card-perspective: 700px;
     --card-z-offset: 6px;
-    --card-y-offset: 14px;
+    --card-y-offset: 5px;
     --card-max-z-index: 100;
     --card-swap-duration: 0.4s;
     --swipe-x: 0px;
