@@ -1,0 +1,145 @@
+body {
+    background-color: #181818;       /* тёмный фон, чуть светлее */
+    color: #d8d8d8;                  /* мягкий светло-серый текст */
+}
+
+.navbar {
+    font-size: 1.8rem;
+    background-color: #202020;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: #0d6efd !important;
+}
+
+.navbar .nav-link {
+    color: #aaa;
+}
+
+.navbar .nav-link.active {
+    color: #fff;
+    font-weight: bold;
+    border-bottom: 2px solid #5a8bd8;  /* мягкий синий */
+}
+
+/* Блок статьи */
+.article-content {
+    background-color: #1f1f1f;      /* блок чуть светлее основного фона */
+    border: 1px solid #333;         /* тонкая рамка */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.5);
+}
+
+.article-content p {
+    text-align: justify;
+    background-color: #262626;      /* абзацы с мягким контрастом */
+    border-radius: 4px;
+    padding: 0.5rem 0.8rem;
+    line-height: 1.7;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.article-content strong {
+    color: #e0b657;                 /* мягкий янтарный */
+}
+
+.article-content em {
+    color: #57a0d8;                 /* мягкий голубой */
+}
+
+.article-content blockquote {
+    background-color: #262626;
+    border-left: 4px solid #57a0d8;
+    padding-left: 15px;
+    margin-left: 0;
+    color: #c0c0c0;
+    font-style: italic;
+    border-radius: 4px;
+}
+
+.article-content ul,
+.article-content ol {
+    margin-left: 1.5rem;
+}
+
+.article-content li {
+    margin-bottom: 0.5rem;
+}
+
+.article-content img {
+    display: block;
+    margin: 0 auto 20px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.4);
+    max-width: 100%;
+    height: auto;
+}
+
+.related-articles .card {
+    background-color: #1f1f1f;
+    border: 1px solid #333;
+}
+
+.article-header {
+    font-size: 1.4rem;
+}
+
+.article-header h1 {
+    font-size: 4rem;
+}
+
+footer {
+    background-color: #202020;
+    color: #aaa;
+}
+
+/* Отдельные комментарии */
+.comment {
+    display: flex;
+    align-items: flex-start;
+    background-color: #29292d; /* чуть светлее секции, мягкий контраст */
+    padding: 15px 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+.comment:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.6);
+    background-color: #2a2a32; /* мягкое выделение при наведении */
+}
+
+/* Аватарка */
+.comment-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+    flex-shrink: 0;
+    border: 1px solid #444; /* нейтральная окантовка */
+}
+
+/* Блок с текстом комментария */
+.comment-body strong {
+    font-size: 1.8rem;
+    color: #e0b657; /* имя пользователя */
+}
+
+.comment-body .comment-date {
+    font-size: 1.4rem;
+    color: #aaa;
+    margin-left: 8px;
+}
+
+.comment-body p {
+    margin-top: 5px;
+    font-size: 1.9rem;
+    color: #ccc;
+}
