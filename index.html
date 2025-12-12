@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HB DAY | SPECIAL EDITION</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0e0e0e;
+            --bg-card: #1a1a1a;
+            --bg-card-hover: #252525;
+
+            /* --- ИЗМЕНЕНИЯ ЦВЕТА ЗДЕСЬ --- */
+            --accent: #C40000; /* Глубокий красный */
+            --text-on-accent: #ffffff; /* Белый текст на красном фоне */
+
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --border-dark: #333;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: var(--bg-body); color: var(--text-main); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* Типографика */
+        h1, h2, h3, .brand, .read-more-label {
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            font-weight: 900;
+            line-height: 1.1;
+        }
+
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+        /* Ticker */
+        .ticker-wrap {
+            position: fixed; top: 0; width: 100%;
+            background: var(--accent);
+            color: var(--text-on-accent); /* Белый текст */
+            font-weight: 700; font-size: 0.9rem; text-transform: uppercase; z-index: 1000; padding: 8px 0; overflow: hidden; white-space: nowrap;
+        }
+        .ticker { display: inline-block; animation: ticker 20s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        nav { margin-top: 40px; padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-dark); background: rgba(14, 14, 14, 0.8); backdrop-filter: blur(10px); position: sticky; top: 35px; z-index: 900; }
+        .brand { font-size: 2rem; letter-spacing: -2px; }
+        .brand span { color: var(--accent); }
+
+        /* --- СЕТКА (GRID) --- */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 30px;
+        }
+
+        /* --- КАРТОЧКА НОВОСТИ --- */
+        .news-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 25px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+        }
+
+        /* Эффект при наведении (КРАСНОЕ СВЕЧЕНИЕ) */
+        .news-card:hover {
+            transform: translateY(-7px);
+            background: var(--bg-card-hover);
+            border-color: var(--accent);
+            box-shadow: 0 10px 40px rgba(196, 0, 0, 0.25); /* Красноватая тень */
+        }
+
+        .card-img-wrap {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            aspect-ratio: 16 / 9;
+            background: #222;
+        }
+
+        .card-img-wrap img {
+            width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
+        }
+        .news-card:hover .card-img-wrap img { transform: scale(1.05); }
+
+        .news-card h3 { font-size: 1.4rem; margin-bottom: 10px; color: white; }
+        .news-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin-bottom: 20px;}
+
+        .card-meta {
+            margin-top: auto; display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #333; padding-top: 15px;
+        }
+
+        .tag { color: var(--accent); font-weight: 700; text-transform: uppercase; font-size: 0.8rem; }
+
+        .read-icon { font-size: 1.2rem; color: var(--text-muted); transition: 0.3s; }
+        .news-card:hover .read-icon { color: var(--accent); transform: translate(5px, -5px); }
+
+        /* Размеры карточек */
+        .span-12 { grid-column: span 12; }
+        .span-8  { grid-column: span 8; }
+        .span-6  { grid-column: span 6; }
+        .span-4  { grid-column: span 4; }
+
+        /* --- HERO БЛОК --- */
+        .hero-link {
+            grid-column: span 12; position: relative; min-height: 550px; border-radius: 20px; overflow: hidden; display: flex; align-items: flex-end; text-decoration: none; border: 1px solid transparent; transition: 0.3s;
+        }
+        .hero-link:hover { border-color: var(--accent); transform: scale(0.995); }
+
+        .hero-img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6); transition: 0.5s; }
+        .hero-link:hover .hero-img { transform: scale(1.02); filter: brightness(0.8); }
+
+        .hero-content { position: relative; z-index: 2; padding: 40px; width: 100%; background: linear-gradient(to top, black, transparent); }
+        .hero-title { font-size: 3.5rem; color: white; margin-bottom: 15px; }
+
+        .hero-cta {
+            display: inline-block;
+            background: var(--accent);
+            color: var(--text-on-accent); /* Белый текст */
+            padding: 10px 20px; font-weight: 800; text-transform: uppercase; margin-top: 10px;
+        }
+
+        /* --- STATS --- */
+        .stats-container {
+            background: var(--accent);
+            color: var(--text-on-accent); /* Белый текст */
+            border-radius: 16px; padding: 30px;
+            display: flex; flex-direction: column; justify-content: center;
+            height: 100%;
+        }
+        .stat-number { font-size: 2.5rem; font-weight: 900; line-height: 1; font-family: 'Montserrat', sans-serif;}
+
+        /* --- Адаптив --- */
+        @media (max-width: 1024px) { .span-8, .span-6, .span-4 { grid-column: span 6; } }
+        @media (max-width: 768px) {
+            .span-12, .span-8, .span-6, .span-4 { grid-column: span 12; }
+            .hero-title { font-size: 2rem; }
+            .container { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+    <div class="ticker">
+        BREAKING NEWS: ДЖО ПРАЗДНУЕТ ДЕНЬ РОЖДЕНИЯ +++ ЦЕНЫ НА СКИНЫ В КС УПАЛИ +++ ПУТИНА ВИНА +++ АВТОР КУШАТЬ ХОЧЕТ +++ 2XKO НЕ БУДЕТ +++ В ЛОЛЕ ВВЕЛИ ПУСТЫНЮ
+    </div>
+</div>
+
+<nav>
+    <div class="brand">THE <span>FRIEND</span> NEWS</div>
+</nav>
+
+<div class="container">
+
+    <a href="news/news-1.html" class="hero-link span-12">
+        <img src="images/news-1.jpg" alt="Main News" class="hero-img">
+        <div class="hero-content">
+            <span class="hero-cta">Тема дня</span>
+            <h1 class="hero-title">ЗВЕЗДА КИБЕРСПОРТА: ДЕНЬ РОЖДЕНИЯ ДЖО</h1>
+            <p style="color: #ddd; font-size: 1.2rem;">Нажмите, чтобы прочитать полный репортаж с места событий</p>
+        </div>
+    </a>
+
+    <a href="news/news-2.html" class="news-card span-4">
+        <div class="card-img-wrap">
+            <img src="images/news-2.jpg" alt="News 2">
+        </div>
+        <h3>КАК ОН ПРОЖИМАЕТ ПОЛУКРУГ?</h3>
+        <p>Я хочу его пальцы так сильно, что готов...</p>
+        <div class="card-meta">
+            <span class="tag">Архив</span>
+            <span class="read-icon">↗</span>
+        </div>
+    </a>
+
+    <div class="stats-container span-4">
+        <div style="margin-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 10px;">
+            <div class="stat-number">20</div> <div style="font-weight: 700; opacity: 0.9;">ЛЕТ В ГЕЙМИНГЕ</div>
+        </div>
+        <div>
+            <div class="stat-number">∞</div>
+            <div style="margin-bottom: 40px; font-weight: 700; opacity: 0.9;">УРОВЕНЬ ХАРИЗМЫ</div>
+        </div>
+        <div style="margin-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.3); padding-bottom: 10px;">
+            <div class="stat-number">100%</div> <div style="font-weight: 700; opacity: 0.9;">ШАНС ДРОПА РОЛИКА?! </div>
+            <div style="font-weight: 700; opacity: 0.9;">(АУДИТОРИЯ ПРОСИТ)</div>
+        </div>
+    </div>
+
+    <a href="news/news-3.html" class="news-card span-4">
+        <div class="card-img-wrap">
+            <img src="images/news-3.jpg" alt="News 3">
+        </div>
+        <h3>МНЕНИЕ ЭКСПЕРТОВ: ОН ХАЙСКИЛ</h3>
+        <p>Интересно, как он капхедик проходил? Тогда читай на ху...</p>
+        <div class="card-meta">
+            <span class="tag">Аналитика</span>
+            <span class="read-icon">↗</span>
+        </div>
+    </a>
+
+    <a href="news/news-4.html" class="news-card span-8">
+        <div class="card-img-wrap" style="aspect-ratio: 21/9;"> <img src="images/news-4.jpg" alt="News 4">
+        </div>
+        <h3>Прайм легенды</h3>
+        <p>Взгляните на прошлое истинного игрока в лолку!</p>
+        <div class="card-meta">
+            <span class="tag">Интервью</span>
+            <span class="read-icon">↗</span>
+        </div>
+    </a>
+
+    <a href="news/news-5.html" class="news-card span-4">
+        <div class="card-img-wrap">
+            <img src="images/news-5.jpg" alt="News 5">
+        </div>
+        <h3>Тёмное прошлое легенды</h3>
+        <p>Никто не ожидал, но на самом деле, Джо был замечен за игрой в гачу. Кто знает, сколько времени утекло с того события, но память об этом вечном событии будет жить вечно.</p>
+        <div class="card-meta">
+            <span class="tag">LifeStyle</span>
+            <span class="read-icon">↗</span>
+        </div>
+    </a>
+
+    <a href="news/news-6.html" class="news-card span-4">
+        <div class="card-img-wrap">
+            <img src="images/news-6.jpg" alt="News 6">
+        </div>
+        <h3>Икона стиля: новая мода</h3>
+        <p>Сегодня хотелось бы разобрать стиль нашего главного огурчика...</p>
+        <div class="card-meta">
+            <span class="tag">Мода</span>
+            <span class="read-icon">↗</span>
+        </div>
+    </a>
+
+    <a href="news/news-7.html" class="news-card span-4">
+        <div class="card-img-wrap">
+            <img src="images/news-7.jpg" alt="News 7">
+        </div>
+        <h3>Депрессия у Джо?</h3>
+        <p>После недавно опубликованых фото у соц. сетях, фанаты Джо весьма на взводе.</p>
+        <div class="card-meta">
+            <span class="tag">Настроение</span>
+            <span class="read-icon">↗</span>
+        </div>
+    </a>
+
+    <a href="news/news-8.html" class="news-card span-4">
+        <div class="card-img-wrap">
+            <img src="images/news-8.jpg" alt="News 8">
+        </div>
+        <h3>Он уже готов праздновать</h3>
+        <p>Ожидается шквал веселья и осадки в виде конфетти...</p>
+        <div class="card-meta">
+            <span class="tag">Чилл</span>
+            <span class="read-icon">↗</span>
+        </div>
+    </a>
+
+</div>
+
+<footer>
+    <p>© 2025 THE GAMER NEWS. ALL RIGHTS RESERVED.</p>
+</footer>
+
+</body>
+</html>
