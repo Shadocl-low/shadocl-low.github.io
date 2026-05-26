@@ -242,6 +242,12 @@
       }
     }
 
+    function disconnectWallet() {
+      userAddress = null;
+      handleAccountsChanged([]);
+      console.log('Wallet disconnected from app');
+    }
+
     const beats = [
       {name:'Midnight Pulse', genre:'Trap', price:420, license:'Non-exclusive', royalty:10, left:87},
       {name:'Paris Bounce', genre:'Afrobeat', price:350, license:'One-year lease', royalty:8, left:42},
@@ -265,7 +271,15 @@
       renderCards(beats.filter(b=>b.name.toLowerCase().includes(q)&&(g==='all'||b.genre===g)));
     }
 
-    document.getElementById('walletBtn').onclick = connectWallet;
+    document.getElementById('walletBtn').onclick = () => {
+      if (userAddress) {
+        if (confirm('Выйти из кошелька?')) {
+          disconnectWallet();
+        }
+      } else {
+        connectWallet();
+      }
+    };
     if (typeof window.ethereum !== 'undefined') {
       window.ethereum.on('accountsChanged', handleAccountsChanged);
       window.ethereum.request({ method: 'eth_accounts' }).then(handleAccountsChanged);
