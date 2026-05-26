@@ -94,8 +94,12 @@
             </div>
             <div class="flex gap-3">
               <input id="search" oninput="filterCards()" placeholder="Search beats..." class="rounded-full border border-slate-200 px-5 py-3 outline-none focus:border-cyan-400" />
-              <select id="genre" onchange="filterCards()" class="rounded-full border border-slate-200 px-5 py-3 outline-none focus:border-cyan-400">
-                <option value="all">All genres</option><option>Trap</option><option>Afrobeat</option><option>Drill</option><option>House</option>
+              <select id="genre" onchange="filterCards()" class="rounded-full border border-slate-200 px-5 py-3 outline-none focus:border-cyan-400 text-slate-950">
+                <option value="all" class="text-slate-950">All genres</option>
+                <option class="text-slate-950">Trap</option>
+                <option class="text-slate-950">Afrobeat</option>
+                <option class="text-slate-950">Drill</option>
+                <option class="text-slate-950">House</option>
               </select>
             </div>
           </div>
@@ -134,8 +138,8 @@
             <div class="grid gap-4 md:grid-cols-2">
               <input id="beatName" placeholder="Beat name" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none" />
               <input id="beatPrice" placeholder="Price in BEAT" type="number" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none" />
-              <select id="beatGenre" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none"><option>Trap</option><option>Afrobeat</option><option>Drill</option><option>House</option></select>
-              <select id="beatLicense" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none"><option>Non-exclusive</option><option>Exclusive</option><option>One-year lease</option></select>
+              <select id="beatGenre" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none [&>option]:text-slate-900"><option>Trap</option><option>Afrobeat</option><option>Drill</option><option>House</option></select>
+              <select id="beatLicense" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none [&>option]:text-slate-900"><option>Non-exclusive</option><option>Exclusive</option><option>One-year lease</option></select>
               <input id="beatEditions" placeholder="Editions, e.g. 100" type="number" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none" />
               <input id="beatRoyalty" placeholder="Royalty %, e.g. 10" type="number" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none" />
             </div>
