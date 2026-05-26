@@ -189,10 +189,34 @@
     </main>
   </div>
 
-  <div id="toast" class="fixed bottom-6 right-6 hidden max-w-sm rounded-3xl border border-emerald-400/20 bg-[#101020] p-5 shadow-2xl">
+  <div id="toast" class="fixed bottom-6 right-6 hidden max-w-sm rounded-3xl border border-emerald-400/20 bg-[#101020] p-5 shadow-2xl z-50">
     <p class="font-black text-emerald-300">Transaction confirmed</p>
     <p id="toastText" class="mt-2 text-sm text-slate-300"></p>
   </div>
+
+  <!-- Audio Player UI -->
+  <div id="audioPlayer" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-2xl bg-[#101020]/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-4 shadow-2xl shadow-black/50 z-50 transition-all duration-500 translate-y-32 opacity-0">
+    <div class="flex items-center gap-4">
+      <button id="masterPlayBtn" onclick="togglePlayback()" class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white text-slate-950 hover:bg-slate-200 transition-colors">
+        <svg id="playIcon" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="pauseIcon" class="h-6 w-6 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center justify-between mb-1">
+          <p id="playerTrackName" class="text-sm font-bold truncate">Not playing</p>
+          <p id="playerTime" class="text-[10px] font-mono text-slate-500">0:00 / 0:00</p>
+        </div>
+        <div id="progressContainer" class="relative h-1.5 w-full rounded-full bg-white/10 overflow-hidden cursor-pointer" onclick="seek(event)">
+          <div id="progressBar" class="absolute left-0 top-0 h-full w-0 bg-gradient-to-r from-fuchsia-500 to-cyan-400 transition-all duration-100"></div>
+        </div>
+      </div>
+      <button onclick="stopPlayback()" class="text-slate-500 hover:text-white transition-colors p-2">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <audio id="mainAudio" class="hidden"></audio>
 
   <div id="uploadModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 px-6">
     <div class="w-full max-w-lg rounded-[2rem] bg-white p-8 text-slate-950">
@@ -204,6 +228,14 @@
 
   <script>
     let userAddress = null;
+    let currentTrack = null;
+    const audio = document.getElementById('mainAudio');
+    const player = document.getElementById('audioPlayer');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+    const trackNameDisplay = document.getElementById('playerTrackName');
+    const timeDisplay = document.getElementById('playerTime');
+    const progressBar = document.getElementById('progressBar');
 
     async function connectWallet() {
       // Проверка на протокол file://
@@ -249,18 +281,25 @@
     }
 
     const beats = [
-      {name:'Midnight Pulse', genre:'Trap', price:420, license:'Non-exclusive', royalty:10, left:87},
-      {name:'Paris Bounce', genre:'Afrobeat', price:350, license:'One-year lease', royalty:8, left:42},
-      {name:'Lyon Drill', genre:'Drill', price:620, license:'Non-exclusive', royalty:12, left:65},
-      {name:'Neon Avenue', genre:'House', price:500, license:'Non-exclusive', royalty:9, left:91},
-      {name:'Golden Kick', genre:'Trap', price:1200, license:'Exclusive', royalty:15, left:1},
-      {name:'Sunset Keys', genre:'Afrobeat', price:280, license:'One-year lease', royalty:7, left:120}
+      {name:'Land of the Pharaohs', genre:'Trap', price:420, license:'Non-exclusive', royalty:10, left:87, file:'music/Land of the Pharaohs.mp4'},
+      {name:'Lost Tombs', genre:'Afrobeat', price:350, license:'One-year lease', royalty:8, left:42, file:'music/Lost Tombs.mp4'},
+      {name:'Osiris', genre:'Drill', price:620, license:'Non-exclusive', royalty:12, left:65, file:'music/Osiris.mp4'},
+      {name:'Queen Nefertiti', genre:'House', price:500, license:'Non-exclusive', royalty:9, left:91, file:'music/Queen Nefertiti.mp4'},
+      {name:'Ra', genre:'Trap', price:1200, license:'Exclusive', royalty:15, left:1, file:'music/Ra.mp4'},
+      {name:'Scepter of Egypt', genre:'Afrobeat', price:280, license:'One-year lease', royalty:7, left:120, file:'music/Scepter of Egypt.mp4'}
     ];
     function renderCards(list=beats){
       const el=document.getElementById('cards');
-      el.innerHTML=list.map((b,i)=>`<div class="beat-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" data-name="${b.name.toLowerCase()}" data-genre="${b.genre}">
+      el.innerHTML=list.map((b,i)=>`<div class="beat-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm group" data-name="${b.name.toLowerCase()}" data-genre="${b.genre}">
         <div class="flex items-center justify-between"><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">${b.genre}</span><span class="text-sm font-bold text-emerald-600">Verified</span></div>
-        <div class="mt-5 flex h-20 items-center gap-1 rounded-2xl bg-slate-950 p-4">${Array.from({length:16}).map((_,j)=>`<div class="flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:${25+((i+j)*13)%65}%"></div>`).join('')}</div>
+        <div class="mt-5 relative overflow-hidden flex h-20 items-center gap-1 rounded-2xl bg-slate-950 p-4">
+          ${Array.from({length:16}).map((_,j)=>`<div class="flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:${25+((i+j)*13)%65}%"></div>`).join('')}
+          <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button onclick="playTrack('${b.name}', '${b.file}')" class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-950 shadow-xl transform scale-90 group-hover:scale-100 transition-transform">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+        </div>
         <h3 class="mt-5 text-2xl font-black">${b.name}</h3><p class="mt-2 text-slate-500">${b.license} • ${b.royalty}% royalty • ${b.left} left</p>
         <div class="mt-5 flex items-center justify-between"><div><p class="text-xs text-slate-500">Price</p><p class="text-2xl font-black">${b.price} BEAT</p></div><button onclick="buyBeat('${b.name}',${b.price})" class="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800">Lease</button></div>
       </div>`).join('') || '<p class="text-slate-500">No beat found.</p>';
@@ -371,6 +410,68 @@
     }
     function openUpload(){document.getElementById('uploadModal').classList.remove('hidden');document.getElementById('uploadModal').classList.add('flex')}
     function closeUpload(){document.getElementById('uploadModal').classList.add('hidden');document.getElementById('uploadModal').classList.remove('flex')}
+    function playTrack(name, file) {
+      if (currentTrack === file) {
+        togglePlayback();
+        return;
+      }
+      currentTrack = file;
+      audio.src = file;
+      audio.play();
+      trackNameDisplay.textContent = name;
+      player.classList.remove('translate-y-32', 'opacity-0');
+      updateUI();
+    }
+
+    function togglePlayback() {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+      updateUI();
+    }
+
+    function stopPlayback() {
+      audio.pause();
+      audio.currentTime = 0;
+      player.classList.add('translate-y-32', 'opacity-0');
+      currentTrack = null;
+    }
+
+    function updateUI() {
+      if (audio.paused) {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      } else {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+      }
+    }
+
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = Math.floor(seconds % 60);
+      return `${min}:${sec.toString().padStart(2, '0')}`;
+    }
+
+    function seek(e) {
+      const rect = document.getElementById('progressContainer').getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pos * audio.duration;
+    }
+
+    audio.ontimeupdate = () => {
+      const current = audio.currentTime;
+      const total = audio.duration || 0;
+      progressBar.style.width = `${(current / total) * 100}%`;
+      timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
+    };
+
+    audio.onended = () => {
+      stopPlayback();
+    };
+
     renderCards();
   </script>
 </body>
