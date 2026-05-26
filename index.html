@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BEAT Marketplace Demo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .wave-bar { animation: pulseWave 1.8s infinite ease-in-out; }
+    .wave-bar:nth-child(2n) { animation-delay: .15s; }
+    .wave-bar:nth-child(3n) { animation-delay: .3s; }
+    @keyframes pulseWave { 0%,100%{transform:scaleY(.55)} 50%{transform:scaleY(1)} }
+  </style>
+</head>
+<body class="bg-[#080812] text-white">
+  <div class="min-h-screen">
+    <header class="sticky top-0 z-40 border-b border-white/10 bg-[#080812]/90 backdrop-blur-xl">
+      <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+        <div class="flex items-center gap-3">
+          <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-fuchsia-500 to-cyan-400 font-black">B</div>
+          <div>
+            <div class="text-xl font-black">BEAT</div>
+            <div class="text-xs text-slate-400">Tokenized beat marketplace</div>
+          </div>
+        </div>
+        <nav class="hidden gap-6 text-sm font-semibold text-slate-300 md:flex">
+          <a href="#marketplace" class="hover:text-white">Marketplace</a>
+          <a href="#upload" class="hover:text-white">Upload</a>
+          <a href="#royalties" class="hover:text-white">Royalties</a>
+          <a href="#token" class="hover:text-white">Token</a>
+        </nav>
+        <button id="walletBtn" class="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-slate-200">Connect Wallet</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="relative overflow-hidden px-6 py-20">
+        <div class="absolute left-1/2 top-0 h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-fuchsia-500/25 blur-3xl"></div>
+        <div class="absolute right-0 top-32 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl"></div>
+        <div class="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.1fr_.9fr]">
+          <div>
+            <div class="mb-5 inline-flex rounded-full border border-cyan-300/30 bg-white/5 px-4 py-2 text-sm text-cyan-200">Demo marketplace interface</div>
+            <h1 class="max-w-4xl text-5xl font-black tracking-tight md:text-7xl">Lease beats with BEAT tokens.</h1>
+            <p class="mt-6 max-w-2xl text-lg leading-8 text-slate-300">A prototype marketplace where producers upload beats, artists lease licenses, and royalties are tracked automatically through smart-contract logic.</p>
+            <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+              <a href="#marketplace" class="rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-400 px-7 py-3 text-center font-bold">Explore beats</a>
+              <button onclick="openUpload()" class="rounded-full border border-white/15 bg-white/5 px-7 py-3 font-bold hover:bg-white/10">Upload beat</button>
+            </div>
+          </div>
+          <div class="rounded-[2rem] border border-white/10 bg-white/[0.06] p-4 shadow-2xl shadow-black/40">
+            <div class="rounded-[1.5rem] bg-[#101020] p-6">
+              <div class="flex items-center justify-between border-b border-white/10 pb-5">
+                <div>
+                  <p class="text-sm text-slate-400">Featured license</p>
+                  <h3 class="mt-1 text-2xl font-black">Midnight Pulse</h3>
+                </div>
+                <span class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-bold text-emerald-300">Verified</span>
+              </div>
+              <div class="mt-6 flex h-28 items-center gap-1 rounded-3xl border border-white/10 bg-black/20 p-5">
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:35%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:60%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:45%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:85%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:55%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:90%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:40%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:70%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:50%"></div>
+                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:75%"></div>
+              </div>
+              <div class="mt-5 grid grid-cols-2 gap-3">
+                <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">License</p><p class="font-bold">Non-exclusive</p></div>
+                <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Price</p><p class="font-bold">420 BEAT</p></div>
+                <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Royalty</p><p class="font-bold">10%</p></div>
+                <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Remaining</p><p class="font-bold">87 / 100</p></div>
+              </div>
+              <button onclick="buyBeat('Midnight Pulse',420)" class="mt-6 w-full rounded-full bg-white py-3 font-black text-slate-950 hover:bg-slate-200">Lease with BEAT</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="marketplace" class="bg-white px-6 py-20 text-slate-950">
+        <div class="mx-auto max-w-7xl">
+          <div class="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <p class="text-sm font-bold uppercase tracking-[.25em] text-fuchsia-600">Marketplace</p>
+              <h2 class="mt-3 text-4xl font-black md:text-5xl">Available beat licenses</h2>
+              <p class="mt-4 max-w-2xl text-slate-600">Browse demo beat NFTs, preview license terms, and simulate BEAT token purchases.</p>
+            </div>
+            <div class="flex gap-3">
+              <input id="search" oninput="filterCards()" placeholder="Search beats..." class="rounded-full border border-slate-200 px-5 py-3 outline-none focus:border-cyan-400" />
+              <select id="genre" onchange="filterCards()" class="rounded-full border border-slate-200 px-5 py-3 outline-none focus:border-cyan-400">
+                <option value="all">All genres</option><option>Trap</option><option>Afrobeat</option><option>Drill</option><option>House</option>
+              </select>
+            </div>
+          </div>
+          <div id="cards" class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+        </div>
+      </section>
+
+      <section id="upload" class="px-6 py-20">
+        <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[.25em] text-cyan-300">Producer dashboard</p>
+            <h2 class="mt-3 text-4xl font-black md:text-5xl">Upload, mint, and license a beat.</h2>
+            <p class="mt-5 text-lg leading-8 text-slate-300">This fake workflow shows how a producer would set the license price, number of editions, royalty split, and lease duration before minting.</p>
+          </div>
+          <div class="rounded-[2rem] border border-white/10 bg-white/[0.06] p-8">
+            <div id="dropZone" class="mb-6 flex flex-col items-center justify-center rounded-[2rem] border-2 border-dashed border-white/20 bg-white/5 p-10 transition-all hover:border-cyan-400/50 hover:bg-white/10 cursor-pointer">
+              <div class="mb-4 rounded-2xl bg-white/10 p-4">
+                <svg class="h-8 w-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+              </div>
+              <p class="text-lg font-bold">Drop your beat file here</p>
+              <p class="mt-1 text-sm text-slate-400">MP3, WAV, or FLAC (Max 50MB)</p>
+              <input type="file" id="fileInput" class="hidden" accept=".mp3,.wav,.flac" />
+            </div>
+            <div id="fileInfo" class="mb-6 hidden items-center justify-between rounded-2xl border border-white/10 bg-white/5 p-4">
+              <div class="flex items-center gap-3">
+                <div class="rounded-xl bg-cyan-400/20 p-2 text-cyan-400">
+                  <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"></path></svg>
+                </div>
+                <div>
+                  <p id="fileName" class="text-sm font-bold truncate max-w-[200px]"></p>
+                  <p id="fileSize" class="text-xs text-slate-500"></p>
+                </div>
+              </div>
+              <button onclick="removeFile()" class="text-2xl leading-none text-slate-500 hover:text-white">&times;</button>
+            </div>
+            <div class="grid gap-4 md:grid-cols-2">
+              <input id="beatName" placeholder="Beat name" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none" />
+              <input id="beatPrice" placeholder="Price in BEAT" type="number" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none" />
+              <select id="beatGenre" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none"><option>Trap</option><option>Afrobeat</option><option>Drill</option><option>House</option></select>
+              <select id="beatLicense" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none"><option>Non-exclusive</option><option>Exclusive</option><option>One-year lease</option></select>
+              <input id="beatEditions" placeholder="Editions, e.g. 100" type="number" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none" />
+              <input id="beatRoyalty" placeholder="Royalty %, e.g. 10" type="number" class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-slate-500 outline-none" />
+            </div>
+            <button onclick="fakeMint()" class="mt-6 w-full rounded-full bg-gradient-to-r from-fuchsia-500 to-cyan-400 py-4 font-black">Mint demo beat NFT</button>
+            <p id="mintStatus" class="mt-4 hidden rounded-2xl bg-emerald-400/10 p-4 text-sm font-semibold text-emerald-300">Minting...</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="royalties" class="bg-slate-50 px-6 py-20 text-slate-950">
+        <div class="mx-auto max-w-7xl">
+          <p class="text-sm font-bold uppercase tracking-[.25em] text-fuchsia-600">Royalty dashboard</p>
+          <h2 class="mt-3 text-4xl font-black md:text-5xl">Automatic revenue tracking</h2>
+          <div class="mt-10 grid gap-6 md:grid-cols-4">
+            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Total sales</p><p class="mt-2 text-3xl font-black">24,820 BEAT</p></div>
+            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Royalties paid</p><p class="mt-2 text-3xl font-black">2,482 BEAT</p></div>
+            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Active leases</p><p class="mt-2 text-3xl font-black">139</p></div>
+            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Expiring soon</p><p class="mt-2 text-3xl font-black">12</p></div>
+          </div>
+          <div class="mt-8 overflow-hidden rounded-3xl bg-white shadow-sm">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-100 text-slate-500"><tr><th class="p-4">Beat</th><th class="p-4">Buyer</th><th class="p-4">License</th><th class="p-4">Amount</th><th class="p-4">Status</th></tr></thead>
+              <tbody>
+                <tr class="border-t"><td class="p-4 font-bold">Midnight Pulse</td><td class="p-4">0x71...9A2</td><td class="p-4">Non-exclusive</td><td class="p-4">420 BEAT</td><td class="p-4 text-emerald-600 font-bold">Paid</td></tr>
+                <tr class="border-t"><td class="p-4 font-bold">Paris Bounce</td><td class="p-4">0x3B...22F</td><td class="p-4">One-year lease</td><td class="p-4">350 BEAT</td><td class="p-4 text-emerald-600 font-bold">Paid</td></tr>
+                <tr class="border-t"><td class="p-4 font-bold">Lyon Drill</td><td class="p-4">0xF8...1C0</td><td class="p-4">Exclusive</td><td class="p-4">3,200 BEAT</td><td class="p-4 text-cyan-600 font-bold">Verified</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="token" class="px-6 py-20">
+        <div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1fr_1fr] lg:items-center">
+          <div class="rounded-[2rem] border border-white/10 bg-white/[0.06] p-8">
+            <p class="text-sm font-bold uppercase tracking-[.25em] text-cyan-300">Live testnet token</p>
+            <h2 class="mt-3 text-5xl font-black">BEAT Token</h2>
+            <p class="mt-5 text-slate-300">Network: Sepolia testnet</p>
+            <div class="mt-5 rounded-2xl bg-black/25 p-4 text-sm text-cyan-200 break-all">0x3463c88000da3281baD02633a7940ed0b2C182B3</div>
+            <div class="mt-6 grid grid-cols-2 gap-4">
+              <div class="rounded-2xl bg-white/5 p-4"><p class="text-xs text-slate-500">Supply</p><p class="font-black">100,000,000</p></div>
+              <div class="rounded-2xl bg-white/5 p-4"><p class="text-xs text-slate-500">Symbol</p><p class="font-black">BEAT</p></div>
+            </div>
+          </div>
+          <div>
+            <h2 class="text-4xl font-black md:text-5xl">Token utility inside the marketplace.</h2>
+            <p class="mt-5 text-lg leading-8 text-slate-300">BEAT is used to simulate purchases, lease payments, royalty splits, platform rewards, and future governance in the project demo.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="fixed bottom-6 right-6 hidden max-w-sm rounded-3xl border border-emerald-400/20 bg-[#101020] p-5 shadow-2xl">
+    <p class="font-black text-emerald-300">Transaction confirmed</p>
+    <p id="toastText" class="mt-2 text-sm text-slate-300"></p>
+  </div>
+
+  <div id="uploadModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/70 px-6">
+    <div class="w-full max-w-lg rounded-[2rem] bg-white p-8 text-slate-950">
+      <div class="flex items-center justify-between"><h3 class="text-2xl font-black">Upload beat</h3><button onclick="closeUpload()" class="text-2xl">×</button></div>
+      <p class="mt-3 text-slate-600">This is a demo upload flow. It simulates IPFS upload and NFT minting.</p>
+      <button onclick="closeUpload(); document.getElementById('upload').scrollIntoView({behavior:'smooth'});" class="mt-6 w-full rounded-full bg-slate-950 py-3 font-bold text-white">Go to upload dashboard</button>
+    </div>
+  </div>
+
+  <script>
+    let userAddress = null;
+
+    async function connectWallet() {
+      // Проверка на протокол file://
+      if (window.location.protocol === 'file:') {
+        alert('Web3 кошельки не работают при открытии файла напрямую. Пожалуйста, используйте локальный сервер (например, Live Server в VS Code).');
+        return;
+      }
+
+      const provider = window.ethereum;
+      if (provider) {
+        try {
+          const accounts = await provider.request({ method: 'eth_requestAccounts' });
+          handleAccountsChanged(accounts);
+        } catch (err) {
+          if (err.code === 4001) {
+            console.log('Пользователь отклонил запрос');
+          } else {
+            console.error('Ошибка подключения:', err);
+          }
+        }
+      } else {
+        alert('Web3 кошелек не обнаружен. Пожалуйста, установите MetaMask!');
+      }
+    }
+
+    function handleAccountsChanged(accounts) {
+      const btn = document.getElementById('walletBtn');
+      if (accounts.length === 0) {
+        userAddress = null;
+        btn.textContent = 'Connect Wallet';
+        btn.className = 'rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-slate-200';
+      } else {
+        userAddress = accounts[0];
+        btn.textContent = `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
+        btn.className = 'rounded-full bg-emerald-400 px-5 py-2.5 text-sm font-bold text-slate-950';
+      }
+    }
+
+    const beats = [
+      {name:'Midnight Pulse', genre:'Trap', price:420, license:'Non-exclusive', royalty:10, left:87},
+      {name:'Paris Bounce', genre:'Afrobeat', price:350, license:'One-year lease', royalty:8, left:42},
+      {name:'Lyon Drill', genre:'Drill', price:620, license:'Non-exclusive', royalty:12, left:65},
+      {name:'Neon Avenue', genre:'House', price:500, license:'Non-exclusive', royalty:9, left:91},
+      {name:'Golden Kick', genre:'Trap', price:1200, license:'Exclusive', royalty:15, left:1},
+      {name:'Sunset Keys', genre:'Afrobeat', price:280, license:'One-year lease', royalty:7, left:120}
+    ];
+    function renderCards(list=beats){
+      const el=document.getElementById('cards');
+      el.innerHTML=list.map((b,i)=>`<div class="beat-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm" data-name="${b.name.toLowerCase()}" data-genre="${b.genre}">
+        <div class="flex items-center justify-between"><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">${b.genre}</span><span class="text-sm font-bold text-emerald-600">Verified</span></div>
+        <div class="mt-5 flex h-20 items-center gap-1 rounded-2xl bg-slate-950 p-4">${Array.from({length:16}).map((_,j)=>`<div class="flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:${25+((i+j)*13)%65}%"></div>`).join('')}</div>
+        <h3 class="mt-5 text-2xl font-black">${b.name}</h3><p class="mt-2 text-slate-500">${b.license} • ${b.royalty}% royalty • ${b.left} left</p>
+        <div class="mt-5 flex items-center justify-between"><div><p class="text-xs text-slate-500">Price</p><p class="text-2xl font-black">${b.price} BEAT</p></div><button onclick="buyBeat('${b.name}',${b.price})" class="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800">Lease</button></div>
+      </div>`).join('') || '<p class="text-slate-500">No beat found.</p>';
+    }
+    function filterCards(){
+      const q=document.getElementById('search').value.toLowerCase();
+      const g=document.getElementById('genre').value;
+      renderCards(beats.filter(b=>b.name.toLowerCase().includes(q)&&(g==='all'||b.genre===g)));
+    }
+
+    document.getElementById('walletBtn').onclick = connectWallet;
+    if (typeof window.ethereum !== 'undefined') {
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+      window.ethereum.request({ method: 'eth_accounts' }).then(handleAccountsChanged);
+    }
+
+    function buyBeat(name,price){
+      if (!userAddress) {
+        alert('Please connect your wallet first!');
+        connectWallet();
+        return;
+      }
+      const toast=document.getElementById('toast');
+      document.getElementById('toastText').textContent=`${name} license purchased for ${price} BEAT. NFT license and royalty split simulated successfully.`;
+      toast.classList.remove('hidden');
+      setTimeout(()=>toast.classList.add('hidden'),5000);
+    }
+
+    let selectedFile = null;
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileInfo = document.getElementById('fileInfo');
+    const fileName = document.getElementById('fileName');
+    const fileSize = document.getElementById('fileSize');
+
+    dropZone.onclick = () => fileInput.click();
+
+    dropZone.ondragover = (e) => {
+      e.preventDefault();
+      dropZone.classList.add('border-cyan-400', 'bg-white/10');
+    };
+
+    dropZone.ondragleave = () => {
+      dropZone.classList.remove('border-cyan-400', 'bg-white/10');
+    };
+
+    dropZone.ondrop = (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-cyan-400', 'bg-white/10');
+      if (e.dataTransfer.files.length) handleFiles(e.dataTransfer.files);
+    };
+
+    fileInput.onchange = (e) => {
+      if (e.target.files.length) handleFiles(e.target.files);
+    };
+
+    function handleFiles(files) {
+      selectedFile = files[0];
+      fileName.textContent = selectedFile.name;
+      fileSize.textContent = (selectedFile.size / (1024 * 1024)).toFixed(2) + ' MB';
+      dropZone.classList.add('hidden');
+      fileInfo.classList.remove('hidden');
+      fileInfo.classList.add('flex');
+    }
+
+    function removeFile() {
+      selectedFile = null;
+      fileInput.value = '';
+      dropZone.classList.remove('hidden');
+      fileInfo.classList.add('hidden');
+      fileInfo.classList.remove('flex');
+    }
+
+    function fakeMint(){
+      const status=document.getElementById('mintStatus');
+      const name=document.getElementById('beatName').value || 'New Demo Beat';
+
+      if (!userAddress) {
+        alert('Please connect your wallet to mint beats!');
+        connectWallet();
+        return;
+      }
+
+      if (!selectedFile) {
+        status.classList.remove('hidden');
+        status.classList.replace('bg-emerald-400/10', 'bg-red-400/10');
+        status.classList.replace('text-emerald-300', 'text-red-300');
+        status.textContent = 'Please select a beat file first.';
+        setTimeout(() => {
+          status.classList.add('hidden');
+          status.classList.replace('bg-red-400/10', 'bg-emerald-400/10');
+          status.classList.replace('text-red-300', 'text-emerald-300');
+        }, 3000);
+        return;
+      }
+
+      status.classList.remove('hidden'); status.textContent=`Uploading ${selectedFile.name} to IPFS...`;
+      setTimeout(()=>status.textContent='Encoding license rules into smart contract...', 900);
+      setTimeout(()=>status.textContent=`Success! ${name} minted as a demo NFT license with file ${selectedFile.name} and added to the marketplace.`, 1900);
+    }
+    function openUpload(){document.getElementById('uploadModal').classList.remove('hidden');document.getElementById('uploadModal').classList.add('flex')}
+    function closeUpload(){document.getElementById('uploadModal').classList.add('hidden');document.getElementById('uploadModal').classList.remove('flex')}
+    renderCards();
+  </script>
+</body>
+</html>
