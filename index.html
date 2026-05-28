@@ -84,6 +84,14 @@
           <div id="libraryCards" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             <!-- Library cards will be rendered here -->
           </div>
+          <!-- Library Pagination -->
+          <div id="libraryPagination" class="mt-12 flex items-center justify-between border-t border-white/10 pt-8 hidden">
+            <p id="libraryPaginationInfo" class="text-sm text-slate-500 font-semibold text-white/60">Page 1 of 1</p>
+            <div class="flex gap-2">
+              <button id="prevLibraryBtn" onclick="changeLibraryPage(-1)" class="rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Previous</button>
+              <button id="nextLibraryBtn" onclick="changeLibraryPage(1)" class="rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-bold text-white hover:bg-white/10 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Next</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -260,6 +268,8 @@
     const royaltyPageSize = 5;
     let beatsPage = 1;
     const beatsPageSize = 6;
+    let libraryPage = 1;
+    const libraryPageSize = 6;
     let filteredBeats = []; // For storing search/filter results
     
     const audio = document.getElementById('mainAudio');
@@ -359,15 +369,21 @@
       const el = document.getElementById('libraryCards');
       const ownedBeats = allBeats.filter(b => userPurchases.includes(b.id));
       
+      const start = (libraryPage - 1) * libraryPageSize;
+      const end = start + libraryPageSize;
+      const pageItems = ownedBeats.slice(start, end);
+
       if (ownedBeats.length === 0) {
         el.innerHTML = `<div class="col-span-full py-10 text-center border-2 border-dashed border-white/10 rounded-[2rem]">
           <p class="text-slate-500">Your library is empty. Buy a beat in the marketplace to see it here!</p>
           <a href="#marketplace" class="mt-4 inline-block text-cyan-400 font-bold hover:underline">Explore Marketplace</a>
         </div>`;
+        document.getElementById('libraryPagination').classList.add('hidden');
         return;
       }
 
-      el.innerHTML = ownedBeats.map((b, i) => `<div class="beat-card rounded-3xl border border-white/10 bg-white/5 p-6 shadow-sm group">
+      document.getElementById('libraryPagination').classList.toggle('hidden', ownedBeats.length <= libraryPageSize);
+      el.innerHTML = pageItems.map((b, i) => `<div class="beat-card rounded-3xl border border-white/10 bg-white/5 p-6 shadow-sm group">
         <div class="flex items-center justify-between"><span class="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-bold text-cyan-400">${b.genre}</span><span class="text-xs text-emerald-400 font-bold">FULL ACCESS</span></div>
         <div class="mt-5 relative overflow-hidden flex h-20 items-center gap-1 rounded-2xl bg-black/40 p-4">
           ${Array.from({length:16}).map((_,j)=>`<div class="flex-1 rounded-full bg-gradient-to-t from-emerald-500 to-cyan-400" style="height:${30+((i+j)*17)%60}%"></div>`).join('')}
@@ -386,6 +402,23 @@
           </a>
         </div>
       </div>`).join('');
+
+      // Update Pagination Info
+      const totalPages = Math.ceil(ownedBeats.length / libraryPageSize);
+      document.getElementById('libraryPaginationInfo').textContent = `Page ${libraryPage} of ${totalPages} (${ownedBeats.length} total)`;
+      document.getElementById('prevLibraryBtn').disabled = (libraryPage === 1);
+      document.getElementById('nextLibraryBtn').disabled = (libraryPage === totalPages || totalPages === 0);
+    }
+
+    function changeLibraryPage(direction) {
+      const ownedBeats = allBeats.filter(b => userPurchases.includes(b.id));
+      const totalPages = Math.ceil(ownedBeats.length / libraryPageSize);
+      const newPage = libraryPage + direction;
+      if (newPage >= 1 && newPage <= totalPages) {
+        libraryPage = newPage;
+        renderLibrary();
+        document.getElementById('library').scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     async function loadBeats() {
