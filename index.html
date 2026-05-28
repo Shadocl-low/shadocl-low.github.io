@@ -107,6 +107,14 @@
             </div>
           </div>
           <div id="cards" class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3"></div>
+          <!-- Beats Pagination -->
+          <div id="beatsPagination" class="mt-12 flex items-center justify-between border-t border-slate-100 pt-8">
+            <p id="beatsPaginationInfo" class="text-sm text-slate-500 font-semibold">Page 1 of 1</p>
+            <div class="flex gap-2">
+              <button id="prevBeatsBtn" onclick="changeBeatsPage(-1)" class="rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-950 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Previous</button>
+              <button id="nextBeatsBtn" onclick="changeBeatsPage(1)" class="rounded-full border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-950 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Next</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -250,6 +258,9 @@
     let allPurchases = []; // Full transaction history
     let royaltyPage = 1;
     const royaltyPageSize = 5;
+    let beatsPage = 1;
+    const beatsPageSize = 6;
+    let filteredBeats = []; // For storing search/filter results
     
     const audio = document.getElementById('mainAudio');
     const player = document.getElementById('audioPlayer');
@@ -386,6 +397,7 @@
           // Use the first (newest) available beat as featured
           updateFeaturedBeat(allBeats[0]);
         }
+        filterCards(); // This will initialize filteredBeats and render the first page
         loadUserPurchases();
         updateRoyaltyDashboard();
       }
@@ -502,12 +514,20 @@
       }
     }
 
-    function renderCards(list){
+    function renderCards(){
       const el=document.getElementById('cards');
-      // Only show beats that are NOT sold out and NOT already owned (they are in the library)
-      const availableBeats = list.filter(b => b.left > 0 && !userPurchases.includes(b.id));
+      const start = (beatsPage - 1) * beatsPageSize;
+      const end = start + beatsPageSize;
+      const pageItems = filteredBeats.slice(start, end);
       
-      el.innerHTML=availableBeats.map((b,i)=>{
+      if (filteredBeats.length === 0) {
+        el.innerHTML = '<p class="text-slate-500 col-span-full py-10 text-center">No available beats found.</p>';
+        document.getElementById('beatsPagination').classList.add('hidden');
+        return;
+      }
+
+      document.getElementById('beatsPagination').classList.remove('hidden');
+      el.innerHTML=pageItems.map((b,i)=>{
         const hasFullAccess = userAddress && b.author && b.author.toLowerCase() === userAddress.toLowerCase();
         
         return `<div class="beat-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm group" data-name="${b.name.toLowerCase()}" data-genre="${b.genre}">
@@ -525,13 +545,39 @@
             <div><p class="text-xs text-slate-500">Price</p><p class="text-2xl font-black">${b.price} BEAT</p></div>
             <button onclick="buyBeat('${b.name}',${b.price}, ${b.id})" class="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800">Lease</button>
           </div>
-        </div>`}).join('') || '<p class="text-slate-500">No available beats found.</p>';
+        </div>`}).join('');
+
+      // Update Pagination Info
+      const totalPages = Math.ceil(filteredBeats.length / beatsPageSize);
+      document.getElementById('beatsPaginationInfo').textContent = `Page ${beatsPage} of ${totalPages} (${filteredBeats.length} total)`;
+      document.getElementById('prevBeatsBtn').disabled = (beatsPage === 1);
+      document.getElementById('nextBeatsBtn').disabled = (beatsPage === totalPages || totalPages === 0);
     }
 
     function filterCards(){
       const q=document.getElementById('search').value.toLowerCase();
       const g=document.getElementById('genre').value;
-      renderCards(allBeats.filter(b=>b.name.toLowerCase().includes(q)&&(g==='all'||b.genre===g)));
+      
+      // Apply existing filter logic
+      filteredBeats = allBeats.filter(b => 
+        b.left > 0 && 
+        !userPurchases.includes(b.id) &&
+        b.name.toLowerCase().includes(q) && 
+        (g==='all' || b.genre === g)
+      );
+
+      beatsPage = 1; // Reset to first page on new filter
+      renderCards();
+    }
+
+    function changeBeatsPage(direction) {
+      const totalPages = Math.ceil(filteredBeats.length / beatsPageSize);
+      const newPage = beatsPage + direction;
+      if (newPage >= 1 && newPage <= totalPages) {
+        beatsPage = newPage;
+        renderCards();
+        document.getElementById('marketplace').scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
     document.getElementById('walletBtn').onclick = async () => {
