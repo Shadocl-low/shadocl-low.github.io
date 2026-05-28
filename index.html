@@ -261,6 +261,7 @@
     let userAddress = null;
     let currentTrack = null;
     let isFullAccess = false;
+    let previewEnded = false;
     let allBeats = []; // Will be populated from Supabase
     let userPurchases = []; // IDs of beats bought by current user
     
@@ -583,12 +584,17 @@
     function openUpload(){document.getElementById('uploadModal').classList.remove('hidden');document.getElementById('uploadModal').classList.add('flex')}
     function closeUpload(){document.getElementById('uploadModal').classList.add('hidden');document.getElementById('uploadModal').classList.remove('flex')}
     function playTrack(name, file, fullAccess = false) {
+      if (!file || file === 'null' || file === '') {
+        alert('This beat does not have an audio file attached yet.');
+        return;
+      }
       if (currentTrack === file) {
         togglePlayback();
         return;
       }
       currentTrack = file;
       isFullAccess = fullAccess;
+      previewEnded = false;
       audio.src = file;
       audio.play();
       trackNameDisplay.textContent = name + (!isFullAccess ? ' (Preview)' : '');
@@ -598,6 +604,11 @@
 
     function togglePlayback() {
       if (audio.paused) {
+        // If preview reached limit, reset to start when playing again
+        if (!isFullAccess && audio.currentTime >= 30) {
+          audio.currentTime = 0;
+          previewEnded = false;
+        }
         audio.play();
       } else {
         audio.pause();
@@ -644,11 +655,20 @@
       const current = audio.currentTime;
       const total = audio.duration || 0;
       
+      // Absolute limit for previews
       if (!isFullAccess && current >= 30) {
         audio.pause();
         audio.currentTime = 30;
         updateUI();
-        alert('Preview ended. Please buy the beat to listen to the full version!');
+        
+        if (!previewEnded) {
+          previewEnded = true;
+          const toast = document.getElementById('toast');
+          const toastText = document.getElementById('toastText');
+          toastText.textContent = 'Preview ended. Please buy the beat to listen to the full version!';
+          toast.classList.remove('hidden');
+          setTimeout(() => toast.classList.add('hidden'), 5000);
+        }
         return;
       }
 
