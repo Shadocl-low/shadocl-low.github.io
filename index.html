@@ -510,8 +510,12 @@
 
     async function buyBeat(name,price, beatId){
       if (!userAddress) {
-        UI.toast('Please connect your wallet first!', 'error');
-        connectWallet();
+        UI.modal({
+          title: 'Wallet Required',
+          message: 'You need to connect your wallet to purchase beat licenses.',
+          type: 'confirm',
+          onConfirm: connectWallet
+        });
         return;
       }
 
@@ -554,10 +558,7 @@
         userBalance -= price;
         updateBalanceUI();
 
-        const toast=document.getElementById('toast');
-        document.getElementById('toastText').textContent=`${name} license purchased! It is now in your Library.`;
-        toast.classList.remove('hidden');
-        setTimeout(()=>toast.classList.add('hidden'),5000);
+        UI.toast(`${name} license purchased! It is now in your Library.`, 'success');
 
         loadBeats(); // This will refresh both the marketplace and the library
 
@@ -622,8 +623,12 @@
       const royalty=document.getElementById('beatRoyalty').value || 10;
 
       if (!userAddress) {
-        UI.toast('Please connect your wallet to mint beats!', 'error');
-        connectWallet();
+        UI.modal({
+          title: 'Wallet Required',
+          message: 'Please connect your wallet to mint beats!',
+          type: 'confirm',
+          onConfirm: connectWallet
+        });
         return;
       }
 
@@ -687,7 +692,19 @@
         status.classList.replace('text-emerald-300', 'text-red-300');
       }
     }
-    function openUpload(){document.getElementById('uploadModal').classList.remove('hidden');document.getElementById('uploadModal').classList.add('flex')}
+    function openUpload(){
+      if (!userAddress) {
+        UI.modal({
+          title: 'Wallet Required',
+          message: 'Please connect your wallet to upload and mint new beats.',
+          type: 'confirm',
+          onConfirm: connectWallet
+        });
+        return;
+      }
+      document.getElementById('uploadModal').classList.remove('hidden');
+      document.getElementById('uploadModal').classList.add('flex');
+    }
     function closeUpload(){document.getElementById('uploadModal').classList.add('hidden');document.getElementById('uploadModal').classList.remove('flex')}
     function playTrack(name, file, fullAccess = false) {
       if (!file || file === 'null' || file === '') {
