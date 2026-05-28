@@ -6,6 +6,7 @@
   <title>Mintwave Marketplace Demo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="ui.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -221,11 +222,6 @@
     </main>
   </div>
 
-  <div id="toast" class="fixed bottom-6 right-6 hidden max-w-sm rounded-3xl border border-emerald-400/20 bg-[#101020] p-5 shadow-2xl z-50">
-    <p class="font-black text-emerald-300">Transaction confirmed</p>
-    <p id="toastText" class="mt-2 text-sm text-slate-300"></p>
-  </div>
-
   <!-- Audio Player UI -->
   <div id="audioPlayer" class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-2xl bg-[#101020]/90 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-4 shadow-2xl shadow-black/50 z-50 transition-all duration-500 translate-y-32 opacity-0">
     <div class="flex items-center gap-4">
@@ -283,7 +279,11 @@
     async function connectWallet() {
       // Проверка на протокол file://
       if (window.location.protocol === 'file:') {
-        alert('Web3 кошельки не работают при открытии файла напрямую. Пожалуйста, используйте локальный сервер (например, Live Server в VS Code).');
+        UI.modal({
+          title: 'Connection Error',
+          message: 'Web3 wallets do not work when opening a file directly. Please use a local server (e.g., Live Server in VS Code).',
+          type: 'error'
+        });
         return;
       }
 
@@ -292,15 +292,21 @@
         try {
           const accounts = await provider.request({ method: 'eth_requestAccounts' });
           handleAccountsChanged(accounts);
+          UI.toast('Wallet connected successfully!');
         } catch (err) {
           if (err.code === 4001) {
-            console.log('Пользователь отклонил запрос');
+            UI.toast('Connection rejected by user', 'error');
           } else {
             console.error('Ошибка подключения:', err);
+            UI.toast('Connection error', 'error');
           }
         }
       } else {
-        alert('Web3 кошелек не обнаружен. Пожалуйста, установите MetaMask!');
+        UI.modal({
+          title: 'MetaMask Not Found',
+          message: 'Please install MetaMask to use this application.',
+          type: 'info'
+        });
       }
     }
 
@@ -332,6 +338,12 @@
 
     function updateBalanceUI() {
       document.getElementById('userBalanceText').textContent = `${userBalance} BEAT`;
+    }
+
+    function disconnectWallet() {
+      userAddress = null;
+      handleAccountsChanged([]);
+      UI.toast('Wallet disconnected', 'info');
     }
 
     async function loadUserPurchases() {
@@ -423,9 +435,10 @@
       renderCards(allBeats.filter(b=>b.name.toLowerCase().includes(q)&&(g==='all'||b.genre===g)));
     }
 
-    document.getElementById('walletBtn').onclick = () => {
+    document.getElementById('walletBtn').onclick = async () => {
       if (userAddress) {
-        if (confirm('Выйти из кошелька?')) {
+        const confirmed = await confirmModal('Disconnect Wallet', 'Are you sure you want to log out?');
+        if (confirmed) {
           disconnectWallet();
         }
       } else {
@@ -439,13 +452,17 @@
 
     async function buyBeat(name,price, beatId){
       if (!userAddress) {
-        alert('Please connect your wallet first!');
+        UI.toast('Please connect your wallet first!', 'error');
         connectWallet();
         return;
       }
 
       if (userBalance < price) {
-        alert(`Insufficient balance! You need ${price} BEAT, but you only have ${userBalance} BEAT.`);
+        UI.modal({
+          title: 'Insufficient Balance',
+          message: `You need ${price} BEAT, but you only have ${userBalance} BEAT.`,
+          type: 'error'
+        });
         return;
       }
 
@@ -454,7 +471,11 @@
         const { data: beat } = await _supabase.from('beats').select('left').eq('id', beatId).single();
         
         if (beat.left <= 0) {
-          alert('This beat is already sold out!');
+          UI.modal({
+            title: 'Sold Out',
+            message: 'This beat is already sold out!',
+            type: 'info'
+          });
           return;
         }
 
@@ -543,7 +564,7 @@
       const royalty=document.getElementById('beatRoyalty').value || 10;
 
       if (!userAddress) {
-        alert('Please connect your wallet to mint beats!');
+        UI.toast('Please connect your wallet to mint beats!', 'error');
         connectWallet();
         return;
       }
@@ -612,7 +633,11 @@
     function closeUpload(){document.getElementById('uploadModal').classList.add('hidden');document.getElementById('uploadModal').classList.remove('flex')}
     function playTrack(name, file, fullAccess = false) {
       if (!file || file === 'null' || file === '') {
-        alert('This beat does not have an audio file attached yet.');
+        UI.modal({
+          title: 'Missing File',
+          message: 'This beat does not have an audio file attached yet.',
+          type: 'info'
+        });
         return;
       }
       if (currentTrack === file) {
@@ -672,7 +697,7 @@
       const targetTime = pos * audio.duration;
       
       if (!isFullAccess && targetTime > 30) {
-        alert('Purchase the license to listen to the full track!');
+        UI.toast('Purchase the license to listen to the full track!', 'error');
         return;
       }
       audio.currentTime = targetTime;
