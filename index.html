@@ -59,35 +59,9 @@
               <button onclick="openUpload()" class="rounded-full border border-white/15 bg-white/5 px-7 py-3 font-bold hover:bg-white/10">Upload beat</button>
             </div>
           </div>
-          <div class="rounded-[2rem] border border-white/10 bg-white/[0.06] p-4 shadow-2xl shadow-black/40">
-            <div class="rounded-[1.5rem] bg-[#101020] p-6">
-              <div class="flex items-center justify-between border-b border-white/10 pb-5">
-                <div>
-                  <p class="text-sm text-slate-400">Featured license</p>
-                  <h3 class="mt-1 text-2xl font-black">Midnight Pulse</h3>
-                </div>
-                <span class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-bold text-emerald-300">Verified</span>
-              </div>
-              <div class="mt-6 flex h-28 items-center gap-1 rounded-3xl border border-white/10 bg-black/20 p-5">
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:35%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:60%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:45%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:85%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:55%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:90%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:40%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:70%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:50%"></div>
-                <div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:75%"></div>
-              </div>
-              <div class="mt-5 grid grid-cols-2 gap-3">
-                <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">License</p><p class="font-bold">Non-exclusive</p></div>
-                <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Price</p><p class="font-bold">420 BEAT</p></div>
-                <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Royalty</p><p class="font-bold">10%</p></div>
-                <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Remaining</p><p class="font-bold">87 / 100</p></div>
-              </div>
-              <button onclick="buyBeat('Midnight Pulse',420)" class="mt-6 w-full rounded-full bg-white py-3 font-black text-slate-950 hover:bg-slate-200">Lease with BEAT</button>
-            </div>
+          <div id="featuredBeatContainer" class="rounded-[2rem] border border-white/10 bg-white/[0.06] p-4 shadow-2xl shadow-black/40">
+            <!-- Featured beat will be rendered here -->
+            <div class="animate-pulse h-[400px] rounded-[1.5rem] bg-[#101020]"></div>
           </div>
         </div>
       </section>
@@ -183,18 +157,16 @@
           <p class="text-sm font-bold uppercase tracking-[.25em] text-fuchsia-600">Royalty dashboard</p>
           <h2 class="mt-3 text-4xl font-black md:text-5xl">Automatic revenue tracking</h2>
           <div class="mt-10 grid gap-6 md:grid-cols-4">
-            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Total sales</p><p class="mt-2 text-3xl font-black">24,820 BEAT</p></div>
-            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Royalties paid</p><p class="mt-2 text-3xl font-black">2,482 BEAT</p></div>
-            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Active leases</p><p class="mt-2 text-3xl font-black">139</p></div>
-            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Expiring soon</p><p class="mt-2 text-3xl font-black">12</p></div>
+            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Total sales</p><p id="statTotalSales" class="mt-2 text-3xl font-black">0 BEAT</p></div>
+            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Royalties paid</p><p id="statRoyaltiesPaid" class="mt-2 text-3xl font-black">0 BEAT</p></div>
+            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Active leases</p><p id="statActiveLeases" class="mt-2 text-3xl font-black">0</p></div>
+            <div class="rounded-3xl bg-white p-6 shadow-sm"><p class="text-sm text-slate-500">Expiring soon</p><p class="mt-2 text-3xl font-black">0</p></div>
           </div>
           <div class="mt-8 overflow-hidden rounded-3xl bg-white shadow-sm">
             <table class="w-full text-left text-sm">
               <thead class="bg-slate-100 text-slate-500"><tr><th class="p-4">Beat</th><th class="p-4">Buyer</th><th class="p-4">License</th><th class="p-4">Amount</th><th class="p-4">Status</th></tr></thead>
-              <tbody>
-                <tr class="border-t"><td class="p-4 font-bold">Midnight Pulse</td><td class="p-4">0x71...9A2</td><td class="p-4">Non-exclusive</td><td class="p-4">420 BEAT</td><td class="p-4 text-emerald-600 font-bold">Paid</td></tr>
-                <tr class="border-t"><td class="p-4 font-bold">Paris Bounce</td><td class="p-4">0x3B...22F</td><td class="p-4">One-year lease</td><td class="p-4">350 BEAT</td><td class="p-4 text-emerald-600 font-bold">Paid</td></tr>
-                <tr class="border-t"><td class="p-4 font-bold">Lyon Drill</td><td class="p-4">0xF8...1C0</td><td class="p-4">Exclusive</td><td class="p-4">3,200 BEAT</td><td class="p-4 text-cyan-600 font-bold">Verified</td></tr>
+              <tbody id="royaltyTableBody">
+                <!-- Transaction history will be rendered here -->
               </tbody>
             </table>
           </div>
@@ -399,8 +371,94 @@
       if (error) console.error('Error loading beats:', error);
       else {
         allBeats = data;
+        if (allBeats.length > 0) {
+          // Use the first (newest) available beat as featured
+          updateFeaturedBeat(allBeats[0]);
+        }
         loadUserPurchases();
+        updateRoyaltyDashboard();
       }
+    }
+
+    function updateFeaturedBeat(b) {
+      const el = document.getElementById('featuredBeatContainer');
+      const isOwned = userPurchases.includes(b.id);
+      const hasFullAccess = isOwned || (userAddress && b.author && b.author.toLowerCase() === userAddress.toLowerCase());
+
+      el.innerHTML = `
+        <div class="rounded-[1.5rem] bg-[#101020] p-6 animate-in fade-in duration-700">
+          <div class="flex items-center justify-between border-b border-white/10 pb-5">
+            <div>
+              <p class="text-sm text-slate-400">Featured license</p>
+              <h3 class="mt-1 text-2xl font-black">${b.name}</h3>
+            </div>
+            <span class="rounded-full bg-emerald-400/10 px-3 py-1 text-xs font-bold text-emerald-300">Verified</span>
+          </div>
+          <div class="mt-6 relative overflow-hidden flex h-28 items-center gap-1 rounded-3xl border border-white/10 bg-black/20 p-5 group cursor-pointer" onclick="playTrack('${b.name}', '${b.file_url}', ${hasFullAccess})">
+            ${Array.from({length:16}).map((_,j)=>`<div class="wave-bar flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:${30+((j*13)%65)}%"></div>`).join('')}
+            <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+              <div class="rounded-full bg-white p-3 text-slate-950 shadow-xl">
+                <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="mt-5 grid grid-cols-2 gap-3">
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">License</p><p class="font-bold">${b.license}</p></div>
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Price</p><p class="font-bold">${b.price} BEAT</p></div>
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Royalty</p><p class="font-bold">${b.royalty}%</p></div>
+            <div class="rounded-2xl border border-white/10 bg-white/[0.04] p-4"><p class="text-xs text-slate-500">Remaining</p><p class="font-bold">${b.left} Editions</p></div>
+          </div>
+          ${isOwned 
+            ? `<button class="mt-6 w-full rounded-full bg-emerald-500/20 py-3 font-black text-emerald-400 cursor-default">Owned in Library</button>`
+            : `<button onclick="buyBeat('${b.name}',${b.price}, ${b.id})" class="mt-6 w-full rounded-full bg-white py-3 font-black text-slate-950 hover:bg-slate-200 transition-colors">Lease with BEAT</button>`
+          }
+        </div>
+      `;
+    }
+
+    async function updateRoyaltyDashboard() {
+      // Fetch all purchases and join with beats info
+      const { data: purchases, error } = await _supabase
+        .from('purchases')
+        .select('*, beats(*)');
+      
+      if (error) {
+        console.error('Error loading royalty data:', error);
+        return;
+      }
+
+      let totalSales = 0;
+      let totalRoyalties = 0;
+      let activeLeases = purchases.length;
+
+      const tableBody = document.getElementById('royaltyTableBody');
+      
+      if (purchases.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">No transactions recorded yet.</td></tr>';
+      } else {
+        tableBody.innerHTML = purchases.slice(0, 10).map(p => {
+          const beat = p.beats;
+          if (!beat) return '';
+          
+          const royaltyAmount = (beat.price * beat.royalty) / 100;
+          totalSales += beat.price;
+          totalRoyalties += royaltyAmount;
+
+          return `
+            <tr class="border-t">
+              <td class="p-4 font-bold">${beat.name}</td>
+              <td class="p-4 text-slate-500 font-mono">${p.buyer_address.slice(0,6)}...${p.buyer_address.slice(-4)}</td>
+              <td class="p-4 text-slate-500">${beat.license}</td>
+              <td class="p-4 font-bold">${beat.price} BEAT</td>
+              <td class="p-4"><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-600">Paid</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('statTotalSales').textContent = `${totalSales.toLocaleString()} BEAT`;
+      document.getElementById('statRoyaltiesPaid').textContent = `${totalRoyalties.toLocaleString()} BEAT`;
+      document.getElementById('statActiveLeases').textContent = activeLeases;
     }
 
     function renderCards(list){
