@@ -170,6 +170,14 @@
               </tbody>
             </table>
           </div>
+          <!-- Pagination Controls -->
+          <div id="royaltyPagination" class="mt-6 flex items-center justify-between px-2">
+            <p id="paginationInfo" class="text-sm text-slate-500 font-semibold">Showing 0-0 of 0</p>
+            <div class="flex gap-2">
+              <button id="prevPageBtn" onclick="changeRoyaltyPage(-1)" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-950 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Previous</button>
+              <button id="nextPageBtn" onclick="changeRoyaltyPage(1)" class="rounded-full border border-slate-200 bg-white px-4 py-2 text-xs font-bold text-slate-950 hover:bg-slate-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors">Next</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -239,6 +247,9 @@
     let userBalance = 2500;
     let allBeats = []; // Will be populated from Supabase
     let userPurchases = []; // IDs of beats bought by current user
+    let allPurchases = []; // Full transaction history
+    let royaltyPage = 1;
+    const royaltyPageSize = 5;
     
     const audio = document.getElementById('mainAudio');
     const player = document.getElementById('audioPlayer');
