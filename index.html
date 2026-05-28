@@ -428,48 +428,78 @@
     }
 
     async function updateRoyaltyDashboard() {
-      // Fetch all purchases and join with beats info
-      const { data: purchases, error } = await _supabase
-        .from('purchases')
-        .select('*, beats(*)');
-      
-      if (error) {
-        console.error('Error loading royalty data:', error);
-        return;
+      try {
+        const { data: purchases, error } = await _supabase
+          .from('purchases')
+          .select('*, beats(*)');
+        
+        if (error) throw error;
+
+        allPurchases = purchases || [];
+        console.log('Total purchases loaded:', allPurchases.length);
+        
+        // Calculate Stats
+        let totalSales = 0;
+        let totalRoyalties = 0;
+        allPurchases.forEach(p => {
+          if (p.beats) {
+            totalSales += p.beats.price;
+            totalRoyalties += (p.beats.price * p.beats.royalty) / 100;
+          }
+        });
+
+        document.getElementById('statTotalSales').textContent = `${totalSales.toLocaleString()} BEAT`;
+        document.getElementById('statRoyaltiesPaid').textContent = `${totalRoyalties.toLocaleString()} BEAT`;
+        document.getElementById('statActiveLeases').textContent = allPurchases.length;
+
+        renderRoyaltyTable();
+      } catch (err) {
+        console.error('Error updating royalty dashboard:', err);
       }
+    }
 
-      let totalSales = 0;
-      let totalRoyalties = 0;
-      let activeLeases = purchases.length;
-
+    function renderRoyaltyTable() {
       const tableBody = document.getElementById('royaltyTableBody');
+      const start = (royaltyPage - 1) * royaltyPageSize;
+      const end = start + royaltyPageSize;
+      const pageItems = allPurchases.slice(start, end);
       
-      if (purchases.length === 0) {
+      console.log(`Rendering page ${royaltyPage}, items: ${pageItems.length}`);
+
+      if (allPurchases.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="5" class="p-8 text-center text-slate-400">No transactions recorded yet.</td></tr>';
+        document.getElementById('royaltyPagination').classList.add('hidden');
       } else {
-        tableBody.innerHTML = purchases.slice(0, 10).map(p => {
+        document.getElementById('royaltyPagination').classList.remove('hidden');
+        tableBody.innerHTML = pageItems.map(p => {
           const beat = p.beats;
           if (!beat) return '';
-          
-          const royaltyAmount = (beat.price * beat.royalty) / 100;
-          totalSales += beat.price;
-          totalRoyalties += royaltyAmount;
-
           return `
             <tr class="border-t">
-              <td class="p-4 font-bold">${beat.name}</td>
+              <td class="p-4 font-bold text-slate-950">${beat.name}</td>
               <td class="p-4 text-slate-500 font-mono">${p.buyer_address.slice(0,6)}...${p.buyer_address.slice(-4)}</td>
               <td class="p-4 text-slate-500">${beat.license}</td>
-              <td class="p-4 font-bold">${beat.price} BEAT</td>
+              <td class="p-4 font-bold text-slate-950">${beat.price} BEAT</td>
               <td class="p-4"><span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-600">Paid</span></td>
             </tr>
           `;
         }).join('');
-      }
 
-      document.getElementById('statTotalSales').textContent = `${totalSales.toLocaleString()} BEAT`;
-      document.getElementById('statRoyaltiesPaid').textContent = `${totalRoyalties.toLocaleString()} BEAT`;
-      document.getElementById('statActiveLeases').textContent = activeLeases;
+        // Update Pagination Info
+        const totalPages = Math.ceil(allPurchases.length / royaltyPageSize);
+        document.getElementById('paginationInfo').textContent = `Page ${royaltyPage} of ${totalPages} (${allPurchases.length} total)`;
+        document.getElementById('prevPageBtn').disabled = (royaltyPage === 1);
+        document.getElementById('nextPageBtn').disabled = (royaltyPage === totalPages);
+      }
+    }
+
+    function changeRoyaltyPage(direction) {
+      const totalPages = Math.ceil(allPurchases.length / royaltyPageSize);
+      const newPage = royaltyPage + direction;
+      if (newPage >= 1 && newPage <= totalPages) {
+        royaltyPage = newPage;
+        renderRoyaltyTable();
+      }
     }
 
     function renderCards(list){
@@ -783,7 +813,11 @@
       const targetTime = pos * audio.duration;
       
       if (!isFullAccess && targetTime > 30) {
-        UI.toast('Purchase the license to listen to the full track!', 'error');
+        UI.modal({
+          title: 'Full Version Required',
+          message: 'This is a preview version. Please purchase a license to listen to the full track and enable seeking beyond 30 seconds.',
+          type: 'info'
+        });
         return;
       }
       audio.currentTime = targetTime;
@@ -801,11 +835,7 @@
         
         if (!previewEnded) {
           previewEnded = true;
-          const toast = document.getElementById('toast');
-          const toastText = document.getElementById('toastText');
-          toastText.textContent = 'Preview ended. Please buy the beat to listen to the full version!';
-          toast.classList.remove('hidden');
-          setTimeout(() => toast.classList.add('hidden'), 5000);
+          UI.toast('Preview ended. Please buy the beat to listen to the full version!', 'info');
         }
         return;
       }
