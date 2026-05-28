@@ -293,7 +293,7 @@
     }
 
     async function loadBeats() {
-      const { data, error } = await _supabase.from('beats').select('*').order('created_at', { ascending: false });
+      const { data, error } = await _supabase.from('beats').select('*').order('id', { ascending: false });
       if (error) console.error('Error loading beats:', error);
       else {
         allBeats = data;
