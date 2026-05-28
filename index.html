@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mintwave Marketplace Demo</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -231,8 +232,15 @@
   </div>
 
   <script>
+    // Supabase Configuration
+    const SUPABASE_URL = 'https://hjnwyjreftcqnyfumosu.supabase.co';
+    const SUPABASE_ANON_KEY = 'sb_publishable_VQ0HmzGYLLePTmGg263XzA_s1TzSooZ';
+    const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     let userAddress = null;
     let currentTrack = null;
+    let allBeats = []; // Will be populated from Supabase
+    
     const audio = document.getElementById('mainAudio');
     const player = document.getElementById('audioPlayer');
     const playIcon = document.getElementById('playIcon');
@@ -284,22 +292,23 @@
       console.log('Wallet disconnected from app');
     }
 
-    const beats = [
-      {name:'Land of the Pharaohs', genre:'Trap', price:420, license:'Non-exclusive', royalty:10, left:87, file:'music/Land of the Pharaohs.mp4'},
-      {name:'Lost Tombs', genre:'Afrobeat', price:350, license:'One-year lease', royalty:8, left:42, file:'music/Lost Tombs.mp4'},
-      {name:'Osiris', genre:'Drill', price:620, license:'Non-exclusive', royalty:12, left:65, file:'music/Osiris.mp4'},
-      {name:'Queen Nefertiti', genre:'House', price:500, license:'Non-exclusive', royalty:9, left:91, file:'music/Queen Nefertiti.mp4'},
-      {name:'Ra', genre:'Trap', price:1200, license:'Exclusive', royalty:15, left:1, file:'music/Ra.mp4'},
-      {name:'Scepter of Egypt', genre:'Afrobeat', price:280, license:'One-year lease', royalty:7, left:120, file:'music/Scepter of Egypt.mp4'}
-    ];
-    function renderCards(list=beats){
+    async function loadBeats() {
+      const { data, error } = await _supabase.from('beats').select('*').order('created_at', { ascending: false });
+      if (error) console.error('Error loading beats:', error);
+      else {
+        allBeats = data;
+        renderCards(allBeats);
+      }
+    }
+
+    function renderCards(list){
       const el=document.getElementById('cards');
       el.innerHTML=list.map((b,i)=>`<div class="beat-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm group" data-name="${b.name.toLowerCase()}" data-genre="${b.genre}">
         <div class="flex items-center justify-between"><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">${b.genre}</span><span class="text-sm font-bold text-emerald-600">Verified</span></div>
         <div class="mt-5 relative overflow-hidden flex h-20 items-center gap-1 rounded-2xl bg-slate-950 p-4">
           ${Array.from({length:16}).map((_,j)=>`<div class="flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:${25+((i+j)*13)%65}%"></div>`).join('')}
           <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onclick="playTrack('${b.name}', '${b.file}')" class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-950 shadow-xl transform scale-90 group-hover:scale-100 transition-transform">
+            <button onclick="playTrack('${b.name}', '${b.file_url}')" class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-950 shadow-xl transform scale-90 group-hover:scale-100 transition-transform">
               <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
             </button>
           </div>
@@ -308,10 +317,11 @@
         <div class="mt-5 flex items-center justify-between"><div><p class="text-xs text-slate-500">Price</p><p class="text-2xl font-black">${b.price} BEAT</p></div><button onclick="buyBeat('${b.name}',${b.price})" class="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800">Lease</button></div>
       </div>`).join('') || '<p class="text-slate-500">No beat found.</p>';
     }
+
     function filterCards(){
       const q=document.getElementById('search').value.toLowerCase();
       const g=document.getElementById('genre').value;
-      renderCards(beats.filter(b=>b.name.toLowerCase().includes(q)&&(g==='all'||b.genre===g)));
+      renderCards(allBeats.filter(b=>b.name.toLowerCase().includes(q)&&(g==='all'||b.genre===g)));
     }
 
     document.getElementById('walletBtn').onclick = () => {
@@ -385,9 +395,14 @@
       fileInfo.classList.remove('flex');
     }
 
-    function fakeMint(){
+    async function fakeMint(){
       const status=document.getElementById('mintStatus');
       const name=document.getElementById('beatName').value || 'New Demo Beat';
+      const price=document.getElementById('beatPrice').value || 0;
+      const genre=document.getElementById('beatGenre').value;
+      const license=document.getElementById('beatLicense').value;
+      const editions=document.getElementById('beatEditions').value || 100;
+      const royalty=document.getElementById('beatRoyalty').value || 10;
 
       if (!userAddress) {
         alert('Please connect your wallet to mint beats!');
@@ -408,9 +423,51 @@
         return;
       }
 
-      status.classList.remove('hidden'); status.textContent=`Uploading ${selectedFile.name} to IPFS...`;
-      setTimeout(()=>status.textContent='Encoding license rules into smart contract...', 900);
-      setTimeout(()=>status.textContent=`Success! ${name} minted as a demo NFT license with file ${selectedFile.name} and added to the marketplace.`, 1900);
+      status.classList.remove('hidden'); 
+      status.textContent=`Uploading ${selectedFile.name} to Supabase Storage...`;
+
+      try {
+        // 1. Upload file to Supabase Storage
+        const fileName = `${Date.now()}-${selectedFile.name}`;
+        const { data: uploadData, error: uploadError } = await _supabase.storage
+          .from('music')
+          .upload(fileName, selectedFile);
+
+        if (uploadError) throw uploadError;
+
+        // 2. Get public URL
+        const { data: { publicUrl } } = _supabase.storage
+          .from('music')
+          .getPublicUrl(fileName);
+
+        status.textContent='Recording metadata to Database...';
+
+        // 3. Insert record into Database
+        const { error: dbError } = await _supabase.from('beats').insert([{
+          name,
+          genre,
+          price: parseFloat(price),
+          license,
+          royalty: parseFloat(royalty),
+          left: parseInt(editions),
+          file_url: publicUrl
+        }]);
+
+        if (dbError) throw dbError;
+
+        status.textContent=`Success! ${name} uploaded and added to the marketplace.`;
+        setTimeout(() => {
+          status.classList.add('hidden');
+          removeFile();
+          loadBeats(); // Refresh cards
+        }, 3000);
+
+      } catch (err) {
+        console.error('Minting error:', err);
+        status.textContent = `Error: ${err.message}`;
+        status.classList.replace('bg-emerald-400/10', 'bg-red-400/10');
+        status.classList.replace('text-emerald-300', 'text-red-300');
+      }
     }
     function openUpload(){document.getElementById('uploadModal').classList.remove('hidden');document.getElementById('uploadModal').classList.add('flex')}
     function closeUpload(){document.getElementById('uploadModal').classList.add('hidden');document.getElementById('uploadModal').classList.remove('flex')}
@@ -476,7 +533,7 @@
       stopPlayback();
     };
 
-    renderCards();
+    loadBeats();
   </script>
 </body>
 </html>
