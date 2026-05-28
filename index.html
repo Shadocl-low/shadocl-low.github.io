@@ -34,7 +34,13 @@
           <a href="#upload" class="hover:text-white">Upload</a>
           <a href="#royalties" class="hover:text-white">Royalties</a>
         </nav>
-        <button id="walletBtn" class="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-slate-200">Connect Wallet</button>
+        <div class="flex items-center gap-3">
+          <div id="balanceDisplay" class="hidden items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2">
+            <span class="text-xs font-bold text-slate-500">Balance</span>
+            <span id="userBalanceText" class="text-sm font-black text-cyan-400">2500 BEAT</span>
+          </div>
+          <button id="walletBtn" class="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-slate-200">Connect Wallet</button>
+        </div>
       </div>
     </header>
 
@@ -262,6 +268,7 @@
     let currentTrack = null;
     let isFullAccess = false;
     let previewEnded = false;
+    let userBalance = 2500;
     let allBeats = []; // Will be populated from Supabase
     let userPurchases = []; // IDs of beats bought by current user
     
@@ -300,20 +307,31 @@
     function handleAccountsChanged(accounts) {
       const btn = document.getElementById('walletBtn');
       const librarySection = document.getElementById('library');
+      const balanceDisplay = document.getElementById('balanceDisplay');
+      
       if (accounts.length === 0) {
         userAddress = null;
         btn.textContent = 'Connect Wallet';
         btn.className = 'rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-slate-200';
         userPurchases = [];
         librarySection.classList.add('hidden');
+        balanceDisplay.classList.add('hidden');
+        balanceDisplay.classList.remove('flex');
         renderCards(allBeats);
       } else {
         userAddress = accounts[0];
         btn.textContent = `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
         btn.className = 'rounded-full bg-emerald-400 px-5 py-2.5 text-sm font-bold text-slate-950';
         librarySection.classList.remove('hidden');
+        balanceDisplay.classList.remove('hidden');
+        balanceDisplay.classList.add('flex');
+        updateBalanceUI();
         loadUserPurchases();
       }
+    }
+
+    function updateBalanceUI() {
+      document.getElementById('userBalanceText').textContent = `${userBalance} BEAT`;
     }
 
     async function loadUserPurchases() {
@@ -426,6 +444,11 @@
         return;
       }
 
+      if (userBalance < price) {
+        alert(`Insufficient balance! You need ${price} BEAT, but you only have ${userBalance} BEAT.`);
+        return;
+      }
+
       try {
         // 1. Check if still available
         const { data: beat } = await _supabase.from('beats').select('left').eq('id', beatId).single();
@@ -447,6 +470,10 @@
           .update({ left: beat.left - 1 })
           .eq('id', beatId);
         if (updateError) throw updateError;
+
+        // 4. Deduct balance
+        userBalance -= price;
+        updateBalanceUI();
 
         const toast=document.getElementById('toast');
         document.getElementById('toastText').textContent=`${name} license purchased! It is now in your Library.`;
