@@ -30,9 +30,9 @@
         </div>
         <nav class="hidden gap-6 text-sm font-semibold text-slate-300 md:flex">
           <a href="#marketplace" class="hover:text-white">Marketplace</a>
+          <a href="#library" class="hover:text-white">My Library</a>
           <a href="#upload" class="hover:text-white">Upload</a>
           <a href="#royalties" class="hover:text-white">Royalties</a>
-          <a href="#token" class="hover:text-white">Token</a>
         </nav>
         <button id="walletBtn" class="rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-slate-200">Connect Wallet</button>
       </div>
@@ -81,6 +81,27 @@
               </div>
               <button onclick="buyBeat('Midnight Pulse',420)" class="mt-6 w-full rounded-full bg-white py-3 font-black text-slate-950 hover:bg-slate-200">Lease with BEAT</button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="library" class="hidden px-6 py-20 bg-[#0c0c1d]">
+        <div class="mx-auto max-w-7xl">
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+            <div>
+              <p class="text-sm font-bold uppercase tracking-[.25em] text-cyan-300">Personal Collection</p>
+              <h2 class="mt-3 text-4xl font-black md:text-5xl">My Library</h2>
+              <p class="mt-4 text-slate-400">Your owned beat licenses with full access to high-quality versions.</p>
+            </div>
+            <div id="libraryStats" class="flex gap-4">
+              <div class="rounded-2xl border border-white/10 bg-white/5 px-6 py-3 text-center">
+                <p id="ownedCount" class="text-2xl font-black text-white">0</p>
+                <p class="text-[10px] uppercase font-bold text-slate-500">Beats Owned</p>
+              </div>
+            </div>
+          </div>
+          <div id="libraryCards" class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <!-- Library cards will be rendered here -->
           </div>
         </div>
       </section>
@@ -239,7 +260,9 @@
 
     let userAddress = null;
     let currentTrack = null;
+    let isFullAccess = false;
     let allBeats = []; // Will be populated from Supabase
+    let userPurchases = []; // IDs of beats bought by current user
     
     const audio = document.getElementById('mainAudio');
     const player = document.getElementById('audioPlayer');
@@ -275,21 +298,69 @@
 
     function handleAccountsChanged(accounts) {
       const btn = document.getElementById('walletBtn');
+      const librarySection = document.getElementById('library');
       if (accounts.length === 0) {
         userAddress = null;
         btn.textContent = 'Connect Wallet';
         btn.className = 'rounded-full bg-white px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-slate-200';
+        userPurchases = [];
+        librarySection.classList.add('hidden');
+        renderCards(allBeats);
       } else {
         userAddress = accounts[0];
         btn.textContent = `${userAddress.slice(0, 6)}...${userAddress.slice(-4)}`;
         btn.className = 'rounded-full bg-emerald-400 px-5 py-2.5 text-sm font-bold text-slate-950';
+        librarySection.classList.remove('hidden');
+        loadUserPurchases();
       }
     }
 
-    function disconnectWallet() {
-      userAddress = null;
-      handleAccountsChanged([]);
-      console.log('Wallet disconnected from app');
+    async function loadUserPurchases() {
+      if (!userAddress) return;
+      const { data, error } = await _supabase
+        .from('purchases')
+        .select('beat_id')
+        .eq('buyer_address', userAddress);
+      
+      if (!error) {
+        userPurchases = data.map(p => p.beat_id);
+        document.getElementById('ownedCount').textContent = userPurchases.length;
+        renderCards(allBeats);
+        renderLibrary();
+      }
+    }
+
+    function renderLibrary() {
+      const el = document.getElementById('libraryCards');
+      const ownedBeats = allBeats.filter(b => userPurchases.includes(b.id));
+      
+      if (ownedBeats.length === 0) {
+        el.innerHTML = `<div class="col-span-full py-10 text-center border-2 border-dashed border-white/10 rounded-[2rem]">
+          <p class="text-slate-500">Your library is empty. Buy a beat in the marketplace to see it here!</p>
+          <a href="#marketplace" class="mt-4 inline-block text-cyan-400 font-bold hover:underline">Explore Marketplace</a>
+        </div>`;
+        return;
+      }
+
+      el.innerHTML = ownedBeats.map((b, i) => `<div class="beat-card rounded-3xl border border-white/10 bg-white/5 p-6 shadow-sm group">
+        <div class="flex items-center justify-between"><span class="rounded-full bg-cyan-400/10 px-3 py-1 text-xs font-bold text-cyan-400">${b.genre}</span><span class="text-xs text-emerald-400 font-bold">FULL ACCESS</span></div>
+        <div class="mt-5 relative overflow-hidden flex h-20 items-center gap-1 rounded-2xl bg-black/40 p-4">
+          ${Array.from({length:16}).map((_,j)=>`<div class="flex-1 rounded-full bg-gradient-to-t from-emerald-500 to-cyan-400" style="height:${30+((i+j)*17)%60}%"></div>`).join('')}
+          <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button onclick="playTrack('${b.name}', '${b.file_url}', true)" class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-950 shadow-xl transform scale-90 group-hover:scale-100 transition-transform">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+        </div>
+        <h3 class="mt-5 text-2xl font-black text-white">${b.name}</h3>
+        <p class="mt-2 text-slate-500 text-sm">License: ${b.license}</p>
+        <div class="mt-6 flex items-center justify-between">
+          <button onclick="playTrack('${b.name}', '${b.file_url}', true)" class="rounded-full bg-white px-6 py-2.5 text-sm font-bold text-slate-950 hover:bg-slate-200">Play Now</button>
+          <a href="${b.file_url}" download="${b.name}" class="text-slate-400 hover:text-white transition-colors">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          </a>
+        </div>
+      </div>`).join('');
     }
 
     async function loadBeats() {
@@ -297,25 +368,35 @@
       if (error) console.error('Error loading beats:', error);
       else {
         allBeats = data;
-        renderCards(allBeats);
+        loadUserPurchases();
       }
     }
 
     function renderCards(list){
       const el=document.getElementById('cards');
-      el.innerHTML=list.map((b,i)=>`<div class="beat-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm group" data-name="${b.name.toLowerCase()}" data-genre="${b.genre}">
-        <div class="flex items-center justify-between"><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">${b.genre}</span><span class="text-sm font-bold text-emerald-600">Verified</span></div>
-        <div class="mt-5 relative overflow-hidden flex h-20 items-center gap-1 rounded-2xl bg-slate-950 p-4">
-          ${Array.from({length:16}).map((_,j)=>`<div class="flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:${25+((i+j)*13)%65}%"></div>`).join('')}
-          <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
-            <button onclick="playTrack('${b.name}', '${b.file_url}')" class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-950 shadow-xl transform scale-90 group-hover:scale-100 transition-transform">
-              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </button>
+      el.innerHTML=list.map((b,i)=>{
+        const isOwned = userPurchases.includes(b.id);
+        const hasFullAccess = isOwned || (userAddress && b.author && b.author.toLowerCase() === userAddress.toLowerCase());
+        
+        return `<div class="beat-card rounded-3xl border border-slate-200 bg-white p-6 shadow-sm group" data-name="${b.name.toLowerCase()}" data-genre="${b.genre}">
+          <div class="flex items-center justify-between"><span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-bold text-slate-600">${b.genre}</span><span class="text-xs text-slate-400 font-mono">${b.author ? b.author.slice(0,6)+'...'+b.author.slice(-4) : 'Unknown Author'}</span></div>
+          <div class="mt-5 relative overflow-hidden flex h-20 items-center gap-1 rounded-2xl bg-slate-950 p-4">
+            ${Array.from({length:16}).map((_,j)=>`<div class="flex-1 rounded-full bg-gradient-to-t from-fuchsia-500 to-cyan-300" style="height:${25+((i+j)*13)%65}%"></div>`).join('')}
+            <div class="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button onclick="playTrack('${b.name}', '${b.file_url}', ${hasFullAccess})" class="flex h-12 w-12 items-center justify-center rounded-full bg-white text-slate-950 shadow-xl transform scale-90 group-hover:scale-100 transition-transform">
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </button>
+            </div>
           </div>
-        </div>
-        <h3 class="mt-5 text-2xl font-black">${b.name}</h3><p class="mt-2 text-slate-500">${b.license} • ${b.royalty}% royalty • ${b.left} left</p>
-        <div class="mt-5 flex items-center justify-between"><div><p class="text-xs text-slate-500">Price</p><p class="text-2xl font-black">${b.price} BEAT</p></div><button onclick="buyBeat('${b.name}',${b.price})" class="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800">Lease</button></div>
-      </div>`).join('') || '<p class="text-slate-500">No beat found.</p>';
+          <h3 class="mt-5 text-2xl font-black">${b.name}</h3><p class="mt-2 text-slate-500">${b.license} • ${b.royalty}% royalty • ${b.left} left</p>
+          <div class="mt-5 flex items-center justify-between">
+            <div><p class="text-xs text-slate-500">Price</p><p class="text-2xl font-black">${b.price} BEAT</p></div>
+            ${isOwned 
+              ? `<span class="rounded-full bg-emerald-100 px-5 py-3 text-sm font-bold text-emerald-700">Owned</span>`
+              : `<button onclick="buyBeat('${b.name}',${b.price}, ${b.id})" class="rounded-full bg-slate-950 px-5 py-3 text-sm font-bold text-white hover:bg-slate-800">Lease</button>`
+            }
+          </div>
+        </div>`}).join('') || '<p class="text-slate-500">No beat found.</p>';
     }
 
     function filterCards(){
@@ -338,16 +419,31 @@
       window.ethereum.request({ method: 'eth_accounts' }).then(handleAccountsChanged);
     }
 
-    function buyBeat(name,price){
+    async function buyBeat(name,price, beatId){
       if (!userAddress) {
         alert('Please connect your wallet first!');
         connectWallet();
         return;
       }
-      const toast=document.getElementById('toast');
-      document.getElementById('toastText').textContent=`${name} license purchased for ${price} BEAT. NFT license and royalty split simulated successfully.`;
-      toast.classList.remove('hidden');
-      setTimeout(()=>toast.classList.add('hidden'),5000);
+
+      try {
+        const { error } = await _supabase.from('purchases').insert([
+          { beat_id: beatId, buyer_address: userAddress }
+        ]);
+
+        if (error) throw error;
+
+        const toast=document.getElementById('toast');
+        document.getElementById('toastText').textContent=`${name} license purchased for ${price} BEAT. NFT ownership recorded in Database.`;
+        toast.classList.remove('hidden');
+        setTimeout(()=>toast.classList.add('hidden'),5000);
+
+        loadUserPurchases(); // Refresh the buttons to show "Owned"
+
+      } catch (err) {
+        console.error('Purchase error:', err);
+        alert('Error recording purchase: ' + err.message);
+      }
     }
 
     let selectedFile = null;
@@ -450,7 +546,8 @@
           license,
           royalty: parseFloat(royalty),
           left: parseInt(editions),
-          file_url: publicUrl
+          file_url: publicUrl,
+          author: userAddress // Saving the wallet address as the author
         }]);
 
         if (dbError) throw dbError;
@@ -471,15 +568,16 @@
     }
     function openUpload(){document.getElementById('uploadModal').classList.remove('hidden');document.getElementById('uploadModal').classList.add('flex')}
     function closeUpload(){document.getElementById('uploadModal').classList.add('hidden');document.getElementById('uploadModal').classList.remove('flex')}
-    function playTrack(name, file) {
+    function playTrack(name, file, fullAccess = false) {
       if (currentTrack === file) {
         togglePlayback();
         return;
       }
       currentTrack = file;
+      isFullAccess = fullAccess;
       audio.src = file;
       audio.play();
-      trackNameDisplay.textContent = name;
+      trackNameDisplay.textContent = name + (!isFullAccess ? ' (Preview)' : '');
       player.classList.remove('translate-y-32', 'opacity-0');
       updateUI();
     }
@@ -519,12 +617,27 @@
     function seek(e) {
       const rect = document.getElementById('progressContainer').getBoundingClientRect();
       const pos = (e.clientX - rect.left) / rect.width;
-      audio.currentTime = pos * audio.duration;
+      const targetTime = pos * audio.duration;
+      
+      if (!isFullAccess && targetTime > 30) {
+        alert('Purchase the license to listen to the full track!');
+        return;
+      }
+      audio.currentTime = targetTime;
     }
 
     audio.ontimeupdate = () => {
       const current = audio.currentTime;
       const total = audio.duration || 0;
+      
+      if (!isFullAccess && current >= 30) {
+        audio.pause();
+        audio.currentTime = 30;
+        updateUI();
+        alert('Preview ended. Please buy the beat to listen to the full version!');
+        return;
+      }
+
       progressBar.style.width = `${(current / total) * 100}%`;
       timeDisplay.textContent = `${formatTime(current)} / ${formatTime(total)}`;
     };
